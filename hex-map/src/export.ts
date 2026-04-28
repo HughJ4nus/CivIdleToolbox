@@ -130,7 +130,7 @@ interface PanelLayout {
 
 const layoutPanel = (state: MapState): PanelLayout => {
    const inner = PANEL_WIDTH - PANEL_PAD * 2;
-   const titleLines = wrapToWidth(state.title || "Untitled map", inner, TITLE_FONT, 700);
+   const titleLines = wrapToWidth(state.title || "Untitled Design", inner, TITLE_FONT, 700);
 
    const noteLines = state.notes ? wrapToWidth(state.notes, inner, NOTES_FONT) : [];
 

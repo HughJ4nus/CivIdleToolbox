@@ -8,6 +8,9 @@
    --text-dim: #9a9a9a;
    --accent: #4a9eff;
    --danger: #ff5d5d;
+   /* Single source of truth for the left sidebar width. The toolbar's title
+      input matches this so the title sits over the sidebar column. */
+   --sidebar-width: 360px;
 }
 
 * {
@@ -89,8 +92,10 @@ input[type="number"] {
    flex-wrap: wrap;
 }
 .title-input {
-   flex: 1;
-   min-width: 200px;
+   /* Match the sidebar width so the title sits visually over its column. */
+   flex: 0 0 var(--sidebar-width);
+   width: var(--sidebar-width);
+   min-width: 0;
    font-size: 16px;
    font-weight: 600;
 }
@@ -184,9 +189,9 @@ input[type="number"] {
 }
 
 .sidebar {
-   width: 360px;
-   min-width: 360px;
-   max-width: 360px;
+   width: var(--sidebar-width);
+   min-width: var(--sidebar-width);
+   max-width: var(--sidebar-width);
    background: var(--panel);
    border-right: 1px solid var(--border);
    overflow-y: auto;
