@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Annotations } from "./Annotations";
 import { exportPng, exportSvg } from "./export";
 import { computeCenterShift } from "./resize";
-import { HexGrid } from "./HexGrid";
+import { HexGrid, type Tool } from "./HexGrid";
 import { LabelEditor } from "./LabelEditor";
 import { Legend, newPaletteEntry } from "./Legend";
 import { loadState, saveState } from "./storage";
@@ -15,12 +15,19 @@ import {
 } from "./types";
 
 const STORAGE_KEYS_HEX_SIZE = "cividle-hex-map:hexSize";
+const STORAGE_KEYS_TOOL = "cividle-hex-map:tool";
+
+const isTool = (v: string | null): v is Tool => v === "pan" || v === "paint";
 
 export const App = (): JSX.Element => {
    const [state, setState] = useState<MapState>(() => loadState());
    const [hexSize, setHexSize] = useState<number>(() => {
       const stored = Number(localStorage.getItem(STORAGE_KEYS_HEX_SIZE));
       return Number.isFinite(stored) && stored > 0 ? stored : 26;
+   });
+   const [tool, setTool] = useState<Tool>(() => {
+      const stored = localStorage.getItem(STORAGE_KEYS_TOOL);
+      return isTool(stored) ? stored : "pan";
    });
    const [selected, setSelected] = useState<string | null>(null);
    const [editorOpen, setEditorOpen] = useState(false);
@@ -33,6 +40,10 @@ export const App = (): JSX.Element => {
    useEffect(() => {
       localStorage.setItem(STORAGE_KEYS_HEX_SIZE, String(hexSize));
    }, [hexSize]);
+
+   useEffect(() => {
+      localStorage.setItem(STORAGE_KEYS_TOOL, tool);
+   }, [tool]);
 
    const counts = useMemo(() => {
       const m = new Map<string, number>();
@@ -357,6 +368,8 @@ export const App = (): JSX.Element => {
                   state={state}
                   hexSize={hexSize}
                   selected={selected}
+                  tool={tool}
+                  onToolChange={setTool}
                   onHexClick={handleHexClick}
                   onHexContextMenu={handleHexContextMenu}
                />

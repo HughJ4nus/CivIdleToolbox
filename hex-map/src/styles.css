@@ -140,21 +140,26 @@ input[type="number"] {
    top: 12px;
    right: 12px;
    display: flex;
+   flex-direction: column;
    gap: 4px;
-   align-items: center;
    background: rgba(20, 20, 20, 0.9);
    padding: 4px;
    border: 1px solid var(--border);
    border-radius: 6px;
    backdrop-filter: blur(4px);
 }
-.grid-controls button {
+.grid-controls-row {
+   display: flex;
+   gap: 4px;
+   align-items: center;
+}
+.grid-controls-row > button {
    width: 32px;
    height: 28px;
    padding: 0;
    font-size: 14px;
 }
-.grid-controls button[title="Fit to view"] {
+.grid-controls-row > button[title="Fit to view"] {
    width: auto;
    padding: 0 10px;
 }
@@ -165,6 +170,50 @@ input[type="number"] {
    padding: 0 6px;
    min-width: 44px;
    text-align: right;
+}
+.tool-row {
+   border-top: 1px solid var(--border);
+   padding-top: 4px;
+}
+.tool-btn {
+   flex: 1;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 6px;
+   /* override the size constraints from .grid-controls-row > button */
+   width: auto !important;
+   height: 28px !important;
+   padding: 0 10px !important;
+   font-size: 12px;
+   color: var(--text-dim);
+}
+.tool-btn:hover {
+   color: var(--text);
+}
+.tool-btn.active {
+   background: var(--accent);
+   border-color: var(--accent);
+   color: #fff;
+}
+.tool-btn svg {
+   color: currentColor;
+}
+
+/* Paint tool: crosshair cursor over the entire viewport including hexes. The
+   .grabbing rule below still handles pan-mode drag. */
+.grid-viewport[data-tool="paint"],
+.grid-viewport[data-tool="paint"] svg,
+.grid-viewport[data-tool="paint"] .hex {
+   cursor: crosshair !important;
+}
+
+/* Shift-as-pan override (declared AFTER the paint rule above so equal-
+   specificity selectors lose to this). */
+.grid-viewport[data-shift="true"],
+.grid-viewport[data-shift="true"] svg,
+.grid-viewport[data-shift="true"] .hex {
+   cursor: grab !important;
 }
 
 .legend h3 {
