@@ -14,17 +14,15 @@ import {
    type MapState,
 } from "./types";
 
-const STORAGE_KEYS_HEX_SIZE = "cividle-hex-map:hexSize";
+// Hex polygon size (world units). The on-screen view scales via zoom (handled
+// in HexGrid), so a single constant is enough — no user-facing control.
+const HEX_SIZE = 26;
 const STORAGE_KEYS_TOOL = "cividle-hex-map:tool";
 
 const isTool = (v: string | null): v is Tool => v === "pan" || v === "paint";
 
 export const App = (): JSX.Element => {
    const [state, setState] = useState<MapState>(() => loadState());
-   const [hexSize, setHexSize] = useState<number>(() => {
-      const stored = Number(localStorage.getItem(STORAGE_KEYS_HEX_SIZE));
-      return Number.isFinite(stored) && stored > 0 ? stored : 26;
-   });
    const [tool, setTool] = useState<Tool>(() => {
       const stored = localStorage.getItem(STORAGE_KEYS_TOOL);
       return isTool(stored) ? stored : "pan";
@@ -36,10 +34,6 @@ export const App = (): JSX.Element => {
    useEffect(() => {
       saveState(state);
    }, [state]);
-
-   useEffect(() => {
-      localStorage.setItem(STORAGE_KEYS_HEX_SIZE, String(hexSize));
-   }, [hexSize]);
 
    useEffect(() => {
       localStorage.setItem(STORAGE_KEYS_TOOL, tool);
@@ -235,15 +229,15 @@ export const App = (): JSX.Element => {
 
    const onExportPng = useCallback(async () => {
       try {
-         await exportPng(state, { hexSize: Math.max(28, hexSize), pixelRatio: 2 });
+         await exportPng(state, { hexSize: Math.max(28, HEX_SIZE), pixelRatio: 2 });
       } catch (e) {
          alert(`PNG export failed: ${(e as Error).message}`);
       }
-   }, [state, hexSize]);
+   }, [state]);
 
    const onExportImageSvg = useCallback(() => {
-      exportSvg(state, { hexSize: Math.max(28, hexSize) });
-   }, [state, hexSize]);
+      exportSvg(state, { hexSize: Math.max(28, HEX_SIZE) });
+   }, [state]);
 
    const selectedCell = selected ? state.cells[selected] : undefined;
 
@@ -276,16 +270,6 @@ export const App = (): JSX.Element => {
                      min={1}
                      max={80}
                      onChange={(e) => onResize(state.cols, Number(e.target.value))}
-                  />
-               </label>
-               <label>
-                  hex
-                  <input
-                     type="range"
-                     min={12}
-                     max={60}
-                     value={hexSize}
-                     onChange={(e) => setHexSize(Number(e.target.value))}
                   />
                </label>
             </div>
@@ -366,7 +350,7 @@ export const App = (): JSX.Element => {
             <section className="canvas-wrap">
                <HexGrid
                   state={state}
-                  hexSize={hexSize}
+                  hexSize={HEX_SIZE}
                   selected={selected}
                   tool={tool}
                   onToolChange={setTool}
