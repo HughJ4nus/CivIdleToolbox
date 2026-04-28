@@ -1,0 +1,61 @@
+name: Deploy hex-map to GitHub Pages
+
+on:
+   push:
+      branches: [main]
+      paths:
+         - "hex-map/**"
+         - ".github/workflows/deploy-hex-map.yml"
+   workflow_dispatch:
+
+# peaceiris/actions-gh-pages pushes a commit to the gh-pages branch using
+# GITHUB_TOKEN. The default token in newer repos is read-only, so we have to
+# grant write access explicitly.
+permissions:
+   contents: write
+
+# Make sure two pushes in quick succession don't fight over the gh-pages branch.
+concurrency:
+   group: pages
+   cancel-in-progress: false
+
+jobs:
+   deploy:
+      runs-on: ubuntu-latest
+      steps:
+         - uses: actions/checkout@v4
+
+         - uses: pnpm/action-setup@v4
+           with:
+              version: 10
+
+         - uses: actions/setup-node@v4
+           with:
+              node-version: 20
+              cache: pnpm
+              # Lockfile lives in the subdir, not the repo root.
+              cache-dependency-path: hex-map/pnpm-lock.yaml
+
+         - name: Install
+           run: pnpm install --frozen-lockfile
+           working-directory: hex-map
+
+         - name: Build
+           # GitHub Pages serves project sites under https://<user>.github.io/<repo>/,
+           # so Vite needs that subpath as `base` when emitting asset URLs.
+           env:
+              VITE_BASE: /CivIdleToolbox/
+           run: pnpm build
+           working-directory: hex-map
+
+         - name: Deploy to gh-pages
+           uses: peaceiris/actions-gh-pages@v4
+           with:
+              github_token: ${{ secrets.GITHUB_TOKEN }}
+              publish_dir: hex-map/dist
+              # Same orphan-style commit our manual script uses, so the branch
+              # contains exactly the build output and no accumulated history.
+              force_orphan: true
+              user_name: github-actions[bot]
+              user_email: 41898282+github-actions[bot]@users.noreply.github.com
+              commit_message: "Deploy hex-map ${{ github.sha }}"
