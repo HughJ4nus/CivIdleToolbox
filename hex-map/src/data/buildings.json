@@ -1,0 +1,1427 @@
+[
+  {
+    "key": "AbuSimbel",
+    "name": "Abu Simbel",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "ActorsGuild",
+    "name": "Actor's Guild",
+    "special": null
+  },
+  {
+    "key": "AILab",
+    "name": "AI Lab",
+    "special": null
+  },
+  {
+    "key": "AircraftCarrierYard",
+    "name": "Aircraft Carrier Yard",
+    "special": null
+  },
+  {
+    "key": "AirplaneFactory",
+    "name": "Airplane Factory",
+    "special": null
+  },
+  {
+    "key": "AkademikLomonosov",
+    "name": "Akademik Lomonosov",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "AldersonDisk",
+    "name": "Alderson Disk",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Alps",
+    "name": "Alps",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "AluminumSmelter",
+    "name": "Aluminum Smelter",
+    "special": null
+  },
+  {
+    "key": "AngkorWat",
+    "name": "Angkor Wat",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Apartment",
+    "name": "Apartment",
+    "special": null
+  },
+  {
+    "key": "Aphrodite",
+    "name": "Aphrodite",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "ApolloProgram",
+    "name": "Apollo Program",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Aqueduct",
+    "name": "Aqueduct",
+    "special": null
+  },
+  {
+    "key": "ArcDeTriomphe",
+    "name": "Arc de Triomphe",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Armory",
+    "name": "Armory",
+    "special": null
+  },
+  {
+    "key": "ArtilleryFactory",
+    "name": "Artillery Factory",
+    "special": null
+  },
+  {
+    "key": "AtlasMountains",
+    "name": "Atlas Mountains",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "AtomicFacility",
+    "name": "Atomic Facility",
+    "special": null
+  },
+  {
+    "key": "Atomium",
+    "name": "Atomium",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "AuroraBorealis",
+    "name": "Aurora Borealis",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "Bakery",
+    "name": "Bakery",
+    "special": null
+  },
+  {
+    "key": "Bank",
+    "name": "Bank",
+    "special": null
+  },
+  {
+    "key": "BattleshipBuilder",
+    "name": "Battleship Builder",
+    "special": null
+  },
+  {
+    "key": "BigBen",
+    "name": "Big Ben",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "BiplaneFactory",
+    "name": "Biplane Factory",
+    "special": null
+  },
+  {
+    "key": "BitcoinMiner",
+    "name": "Bitcoin Miner",
+    "special": null
+  },
+  {
+    "key": "BlackForest",
+    "name": "Black Forest",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "Blacksmith",
+    "name": "Blacksmith",
+    "special": null
+  },
+  {
+    "key": "BlueMosque",
+    "name": "Blue Mosque",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "BondMarket",
+    "name": "Bond Market",
+    "special": null
+  },
+  {
+    "key": "BranCastle",
+    "name": "Bran Castle",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "BrandenburgGate",
+    "name": "Brandenburg Gate",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Brewery",
+    "name": "Brewery",
+    "special": null
+  },
+  {
+    "key": "Brickworks",
+    "name": "Brickworks",
+    "special": null
+  },
+  {
+    "key": "BritishMuseum",
+    "name": "British Museum",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Broadway",
+    "name": "Broadway",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "CableFactory",
+    "name": "Cable Factory",
+    "special": null
+  },
+  {
+    "key": "CambridgeUniversity",
+    "name": "Cambridge University",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "CannonWorkshop",
+    "name": "Cannon Workshop",
+    "special": null
+  },
+  {
+    "key": "Cappadocia",
+    "name": "Cappadocia",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "Capybara",
+    "name": "Capybara",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "CarFactory",
+    "name": "Car Factory",
+    "special": null
+  },
+  {
+    "key": "Caravansary",
+    "name": "Caravansary",
+    "special": null
+  },
+  {
+    "key": "CaravelBuilder",
+    "name": "Caravel Builder",
+    "special": null
+  },
+  {
+    "key": "CathedralOfBrasilia",
+    "name": "Cathedral of Brasília",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "CentrePompidou",
+    "name": "Centre Pompidou",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "CerneAbbasGiant",
+    "name": "Cerne Abbas Giant",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "ChariotWorkshop",
+    "name": "Chariot Workshop",
+    "special": null
+  },
+  {
+    "key": "ChateauFrontenac",
+    "name": "Chateau Frontenac",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "CheeseMaker",
+    "name": "Cheese Maker",
+    "special": null
+  },
+  {
+    "key": "ChichenItza",
+    "name": "Chichen Itza",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "ChoghaZanbil",
+    "name": "Chogha Zanbil",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Church",
+    "name": "Church",
+    "special": null
+  },
+  {
+    "key": "CircusMaximus",
+    "name": "Circus Maximus",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "CivGPT",
+    "name": "CivGPT",
+    "special": null
+  },
+  {
+    "key": "CivOasis",
+    "name": "CivOasis",
+    "special": null
+  },
+  {
+    "key": "CivTok",
+    "name": "CivTok",
+    "special": null
+  },
+  {
+    "key": "CloneFactory",
+    "name": "Clone Factory",
+    "special": null
+  },
+  {
+    "key": "CloneLab",
+    "name": "Clone Lab",
+    "special": null
+  },
+  {
+    "key": "CNTower",
+    "name": "CN Tower",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "CoalMine",
+    "name": "Coal Mine",
+    "special": null
+  },
+  {
+    "key": "CoalPowerPlant",
+    "name": "Coal Power Plant",
+    "special": null
+  },
+  {
+    "key": "CoinMint",
+    "name": "Coin Mint",
+    "special": null
+  },
+  {
+    "key": "CologneCathedral",
+    "name": "Cologne Cathedral",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Colosseum",
+    "name": "Colosseum",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "ColossusOfRhodes",
+    "name": "Colossus of Rhodes",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "ComputerFactory",
+    "name": "Computer Factory",
+    "special": null
+  },
+  {
+    "key": "ComputerLab",
+    "name": "Computer Lab",
+    "special": null
+  },
+  {
+    "key": "ConcretePlant",
+    "name": "Concrete Plant",
+    "special": null
+  },
+  {
+    "key": "Condo",
+    "name": "Condo",
+    "special": null
+  },
+  {
+    "key": "CopperMiningCamp",
+    "name": "Copper Mining Camp",
+    "special": null
+  },
+  {
+    "key": "Cosmodrome",
+    "name": "Cosmodrome",
+    "special": null
+  },
+  {
+    "key": "CothonOfCarthage",
+    "name": "Cothon of Carthage",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "CottonMill",
+    "name": "Cotton Mill",
+    "special": null
+  },
+  {
+    "key": "CottonPlantation",
+    "name": "Cotton Plantation",
+    "special": null
+  },
+  {
+    "key": "Courthouse",
+    "name": "Courthouse",
+    "special": null
+  },
+  {
+    "key": "CristoRedentor",
+    "name": "Cristo Redentor",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "DairyFarm",
+    "name": "Dairy Farm",
+    "special": null
+  },
+  {
+    "key": "DinosaurProvincialPark",
+    "name": "Dinosaur Provincial Park",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "DuneOfPilat",
+    "name": "Dune of Pilat",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "DynamiteWorkshop",
+    "name": "Dynamite Workshop",
+    "special": null
+  },
+  {
+    "key": "DysonSphere",
+    "name": "Dyson Sphere",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "EastIndiaCompany",
+    "name": "East India Company",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "EasterBunny",
+    "name": "Easter Bunny",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "EiffelTower",
+    "name": "Eiffel Tower",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Elbphilharmonie",
+    "name": "Elbphilharmonie",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Embassy",
+    "name": "Embassy",
+    "special": null
+  },
+  {
+    "key": "EuphratesRiver",
+    "name": "Euphrates River",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "FighterJetPlant",
+    "name": "Fighter Jet Plant",
+    "special": null
+  },
+  {
+    "key": "FlourMill",
+    "name": "Flour Mill",
+    "special": null
+  },
+  {
+    "key": "ForbiddenCity",
+    "name": "Forbidden City",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "ForexMarket",
+    "name": "Forex Market",
+    "special": null
+  },
+  {
+    "key": "FrigateBuilder",
+    "name": "Frigate Builder",
+    "special": null
+  },
+  {
+    "key": "FurnitureWorkshop",
+    "name": "Furniture Workshop",
+    "special": null
+  },
+  {
+    "key": "FusionFuelPlant",
+    "name": "Fusion Fuel Plant",
+    "special": null
+  },
+  {
+    "key": "FusionPowerPlant",
+    "name": "Fusion Power Plant",
+    "special": null
+  },
+  {
+    "key": "GalleonBuilder",
+    "name": "Galleon Builder",
+    "special": null
+  },
+  {
+    "key": "GangesRiver",
+    "name": "Ganges River",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "GarmentWorkshop",
+    "name": "Garment Workshop",
+    "special": null
+  },
+  {
+    "key": "GasPlasticsPlant",
+    "name": "Gas Plastics Plant",
+    "special": null
+  },
+  {
+    "key": "GasPowerPlant",
+    "name": "Gas Power Plant",
+    "special": null
+  },
+  {
+    "key": "GatlingGunFactory",
+    "name": "Gatling Gun Factory",
+    "special": null
+  },
+  {
+    "key": "GiantOtter",
+    "name": "Giant Otter",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "GlassFrog",
+    "name": "Glass Frog",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "Glassworks",
+    "name": "Glassworks",
+    "special": null
+  },
+  {
+    "key": "GoldMiningCamp",
+    "name": "Gold Mining Camp",
+    "special": null
+  },
+  {
+    "key": "GoldenGateBridge",
+    "name": "Golden Gate Bridge",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "GoldenPavilion",
+    "name": "Golden Pavilion",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "GrandBazaar",
+    "name": "Grand Bazaar",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Shenandoah",
+    "name": "Grand Canyon",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "GreatBarrierReef",
+    "name": "Great Barrier Reef",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "GreatDagonPagoda",
+    "name": "Great Dagon Pagoda",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "GreatMosqueOfSamarra",
+    "name": "Great Mosque of Samarra",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "GreatOceanRoad",
+    "name": "Great Ocean Road",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "GreatSphinx",
+    "name": "Great Sphinx",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "GreatWall",
+    "name": "Great Wall",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "GrottaAzzurra",
+    "name": "Grotta Azzurra",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "GunpowderMill",
+    "name": "Gunpowder Mill",
+    "special": null
+  },
+  {
+    "key": "Habitat67",
+    "name": "Habitat 67",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "HagiaSophia",
+    "name": "Hagia Sophia",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "HangingGarden",
+    "name": "Hanging Garden",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "HatshepsutTemple",
+    "name": "Hatshepsut Temple",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Headquarter",
+    "name": "Headquarter",
+    "special": "HQ"
+  },
+  {
+    "key": "HedgeFund",
+    "name": "Hedge Fund",
+    "special": null
+  },
+  {
+    "key": "Hermitage",
+    "name": "Hermitage",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "HimejiCastle",
+    "name": "Himeji Castle",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Hoatzin",
+    "name": "Hoatzin",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "Hollywood",
+    "name": "Hollywood",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "House",
+    "name": "House",
+    "special": null
+  },
+  {
+    "key": "Hut",
+    "name": "Hut",
+    "special": null
+  },
+  {
+    "key": "HydroDam",
+    "name": "Hydro Dam",
+    "special": null
+  },
+  {
+    "key": "InternationalSpaceStation",
+    "name": "International Space Station",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "InternetServiceProvider",
+    "name": "Internet Service Provider",
+    "special": null
+  },
+  {
+    "key": "IronForge",
+    "name": "Iron Forge",
+    "special": null
+  },
+  {
+    "key": "IronMiningCamp",
+    "name": "Iron Mining Camp",
+    "special": null
+  },
+  {
+    "key": "IroncladBuilder",
+    "name": "Ironclad Builder",
+    "special": null
+  },
+  {
+    "key": "ItaipuDam",
+    "name": "Itaipu Dam",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "ItsukushimaShrine",
+    "name": "Itsukushima Shrine",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Kanagawa",
+    "name": "Kanagawa",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "KizhiPogost",
+    "name": "Kizhi Pogost",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "KnightCamp",
+    "name": "Knight Camp",
+    "special": null
+  },
+  {
+    "key": "LakeBaikal",
+    "name": "Lake Baikal",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "LakeLouise",
+    "name": "Lake Louise",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "Lapland",
+    "name": "Lapland",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "LargeHadronCollider",
+    "name": "Large Hadron Collider",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "LensWorkshop",
+    "name": "Lens Workshop",
+    "special": null
+  },
+  {
+    "key": "Library",
+    "name": "Library",
+    "special": null
+  },
+  {
+    "key": "LighthouseOfAlexandria",
+    "name": "Lighthouse of Alexandria",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "LocomotiveFactory",
+    "name": "Locomotive Factory",
+    "special": null
+  },
+  {
+    "key": "LoggingCamp",
+    "name": "Logging Camp",
+    "special": null
+  },
+  {
+    "key": "Louvre",
+    "name": "Louvre",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "LumberMill",
+    "name": "Lumber Mill",
+    "special": null
+  },
+  {
+    "key": "YearOfTheSnake",
+    "name": "Lunar New Year",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "LuxorTemple",
+    "name": "Luxor Temple",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "MagazinePublisher",
+    "name": "Magazine Publisher",
+    "special": null
+  },
+  {
+    "key": "MaglevFactory",
+    "name": "Maglev Factory",
+    "special": null
+  },
+  {
+    "key": "ManhattanProject",
+    "name": "Manhattan Project",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Marbleworks",
+    "name": "Marbleworks",
+    "special": null
+  },
+  {
+    "key": "MarinaBaySands",
+    "name": "Marina Bay Sands",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Market",
+    "name": "Market",
+    "special": null
+  },
+  {
+    "key": "MatrioshkaBrain",
+    "name": "Matrioshka Brain",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "MausoleumAtHalicarnassus",
+    "name": "Mausoleum at Halicarnassus",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "MogaoCaves",
+    "name": "Mogao Caves",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "MontSaintMichel",
+    "name": "Mont Saint-Michel",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Mosque",
+    "name": "Mosque",
+    "special": null
+  },
+  {
+    "key": "MountArarat",
+    "name": "Mount Ararat",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "MountFuji",
+    "name": "Mount Fuji",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "MountSinai",
+    "name": "Mount Sinai",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "MountTai",
+    "name": "Mount Tai",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "MovieStudio",
+    "name": "Movie Studio",
+    "special": null
+  },
+  {
+    "key": "Museum",
+    "name": "Museum",
+    "special": null
+  },
+  {
+    "key": "MusiciansGuild",
+    "name": "Musician's Guild",
+    "special": null
+  },
+  {
+    "key": "MutualFund",
+    "name": "Mutual Fund",
+    "special": null
+  },
+  {
+    "key": "NaturalGasWell",
+    "name": "Natural Gas Well",
+    "special": null
+  },
+  {
+    "key": "Neuschwanstein",
+    "name": "Neuschwanstein",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "NiagaraFalls",
+    "name": "Niagara Falls",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "NileRiver",
+    "name": "Nile River",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "NuclearMissileSilo",
+    "name": "Nuclear Missile Silo",
+    "special": null
+  },
+  {
+    "key": "NuclearPowerPlant",
+    "name": "Nuclear Power Plant",
+    "special": null
+  },
+  {
+    "key": "NuclearSubmarineYard",
+    "name": "Nuclear Submarine Yard",
+    "special": null
+  },
+  {
+    "key": "OilRefinery",
+    "name": "Oil Refinery",
+    "special": null
+  },
+  {
+    "key": "OilWell",
+    "name": "Oil Well",
+    "special": null
+  },
+  {
+    "key": "OpticalFiberPlant",
+    "name": "Optical Fiber Factory",
+    "special": null
+  },
+  {
+    "key": "OsakaCastle",
+    "name": "Osaka Castle",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "OxfordUniversity",
+    "name": "Oxford University",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Pagoda",
+    "name": "Pagoda",
+    "special": null
+  },
+  {
+    "key": "PaintersGuild",
+    "name": "Painter's Guild",
+    "special": null
+  },
+  {
+    "key": "PalmJumeirah",
+    "name": "Palm Jumeirah",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Pamukkale",
+    "name": "Pamukkale",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "Pantheon",
+    "name": "Pantheon",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "PaperMaker",
+    "name": "Paper Maker",
+    "special": null
+  },
+  {
+    "key": "Parliament",
+    "name": "Parliament",
+    "special": null
+  },
+  {
+    "key": "Parthenon",
+    "name": "Parthenon",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Peacekeeper",
+    "name": "Peacekeeper",
+    "special": null
+  },
+  {
+    "key": "Penthouse",
+    "name": "Penthouse",
+    "special": null
+  },
+  {
+    "key": "Persepolis",
+    "name": "Persepolis",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Petra",
+    "name": "Petra",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Pizzeria",
+    "name": "Pizzeria",
+    "special": null
+  },
+  {
+    "key": "PlasticsFactory",
+    "name": "Plastics Factory",
+    "special": null
+  },
+  {
+    "key": "PoetrySchool",
+    "name": "Poetry School",
+    "special": null
+  },
+  {
+    "key": "PorcelainTower",
+    "name": "Porcelain Tower",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "PortOfSingapore",
+    "name": "Port of Singapore",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Poseidon",
+    "name": "Poseidon",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "PoultryFarm",
+    "name": "Poultry Farm",
+    "special": null
+  },
+  {
+    "key": "PrintingHouse",
+    "name": "Printing House",
+    "special": null
+  },
+  {
+    "key": "ProphetsMosque",
+    "name": "Prophet's Mosque",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "PublishingHouse",
+    "name": "Publishing House",
+    "special": null
+  },
+  {
+    "key": "PygmyMarmoset",
+    "name": "Pygmy Marmoset",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "PyramidOfGiza",
+    "name": "Pyramid of Giza",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "QutbMinar",
+    "name": "Qutb Minar",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "RadioStation",
+    "name": "Radio Station",
+    "special": null
+  },
+  {
+    "key": "RebarPlant",
+    "name": "Rebar Plant",
+    "special": null
+  },
+  {
+    "key": "RedFort",
+    "name": "Red Fort",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "ReinforcedConcretePlant",
+    "name": "Reinforced Concrete Plant",
+    "special": null
+  },
+  {
+    "key": "ResearchFund",
+    "name": "Research Fund",
+    "special": null
+  },
+  {
+    "key": "ResearchLab",
+    "name": "Research Lab",
+    "special": null
+  },
+  {
+    "key": "RhineGorge",
+    "name": "Rhine Gorge",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "RifleFactory",
+    "name": "Rifle Factory",
+    "special": null
+  },
+  {
+    "key": "Rijksmuseum",
+    "name": "Rijksmuseum",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "RobocarFactory",
+    "name": "Robocar Factory",
+    "special": null
+  },
+  {
+    "key": "RockefellerCenterChristmasTree",
+    "name": "Rockefeller Center Christmas Tree",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "RocketFactory",
+    "name": "Rocket Factory",
+    "special": null
+  },
+  {
+    "key": "RoyalFlycatcher",
+    "name": "Royal Flycatcher",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "SagradaFamilia",
+    "name": "Sagrada Familia",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "SaintBasilsCathedral",
+    "name": "Saint Basil's Cathedral",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "SanchiStupa",
+    "name": "Sanchi Stupa",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Sandpit",
+    "name": "Sandpit",
+    "special": null
+  },
+  {
+    "key": "SantaClausVillage",
+    "name": "Santa Claus Village",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "SatelliteFactory",
+    "name": "Satellite Factory",
+    "special": null
+  },
+  {
+    "key": "School",
+    "name": "School",
+    "special": null
+  },
+  {
+    "key": "SemiconductorFab",
+    "name": "Semiconductor Fab",
+    "special": null
+  },
+  {
+    "key": "Shrine",
+    "name": "Shrine",
+    "special": null
+  },
+  {
+    "key": "SiegeWorkshop",
+    "name": "Siege Workshop",
+    "special": null
+  },
+  {
+    "key": "SiliconSmelter",
+    "name": "Silicon Smelter",
+    "special": null
+  },
+  {
+    "key": "SoftwareCompany",
+    "name": "Software Company",
+    "special": null
+  },
+  {
+    "key": "SpaceCenter",
+    "name": "Space Center",
+    "special": null
+  },
+  {
+    "key": "SpaceNeedle",
+    "name": "Space Needle",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "SpacecraftFactory",
+    "name": "Spacecraft Factory",
+    "special": null
+  },
+  {
+    "key": "Sputnik1",
+    "name": "Sputnik 1",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "StPetersBasilica",
+    "name": "St. Peter's Basilica",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Stable",
+    "name": "Stable",
+    "special": null
+  },
+  {
+    "key": "Stadium",
+    "name": "Stadium",
+    "special": null
+  },
+  {
+    "key": "Statistics",
+    "name": "Statistics Office",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "StatueOfLiberty",
+    "name": "Statue of Liberty",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "StatueOfZeus",
+    "name": "Statue of Zeus",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Steamworks",
+    "name": "Steamworks",
+    "special": null
+  },
+  {
+    "key": "SteelMill",
+    "name": "Steel Mill",
+    "special": null
+  },
+  {
+    "key": "StockExchange",
+    "name": "Stock Exchange",
+    "special": null
+  },
+  {
+    "key": "StoneQuarry",
+    "name": "Stone Quarry",
+    "special": null
+  },
+  {
+    "key": "Stonehenge",
+    "name": "Stonehenge",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "SubmarineYard",
+    "name": "Submarine Yard",
+    "special": null
+  },
+  {
+    "key": "SummerPalace",
+    "name": "Summer Palace",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Sundarbans",
+    "name": "Sundarbans",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "SupercomputerLab",
+    "name": "Supercomputer Lab",
+    "special": null
+  },
+  {
+    "key": "SwissBank",
+    "name": "Swiss Bank",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "SwordForge",
+    "name": "Sword Forge",
+    "special": null
+  },
+  {
+    "key": "SydneyHarbourBridge",
+    "name": "Sydney Harbour Bridge",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "SydneyOperaHouse",
+    "name": "Sydney Opera House",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "TajMahal",
+    "name": "Taj Mahal",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "TankFactory",
+    "name": "Tank Factory",
+    "special": null
+  },
+  {
+    "key": "TempleOfArtemis",
+    "name": "Temple Of Artemis",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "TempleOfHeaven",
+    "name": "Temple of Heaven",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "TerracottaArmy",
+    "name": "Terracotta Army",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "TheMet",
+    "name": "The Pentagon",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "TopkapiPalace",
+    "name": "Topkapı Palace",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "TowerBridge",
+    "name": "Tower Bridge",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "TowerOfBabel",
+    "name": "Tower of Babel",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "TVStation",
+    "name": "TV Station",
+    "special": null
+  },
+  {
+    "key": "Uluru",
+    "name": "Uluru",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "UnitedNations",
+    "name": "United Nations",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "University",
+    "name": "University",
+    "special": null
+  },
+  {
+    "key": "UraniumEnrichmentPlant",
+    "name": "Uranium Enrichment Plant",
+    "special": null
+  },
+  {
+    "key": "UraniumMine",
+    "name": "Uranium Mine",
+    "special": null
+  },
+  {
+    "key": "WallOfBabylon",
+    "name": "Wall of Babylon",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "WallStreet",
+    "name": "Wall Street",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Warehouse",
+    "name": "Warehouse",
+    "special": null
+  },
+  {
+    "key": "WheatFarm",
+    "name": "Wheat Farm",
+    "special": null
+  },
+  {
+    "key": "WorldTradeOrganization",
+    "name": "World Trade Organization",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "WritersGuild",
+    "name": "Writer's Guild",
+    "special": null
+  },
+  {
+    "key": "YangtzeRiver",
+    "name": "Yangtze River",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "YellowCraneTower",
+    "name": "Yellow Crane Tower",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "ZagrosMountains",
+    "name": "Zagros Mountains",
+    "special": "NaturalWonder"
+  },
+  {
+    "key": "ZigguratOfUr",
+    "name": "Ziggurat of Ur",
+    "special": "WorldWonder"
+  },
+  {
+    "key": "Zugspitze",
+    "name": "Zugspitze",
+    "special": "NaturalWonder"
+  }
+]

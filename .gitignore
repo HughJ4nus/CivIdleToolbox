@@ -1,0 +1,19 @@
+# Cloned upstream game source (separate repo, GPL-3.0; assets are do-not-redistribute).
+# Re-clone with: git clone https://github.com/fishpondstudio/CivIdle.git
+CivIdle/
+
+# Local notes — used by the dev assistant for context. Comment out if you want to publish them.
+# CONTEXT.md
+
+# Standard Node / Vite output
+node_modules/
+dist/
+.vite/
+
+# Logs / OS noise
+*.log
+.DS_Store
+
+# Editor scratch
+.idea/
+.vscode/*.local.*
