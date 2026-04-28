@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Annotations } from "./Annotations";
+import { Dropdown } from "./Dropdown";
 import { exportPng, exportSvg } from "./export";
 import { computeCenterShift } from "./resize";
 import { HexGrid, type Tool } from "./HexGrid";
@@ -274,15 +275,25 @@ export const App = (): JSX.Element => {
                </label>
             </div>
             <div className="toolbar-group">
-               <button type="button" onClick={onExportPng} className="primary" title="Render map + side panel to PNG">
-                  Export PNG
-               </button>
-               <button type="button" onClick={onExportImageSvg} title="Render map + side panel to SVG">
-                  Export SVG
-               </button>
-               <button type="button" onClick={onExport}>
-                  Save JSON
-               </button>
+               <Dropdown
+                  trigger={
+                     <>
+                        Export <span className="caret">▾</span>
+                     </>
+                  }
+                  triggerClassName="primary"
+               >
+                  <button type="button" onClick={onExportPng} title="Render map + side panel as a PNG image">
+                     PNG image
+                  </button>
+                  <button type="button" onClick={onExportImageSvg} title="Render map + side panel as an SVG image">
+                     SVG image
+                  </button>
+                  <button type="button" onClick={onExport} title="Download the editable map data as JSON">
+                     JSON (editable)
+                  </button>
+               </Dropdown>
+
                <button type="button" onClick={onImportClick}>
                   Load JSON
                </button>
@@ -297,12 +308,20 @@ export const App = (): JSX.Element => {
                      e.target.value = "";
                   }}
                />
-               <button type="button" onClick={onClearAll}>
-                  Clear hexes
-               </button>
-               <button type="button" onClick={onResetAll} className="danger">
-                  Reset all
-               </button>
+
+               <Dropdown
+                  trigger={<TrashIcon />}
+                  triggerClassName="icon-only danger-hover"
+                  ariaLabel="Clear / reset"
+                  align="right"
+               >
+                  <button type="button" onClick={onClearAll} title="Clear placed colors + labels (palette kept)">
+                     Clear hexes
+                  </button>
+                  <button type="button" onClick={onResetAll} className="danger" title="Wipe everything to defaults">
+                     Reset all
+                  </button>
+               </Dropdown>
             </div>
          </header>
 
@@ -362,3 +381,15 @@ export const App = (): JSX.Element => {
       </div>
    );
 };
+
+const TrashIcon = (): JSX.Element => (
+   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+         d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M10 11v6M14 11v6"
+         stroke="currentColor"
+         strokeWidth="1.6"
+         strokeLinecap="round"
+         strokeLinejoin="round"
+      />
+   </svg>
+);

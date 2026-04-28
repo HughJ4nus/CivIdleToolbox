@@ -106,6 +106,77 @@ input[type="number"] {
    color: var(--text-dim);
 }
 
+/* ── Hover dropdown ──────────────────────────────────────────────────── */
+.dropdown {
+   position: relative;
+   display: inline-block;
+}
+.dropdown-trigger {
+   display: inline-flex;
+   align-items: center;
+   gap: 4px;
+}
+.dropdown-trigger .caret {
+   font-size: 10px;
+   line-height: 1;
+   color: var(--text-dim);
+}
+.dropdown-trigger.primary .caret {
+   color: rgba(255, 255, 255, 0.85);
+}
+.dropdown-trigger.icon-only {
+   width: 32px;
+   height: 28px;
+   padding: 0;
+   color: var(--text-dim);
+}
+.dropdown-trigger.icon-only:hover,
+.dropdown.open .dropdown-trigger.danger-hover {
+   color: var(--danger);
+   border-color: var(--danger);
+}
+.dropdown-menu {
+   display: none;
+   position: absolute;
+   top: 100%; /* immediately below trigger so the mouse path stays inside */
+   left: 0;
+   margin-top: 2px;
+   background: var(--panel);
+   border: 1px solid var(--border);
+   border-radius: 6px;
+   padding: 4px;
+   z-index: 10;
+   min-width: max-content;
+   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+   flex-direction: column;
+   gap: 2px;
+}
+.dropdown-right .dropdown-menu {
+   left: auto;
+   right: 0;
+}
+.dropdown.open .dropdown-menu {
+   display: flex;
+}
+.dropdown-menu > button {
+   text-align: left;
+   background: transparent;
+   border: 1px solid transparent;
+   padding: 6px 10px;
+   font-size: 13px;
+   border-radius: 4px;
+   white-space: nowrap;
+}
+.dropdown-menu > button:hover {
+   background: var(--panel-2);
+}
+.dropdown-menu > button.danger {
+   color: var(--danger);
+}
+.dropdown-menu > button.danger:hover {
+   background: rgba(255, 93, 93, 0.12);
+}
+
 .main {
    flex: 1;
    display: flex;
