@@ -110,6 +110,16 @@ input[type="number"] {
    gap: 6px;
    color: var(--text-dim);
 }
+/* Pushes everything after the title to the right edge. Wraps below the title
+   on narrow screens (the parent toolbar has flex-wrap). */
+.toolbar-right {
+   margin-left: auto;
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   flex-wrap: wrap;
+   justify-content: flex-end;
+}
 
 /* ── Hover dropdown ──────────────────────────────────────────────────── */
 .dropdown {
@@ -180,6 +190,69 @@ input[type="number"] {
 }
 .dropdown-menu > button.danger:hover {
    background: rgba(255, 93, 93, 0.12);
+}
+
+/* ── Modal (preview) ─────────────────────────────────────────────────── */
+.modal-backdrop {
+   position: fixed;
+   inset: 0;
+   background: rgba(0, 0, 0, 0.7);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   z-index: 100;
+   padding: 24px;
+}
+.modal-content {
+   background: var(--panel);
+   border: 1px solid var(--border);
+   border-radius: 8px;
+   max-width: 95vw;
+   max-height: 95vh;
+   display: flex;
+   flex-direction: column;
+   overflow: hidden;
+   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+.modal-header {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 12px 16px;
+   border-bottom: 1px solid var(--border);
+   background: var(--panel-2);
+   flex-shrink: 0;
+}
+.modal-header h3 {
+   margin: 0;
+   font-size: 14px;
+   font-weight: 600;
+   color: var(--text);
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+.modal-actions {
+   display: flex;
+   gap: 8px;
+   align-items: center;
+}
+.modal-body {
+   overflow: auto;
+   padding: 16px;
+   background: #0e0e0e;
+   flex: 1 1 auto;
+   min-height: 0;
+}
+.preview-body svg {
+   /* Force the exported SVG to fit inside the modal regardless of its
+      intrinsic width/height attributes. */
+   max-width: 100%;
+   height: auto;
+   max-height: calc(95vh - 80px);
+   display: block;
+   margin: 0 auto;
 }
 
 .main {

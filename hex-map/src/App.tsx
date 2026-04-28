@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Annotations } from "./Annotations";
 import { Dropdown } from "./Dropdown";
-import { exportPng, exportSvg } from "./export";
+import { buildExportSvg, exportPng, exportSvg } from "./export";
+import { PreviewModal } from "./PreviewModal";
 import { computeCenterShift } from "./resize";
 import { HexGrid, type Tool } from "./HexGrid";
 import { LabelEditor } from "./LabelEditor";
@@ -31,6 +32,7 @@ export const App = (): JSX.Element => {
    });
    const [selected, setSelected] = useState<string | null>(null);
    const [editorOpen, setEditorOpen] = useState(false);
+   const [previewSvg, setPreviewSvg] = useState<string | null>(null);
    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
    useEffect(() => {
@@ -240,6 +242,14 @@ export const App = (): JSX.Element => {
       exportSvg(state, { hexSize: Math.max(28, HEX_SIZE) });
    }, [state]);
 
+   const onPreview = useCallback(() => {
+      try {
+         setPreviewSvg(buildExportSvg(state, { hexSize: Math.max(28, HEX_SIZE) }));
+      } catch (e) {
+         alert(`Preview failed: ${(e as Error).message}`);
+      }
+   }, [state]);
+
    const selectedCell = selected ? state.cells[selected] : undefined;
 
    return (
@@ -252,76 +262,85 @@ export const App = (): JSX.Element => {
                className="title-input"
                aria-label="Map title"
             />
-            <div className="toolbar-group">
-               <label>
-                  cols
-                  <input
-                     type="number"
-                     value={state.cols}
-                     min={1}
-                     max={80}
-                     onChange={(e) => onResize(Number(e.target.value), state.rows)}
-                  />
-               </label>
-               <label>
-                  rows
-                  <input
-                     type="number"
-                     value={state.rows}
-                     min={1}
-                     max={80}
-                     onChange={(e) => onResize(state.cols, Number(e.target.value))}
-                  />
-               </label>
-            </div>
-            <div className="toolbar-group">
-               <Dropdown
-                  trigger={
-                     <>
-                        Export <span className="caret">▾</span>
-                     </>
-                  }
-                  triggerClassName="primary"
-               >
-                  <button type="button" onClick={onExportPng} title="Render map + side panel as a PNG image">
-                     PNG image
-                  </button>
-                  <button type="button" onClick={onExportImageSvg} title="Render map + side panel as an SVG image">
-                     SVG image
-                  </button>
-                  <button type="button" onClick={onExport} title="Download the editable map data as JSON">
-                     JSON (editable)
-                  </button>
-               </Dropdown>
 
-               <button type="button" onClick={onImportClick}>
-                  Load JSON
-               </button>
-               <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="application/json"
-                  style={{ display: "none" }}
-                  onChange={(e) => {
-                     const file = e.target.files?.[0];
-                     if (file) onImportFile(file);
-                     e.target.value = "";
-                  }}
-               />
+            {/* Everything to the right of the title sits in `toolbar-right`,
+               which uses margin-left: auto to anchor to the right edge. */}
+            <div className="toolbar-right">
+               <div className="toolbar-group">
+                  <label>
+                     cols
+                     <input
+                        type="number"
+                        value={state.cols}
+                        min={1}
+                        max={80}
+                        onChange={(e) => onResize(Number(e.target.value), state.rows)}
+                     />
+                  </label>
+                  <label>
+                     rows
+                     <input
+                        type="number"
+                        value={state.rows}
+                        min={1}
+                        max={80}
+                        onChange={(e) => onResize(state.cols, Number(e.target.value))}
+                     />
+                  </label>
+               </div>
+               <div className="toolbar-group">
+                  <button type="button" onClick={onPreview} title="Preview the exported image">
+                     <EyeIcon />
+                     <span>Preview</span>
+                  </button>
+                  <Dropdown
+                     trigger={
+                        <>
+                           Export <span className="caret">▾</span>
+                        </>
+                     }
+                     triggerClassName="primary"
+                  >
+                     <button type="button" onClick={onExportPng} title="Render map + side panel as a PNG image">
+                        PNG image
+                     </button>
+                     <button type="button" onClick={onExportImageSvg} title="Render map + side panel as an SVG image">
+                        SVG image
+                     </button>
+                     <button type="button" onClick={onExport} title="Download the editable map data as JSON">
+                        JSON (editable)
+                     </button>
+                  </Dropdown>
 
-               <Dropdown
-                  trigger={<TrashIcon />}
-                  triggerClassName="icon-only danger-hover"
-                  ariaLabel="Clear / reset"
-                  align="right"
-               >
-                  <button type="button" onClick={onClearAll} title="Clear placed colors + labels (palette kept)">
-                     Clear hexes
+                  <button type="button" onClick={onImportClick}>
+                     Load JSON
                   </button>
-                  <button type="button" onClick={onResetAll} className="danger" title="Wipe everything to defaults">
-                     Reset all
-                  </button>
-               </Dropdown>
+                  <input
+                     ref={fileInputRef}
+                     type="file"
+                     accept="application/json"
+                     style={{ display: "none" }}
+                     onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) onImportFile(file);
+                        e.target.value = "";
+                     }}
+                  />
+
+                  <Dropdown
+                     trigger={<TrashIcon />}
+                     triggerClassName="icon-only danger-hover"
+                     ariaLabel="Clear / reset"
+                     align="right"
+                  >
+                     <button type="button" onClick={onClearAll} title="Clear placed colors + labels (palette kept)">
+                        Clear hexes
+                     </button>
+                     <button type="button" onClick={onResetAll} className="danger" title="Wipe everything to defaults">
+                        Reset all
+                     </button>
+                  </Dropdown>
+               </div>
             </div>
          </header>
 
@@ -378,9 +397,32 @@ export const App = (): JSX.Element => {
                />
             </section>
          </main>
+
+         {previewSvg && (
+            <PreviewModal
+               svg={previewSvg}
+               title={state.title}
+               onClose={() => setPreviewSvg(null)}
+               onExportPng={onExportPng}
+               onExportSvg={onExportImageSvg}
+            />
+         )}
       </div>
    );
 };
+
+const EyeIcon = (): JSX.Element => (
+   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+         d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"
+         stroke="currentColor"
+         strokeWidth="1.6"
+         strokeLinecap="round"
+         strokeLinejoin="round"
+      />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.6" />
+   </svg>
+);
 
 const TrashIcon = (): JSX.Element => (
    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
