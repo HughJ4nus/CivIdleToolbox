@@ -56,6 +56,9 @@ const sample = {
    palette: [
       { id: "p1", color: "#e74c3c", label: "Wonder" },
       { id: "p2", color: "#f1c40f", label: "Resource" },
+      // Hostile color string that bypasses sanitisation: SHOULD still produce
+      // safe XML because export.ts also escapes attribute values.
+      { id: "p3", color: '#aaa" onmouseover="alert(1)" foo="', label: "Hostile" },
    ],
    activeColorId: "p1",
    cells: {
@@ -63,6 +66,7 @@ const sample = {
       "4,5": { colorId: "p2", text: "Wheat <Farm>" },
       "6,5": { colorId: "p1", text: "Quote \"test\"" },
       "5,4": { colorId: null, text: "AT&T" },
+      "3,3": { colorId: "p3", text: "Hostile color cell" },
    },
    title: 'My "Quoted" Map & Co.',
    notes: "Line 1\nLine 2 with <html-ish> & ampersands.",
@@ -70,6 +74,7 @@ const sample = {
       { id: "a1", tier: "I", colorId: "p1", label: 'Build "Petra" first' },
       { id: "a2", tier: "II", colorId: "p2", label: "Then a wheat farm <if possible>" },
       { id: "a3", tier: "III", colorId: null, label: "Stuff & things" },
+      { id: "a4", tier: "IV", colorId: "p3", label: "Row backed by hostile color" },
    ],
 };
 
@@ -84,6 +89,13 @@ if (!svg.includes('xmlns="http://www.w3.org/2000/svg"')) issues.push("missing xm
 //    isn't part of the attribute delimiter.
 const badAttr = /font-family="[^"]*"[A-Za-z]/.exec(svg);
 if (badAttr) issues.push(`malformed attribute: ${badAttr[0].slice(0, 80)}…`);
+
+// 2b) The hostile-color string MUST NOT appear verbatim — export.ts has to
+//     escape its attribute values. Sanitiser would normally clean this, but
+//     buildExportSvg is invoked directly without sanitisation here.
+if (svg.includes('onmouseover="alert(1)"')) {
+   issues.push("hostile color string emitted unescaped into an SVG attribute");
+}
 
 // 3) Parse with a minimal XML parser to confirm well-formedness.
 //    Use the built-in DOMParser via JSDOM if available, otherwise fall back to

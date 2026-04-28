@@ -5,6 +5,7 @@ import { computeCenterShift } from "./resize";
 import { HexGrid, type Tool } from "./HexGrid";
 import { LabelEditor } from "./LabelEditor";
 import { Legend, newPaletteEntry } from "./Legend";
+import { sanitizeMapState } from "./sanitize";
 import { loadState, saveState } from "./storage";
 import {
    initialMapState,
@@ -175,15 +176,14 @@ export const App = (): JSX.Element => {
       const reader = new FileReader();
       reader.onload = () => {
          try {
-            const parsed = JSON.parse(String(reader.result)) as MapState;
-            if (parsed.version !== 1 || !parsed.cells || !parsed.palette) {
+            const parsed = JSON.parse(String(reader.result));
+            if (!parsed || typeof parsed !== "object" || (parsed as MapState).version !== 1) {
                alert("That file doesn't look like a hex-map JSON.");
                return;
             }
-            // Backfill new fields if importing an older save.
-            if (typeof parsed.notes !== "string") parsed.notes = "";
-            if (!Array.isArray(parsed.annotations)) parsed.annotations = [];
-            setState(parsed);
+            // Coerce every field to a known-safe shape before it can reach the
+            // renderer or the export pipeline.
+            setState(sanitizeMapState(parsed));
          } catch (e) {
             alert(`Failed to import: ${(e as Error).message}`);
          }
