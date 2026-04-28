@@ -8,6 +8,9 @@
    --text-dim: #9a9a9a;
    --accent: #4a9eff;
    --danger: #ff5d5d;
+   /* Single source of truth for the left sidebar width. The toolbar's title
+      input matches this so the title sits over the sidebar column. */
+   --sidebar-width: 360px;
 }
 
 * {
@@ -89,8 +92,10 @@ input[type="number"] {
    flex-wrap: wrap;
 }
 .title-input {
-   flex: 1;
-   min-width: 200px;
+   /* Match the sidebar width so the title sits visually over its column. */
+   flex: 0 0 var(--sidebar-width);
+   width: var(--sidebar-width);
+   min-width: 0;
    font-size: 16px;
    font-weight: 600;
 }
@@ -105,6 +110,150 @@ input[type="number"] {
    gap: 6px;
    color: var(--text-dim);
 }
+/* Pushes everything after the title to the right edge. Wraps below the title
+   on narrow screens (the parent toolbar has flex-wrap). */
+.toolbar-right {
+   margin-left: auto;
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   flex-wrap: wrap;
+   justify-content: flex-end;
+}
+
+/* ── Hover dropdown ──────────────────────────────────────────────────── */
+.dropdown {
+   position: relative;
+   display: inline-block;
+}
+.dropdown-trigger {
+   display: inline-flex;
+   align-items: center;
+   gap: 4px;
+}
+.dropdown-trigger .caret {
+   font-size: 10px;
+   line-height: 1;
+   color: var(--text-dim);
+}
+.dropdown-trigger.primary .caret {
+   color: rgba(255, 255, 255, 0.85);
+}
+.dropdown-trigger.icon-only {
+   width: 32px;
+   height: 28px;
+   padding: 0;
+   color: var(--text-dim);
+}
+.dropdown-trigger.icon-only:hover,
+.dropdown.open .dropdown-trigger.danger-hover {
+   color: var(--danger);
+   border-color: var(--danger);
+}
+.dropdown-menu {
+   display: none;
+   position: absolute;
+   top: 100%; /* immediately below trigger so the mouse path stays inside */
+   left: 0;
+   margin-top: 2px;
+   background: var(--panel);
+   border: 1px solid var(--border);
+   border-radius: 6px;
+   padding: 4px;
+   z-index: 10;
+   min-width: max-content;
+   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+   flex-direction: column;
+   gap: 2px;
+}
+.dropdown-right .dropdown-menu {
+   left: auto;
+   right: 0;
+}
+.dropdown.open .dropdown-menu {
+   display: flex;
+}
+.dropdown-menu > button {
+   text-align: left;
+   background: transparent;
+   border: 1px solid transparent;
+   padding: 6px 10px;
+   font-size: 13px;
+   border-radius: 4px;
+   white-space: nowrap;
+}
+.dropdown-menu > button:hover {
+   background: var(--panel-2);
+}
+.dropdown-menu > button.danger {
+   color: var(--danger);
+}
+.dropdown-menu > button.danger:hover {
+   background: rgba(255, 93, 93, 0.12);
+}
+
+/* ── Modal (preview) ─────────────────────────────────────────────────── */
+.modal-backdrop {
+   position: fixed;
+   inset: 0;
+   background: rgba(0, 0, 0, 0.7);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   z-index: 100;
+   padding: 24px;
+}
+.modal-content {
+   background: var(--panel);
+   border: 1px solid var(--border);
+   border-radius: 8px;
+   max-width: 95vw;
+   max-height: 95vh;
+   display: flex;
+   flex-direction: column;
+   overflow: hidden;
+   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+.modal-header {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 12px 16px;
+   border-bottom: 1px solid var(--border);
+   background: var(--panel-2);
+   flex-shrink: 0;
+}
+.modal-header h3 {
+   margin: 0;
+   font-size: 14px;
+   font-weight: 600;
+   color: var(--text);
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+.modal-actions {
+   display: flex;
+   gap: 8px;
+   align-items: center;
+}
+.modal-body {
+   overflow: auto;
+   padding: 16px;
+   background: #0e0e0e;
+   flex: 1 1 auto;
+   min-height: 0;
+}
+.preview-body svg {
+   /* Force the exported SVG to fit inside the modal regardless of its
+      intrinsic width/height attributes. */
+   max-width: 100%;
+   height: auto;
+   max-height: calc(95vh - 80px);
+   display: block;
+   margin: 0 auto;
+}
 
 .main {
    flex: 1;
@@ -113,9 +262,9 @@ input[type="number"] {
 }
 
 .sidebar {
-   width: 360px;
-   min-width: 360px;
-   max-width: 360px;
+   width: var(--sidebar-width);
+   min-width: var(--sidebar-width);
+   max-width: var(--sidebar-width);
    background: var(--panel);
    border-right: 1px solid var(--border);
    overflow-y: auto;
@@ -140,21 +289,26 @@ input[type="number"] {
    top: 12px;
    right: 12px;
    display: flex;
+   flex-direction: column;
    gap: 4px;
-   align-items: center;
    background: rgba(20, 20, 20, 0.9);
    padding: 4px;
    border: 1px solid var(--border);
    border-radius: 6px;
    backdrop-filter: blur(4px);
 }
-.grid-controls button {
+.grid-controls-row {
+   display: flex;
+   gap: 4px;
+   align-items: center;
+}
+.grid-controls-row > button {
    width: 32px;
    height: 28px;
    padding: 0;
    font-size: 14px;
 }
-.grid-controls button[title="Fit to view"] {
+.grid-controls-row > button[title="Fit to view"] {
    width: auto;
    padding: 0 10px;
 }
@@ -165,6 +319,50 @@ input[type="number"] {
    padding: 0 6px;
    min-width: 44px;
    text-align: right;
+}
+.tool-row {
+   border-top: 1px solid var(--border);
+   padding-top: 4px;
+}
+.tool-btn {
+   flex: 1;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 6px;
+   /* override the size constraints from .grid-controls-row > button */
+   width: auto !important;
+   height: 28px !important;
+   padding: 0 10px !important;
+   font-size: 12px;
+   color: var(--text-dim);
+}
+.tool-btn:hover {
+   color: var(--text);
+}
+.tool-btn.active {
+   background: var(--accent);
+   border-color: var(--accent);
+   color: #fff;
+}
+.tool-btn svg {
+   color: currentColor;
+}
+
+/* Paint tool: crosshair cursor over the entire viewport including hexes. The
+   .grabbing rule below still handles pan-mode drag. */
+.grid-viewport[data-tool="paint"],
+.grid-viewport[data-tool="paint"] svg,
+.grid-viewport[data-tool="paint"] .hex {
+   cursor: crosshair !important;
+}
+
+/* Shift-as-pan override (declared AFTER the paint rule above so equal-
+   specificity selectors lose to this). */
+.grid-viewport[data-shift="true"],
+.grid-viewport[data-shift="true"] svg,
+.grid-viewport[data-shift="true"] .hex {
+   cursor: grab !important;
 }
 
 .legend h3 {

@@ -130,7 +130,7 @@ interface PanelLayout {
 
 const layoutPanel = (state: MapState): PanelLayout => {
    const inner = PANEL_WIDTH - PANEL_PAD * 2;
-   const titleLines = wrapToWidth(state.title || "Untitled map", inner, TITLE_FONT, 700);
+   const titleLines = wrapToWidth(state.title || "Untitled Design", inner, TITLE_FONT, 700);
 
    const noteLines = state.notes ? wrapToWidth(state.notes, inner, NOTES_FONT) : [];
 
@@ -230,11 +230,13 @@ const layoutPanel = (state: MapState): PanelLayout => {
                   `font-family="${FONT_FAMILY}" font-size="${SECTION_FONT}" font-weight="700" fill="${TEXT_PRIMARY}" ` +
                   `text-anchor="middle" dominant-baseline="central">${escapeXml(row.ann.tier || "?")}</text>`,
             );
-            // Label background
+            // Label background — colors come from the palette which is loaded
+            // through sanitize.ts, but escapeXml is a cheap defence-in-depth
+            // for a hostile JSON import.
             const labelBg = row.color ?? PANEL_BG;
             parts.push(
                `<rect x="${labelX}" y="${rowY}" width="${labelW}" height="${row.rowHeight}" rx="4" ` +
-                  `fill="${labelBg}" stroke="${PANEL_BORDER}" stroke-width="1" />`,
+                  `fill="${escapeXml(labelBg)}" stroke="${PANEL_BORDER}" stroke-width="1" />`,
             );
             // Label text — choose readable text color based on bg luminance.
             const textColor = row.color ? readableTextColor(row.color) : TEXT_PRIMARY;
@@ -279,7 +281,9 @@ const renderMap = (state: MapState, hexSize: number): { svg: string; width: numb
       const fill = cell?.colorId ? palette.get(cell.colorId)?.color ?? "#1a1a1a" : "#1a1a1a";
       const points = hexPolygonPoints(col, row, hexSize);
       parts.push(
-         `<polygon points="${points}" fill="${fill}" stroke="#0a0a0a" stroke-width="1" stroke-linejoin="round" />`,
+         // `fill` comes from the palette, which is sanitised on load/import.
+      // escapeXml is defence-in-depth in case the sanitiser is bypassed.
+      `<polygon points="${points}" fill="${escapeXml(fill)}" stroke="#0a0a0a" stroke-width="1" stroke-linejoin="round" />`,
       );
       const fitted = cell?.text ? fitHexLabel(cell.text, hexSize) : null;
       if (fitted && fitted.lines.length > 0) {

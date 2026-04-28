@@ -116,11 +116,15 @@ const fitLabel = (text: string, size: number): FittedLabel => {
    };
 };
 
+export type Tool = "pan" | "paint";
+
 interface Props {
    state: MapState;
    hexSize: number;
    selected: string | null;
-   onHexClick: (key: string, ev: React.MouseEvent) => void;
+   tool: Tool;
+   onToolChange: (t: Tool) => void;
+   onHexClick: (key: string) => void;
    onHexContextMenu: (key: string, ev: React.MouseEvent) => void;
 }
 
@@ -158,9 +162,10 @@ const HexCellNode = memo(function HexCellNode({
    const stroke = selected ? "#ffffff" : "#0a0a0a";
    const strokeW = selected ? 2.5 : 1;
    const fitted = cell?.text ? fitLabel(cell.text, size) : null;
+   const dataKey = `${col},${row}`;
 
    return (
-      <g className="hex" onClick={onClick} onContextMenu={onContextMenu}>
+      <g className="hex" data-key={dataKey} onClick={onClick} onContextMenu={onContextMenu}>
          <polygon
             points={points}
             fill={fill}
@@ -217,6 +222,8 @@ export const HexGrid = ({
    state,
    hexSize,
    selected,
+   tool,
+   onToolChange,
    onHexClick,
    onHexContextMenu,
 }: Props): JSX.Element => {
@@ -234,9 +241,45 @@ export const HexGrid = ({
    const [zoom, setZoom] = useState(1);
    const [pan, setPan] = useState({ x: 0, y: 0 }); // world-space coord at the SVG's top-left
    const [grabbing, setGrabbing] = useState(false);
+   const [shiftDown, setShiftDown] = useState(false); // for cursor hint only; behaviour is decided at pointerdown via e.shiftKey
 
    const dragRef = useRef<DragState | null>(null);
+   const paintRef = useRef<{ pointerId: number; lastKey: string | null } | null>(null);
    const wasDraggedRef = useRef(false);
+   // True if Shift was held when the current pointer interaction began. The
+   // browser's `click` event fires after pointerup, so we remember the modifier
+   // from pointerdown and use it to suppress hex clicks that started as a
+   // shift-pan (even if the user releases Shift between mousedown and click).
+   const shiftAtDownRef = useRef(false);
+   // Read fresh tool inside event handlers without re-binding listeners.
+   const toolRef = useRef(tool);
+   useEffect(() => {
+      toolRef.current = tool;
+   }, [tool]);
+
+   // Track Shift for the cursor hint. `keydown` fires repeatedly while held;
+   // we only re-render when the boolean actually flips.
+   useEffect(() => {
+      const onKey = (e: KeyboardEvent) => {
+         if (e.key !== "Shift") return;
+         setShiftDown(e.type === "keydown");
+      };
+      const onBlur = () => setShiftDown(false);
+      window.addEventListener("keydown", onKey);
+      window.addEventListener("keyup", onKey);
+      window.addEventListener("blur", onBlur);
+      return () => {
+         window.removeEventListener("keydown", onKey);
+         window.removeEventListener("keyup", onKey);
+         window.removeEventListener("blur", onBlur);
+      };
+   }, []);
+
+   const hexKeyAtCursor = useCallback((clientX: number, clientY: number): string | null => {
+      const el = document.elementFromPoint(clientX, clientY);
+      const g = (el as Element | null)?.closest?.("g.hex");
+      return g?.getAttribute("data-key") ?? null;
+   }, []);
    // Keep latest zoom/pan in refs so wheel and pointer handlers attached via
    // useEffect read fresh values without re-binding every state change.
    const zoomRef = useRef(zoom);
@@ -306,12 +349,28 @@ export const HexGrid = ({
 
    const onPointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
       if (e.button !== 0) return; // left mouse only
-      // NOTE: do NOT setPointerCapture here. If we capture on press, all
-      // subsequent pointer events get re-targeted to the SVG, which means
-      // the browser's click-target derivation never matches a hex (because
-      // pointerup landed on the SVG, not the hex). That breaks click-to-paint.
-      // We capture lazily on the first drag-move past the threshold instead.
       wasDraggedRef.current = false;
+      shiftAtDownRef.current = e.shiftKey;
+      // Holding Shift forces the pan branch regardless of the active tool.
+      const effectiveTool: Tool = e.shiftKey ? "pan" : toolRef.current;
+      if (effectiveTool === "paint") {
+         // Paint the starting hex immediately and capture the pointer so we
+         // keep receiving moves even if the cursor briefly leaves the SVG.
+         const key = hexKeyAtCursor(e.clientX, e.clientY);
+         paintRef.current = { pointerId: e.pointerId, lastKey: null };
+         if (key) {
+            paintRef.current.lastKey = key;
+            onHexClick(key);
+         }
+         try {
+            svgRef.current?.setPointerCapture(e.pointerId);
+         } catch {
+            // ignore
+         }
+         return;
+      }
+      // Pan tool: defer pointer capture until we actually see a drag, so a
+      // click without movement still flows through to the hex's onClick.
       dragRef.current = {
          startX: e.clientX,
          startY: e.clientY,
@@ -323,6 +382,15 @@ export const HexGrid = ({
    };
 
    const onPointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
+      const p = paintRef.current;
+      if (p && p.pointerId === e.pointerId) {
+         const key = hexKeyAtCursor(e.clientX, e.clientY);
+         if (key && key !== p.lastKey) {
+            p.lastKey = key;
+            onHexClick(key);
+         }
+         return;
+      }
       const d = dragRef.current;
       if (!d || d.pointerId !== e.pointerId) return;
       const dx = e.clientX - d.startX;
@@ -331,8 +399,6 @@ export const HexGrid = ({
          d.moved = true;
          wasDraggedRef.current = true;
          setGrabbing(true);
-         // Now that it's actually a drag, capture so we keep getting moves
-         // even if the cursor leaves the SVG.
          try {
             svgRef.current?.setPointerCapture(e.pointerId);
          } catch {
@@ -346,10 +412,7 @@ export const HexGrid = ({
    };
 
    const endDrag = (e: React.PointerEvent<SVGSVGElement>) => {
-      const d = dragRef.current;
-      if (d && d.pointerId === e.pointerId) {
-         dragRef.current = null;
-         setGrabbing(false);
+      const releaseCapture = () => {
          try {
             if (svgRef.current?.hasPointerCapture(e.pointerId)) {
                svgRef.current.releasePointerCapture(e.pointerId);
@@ -357,16 +420,35 @@ export const HexGrid = ({
          } catch {
             // pointer may already be released
          }
+      };
+      if (paintRef.current && paintRef.current.pointerId === e.pointerId) {
+         paintRef.current = null;
+         releaseCapture();
+         return;
+      }
+      const d = dragRef.current;
+      if (d && d.pointerId === e.pointerId) {
+         dragRef.current = null;
+         setGrabbing(false);
+         releaseCapture();
       }
    };
 
    const handleHexClick = useCallback(
-      (key: string, ev: React.MouseEvent) => {
+      (key: string) => {
+         // Shift-pan mode: clicks shouldn't paint either, even on a non-drag.
+         if (shiftAtDownRef.current) {
+            shiftAtDownRef.current = false;
+            return;
+         }
+         // In paint mode the pointerdown flow already painted this hex, so
+         // ignore the synthesized click event to avoid double-painting.
+         if (toolRef.current === "paint") return;
          if (wasDraggedRef.current) {
             wasDraggedRef.current = false;
             return;
          }
-         onHexClick(key, ev);
+         onHexClick(key);
       },
       [onHexClick],
    );
@@ -382,16 +464,31 @@ export const HexGrid = ({
       background: "#0e0e0e",
    };
 
+   // Cursor: Shift forces the pan-style cursor; otherwise the active tool wins.
+   // `grabbing` (set during a drag) always overrides to grabbing.
+   const cursor = grabbing
+      ? "grabbing"
+      : shiftDown
+        ? "grab"
+        : tool === "paint"
+          ? "crosshair"
+          : "grab";
    const svgStyle: CSSProperties = {
       display: "block",
       width: "100%",
       height: "100%",
-      cursor: grabbing ? "grabbing" : "grab",
+      cursor,
       touchAction: "none",
    };
 
    return (
-      <div ref={wrapperRef} className={`grid-viewport ${grabbing ? "grabbing" : ""}`} style={wrapperStyle}>
+      <div
+         ref={wrapperRef}
+         className={`grid-viewport ${grabbing ? "grabbing" : ""}`}
+         data-tool={tool}
+         data-shift={shiftDown ? "true" : "false"}
+         style={wrapperStyle}
+      >
          <svg
             ref={svgRef}
             viewBox={`${pan.x} ${pan.y} ${vbW} ${vbH}`}
@@ -415,7 +512,7 @@ export const HexGrid = ({
                      cell={state.cells[key]}
                      palette={palette}
                      selected={selected === key}
-                     onClick={(ev) => handleHexClick(key, ev)}
+                     onClick={() => handleHexClick(key)}
                      onContextMenu={(ev) => onHexContextMenu(key, ev)}
                   />
                );
@@ -423,42 +520,94 @@ export const HexGrid = ({
          </svg>
 
          <div className="grid-controls" aria-label="View controls">
-            <button
-               type="button"
-               onClick={() => {
-                  const next = clamp(zoomRef.current * 1.2, MIN_ZOOM, MAX_ZOOM);
-                  // Zoom around the wrapper centre.
-                  const cx = viewport.w / 2;
-                  const cy = viewport.h / 2;
-                  const wx = panRef.current.x + cx / zoomRef.current;
-                  const wy = panRef.current.y + cy / zoomRef.current;
-                  setZoom(next);
-                  setPan({ x: wx - cx / next, y: wy - cy / next });
-               }}
-               title="Zoom in"
-            >
-               +
-            </button>
-            <button
-               type="button"
-               onClick={() => {
-                  const next = clamp(zoomRef.current / 1.2, MIN_ZOOM, MAX_ZOOM);
-                  const cx = viewport.w / 2;
-                  const cy = viewport.h / 2;
-                  const wx = panRef.current.x + cx / zoomRef.current;
-                  const wy = panRef.current.y + cy / zoomRef.current;
-                  setZoom(next);
-                  setPan({ x: wx - cx / next, y: wy - cy / next });
-               }}
-               title="Zoom out"
-            >
-               −
-            </button>
-            <button type="button" onClick={fitToView} title="Fit to view">
-               Fit
-            </button>
-            <span className="grid-zoom-readout">{Math.round(zoom * 100)}%</span>
+            <div className="grid-controls-row">
+               <button
+                  type="button"
+                  onClick={() => {
+                     const next = clamp(zoomRef.current * 1.2, MIN_ZOOM, MAX_ZOOM);
+                     // Zoom around the wrapper centre.
+                     const cx = viewport.w / 2;
+                     const cy = viewport.h / 2;
+                     const wx = panRef.current.x + cx / zoomRef.current;
+                     const wy = panRef.current.y + cy / zoomRef.current;
+                     setZoom(next);
+                     setPan({ x: wx - cx / next, y: wy - cy / next });
+                  }}
+                  title="Zoom in"
+               >
+                  +
+               </button>
+               <button
+                  type="button"
+                  onClick={() => {
+                     const next = clamp(zoomRef.current / 1.2, MIN_ZOOM, MAX_ZOOM);
+                     const cx = viewport.w / 2;
+                     const cy = viewport.h / 2;
+                     const wx = panRef.current.x + cx / zoomRef.current;
+                     const wy = panRef.current.y + cy / zoomRef.current;
+                     setZoom(next);
+                     setPan({ x: wx - cx / next, y: wy - cy / next });
+                  }}
+                  title="Zoom out"
+               >
+                  −
+               </button>
+               <button type="button" onClick={fitToView} title="Fit to view">
+                  Fit
+               </button>
+               <span className="grid-zoom-readout">{Math.round(zoom * 100)}%</span>
+            </div>
+            <div className="grid-controls-row tool-row" role="radiogroup" aria-label="Editing tool">
+               <button
+                  type="button"
+                  className={`tool-btn ${tool === "pan" ? "active" : ""}`}
+                  onClick={() => onToolChange("pan")}
+                  role="radio"
+                  aria-checked={tool === "pan"}
+                  title="Pan tool — click and hold to move around"
+               >
+                  <ToolIconPan />
+                  <span>Pan</span>
+               </button>
+               <button
+                  type="button"
+                  className={`tool-btn ${tool === "paint" ? "active" : ""}`}
+                  onClick={() => onToolChange("paint")}
+                  role="radio"
+                  aria-checked={tool === "paint"}
+                  title="Paint tool — click and hold to paint hexes"
+               >
+                  <ToolIconPaint />
+                  <span>Paint</span>
+               </button>
+            </div>
          </div>
       </div>
    );
 };
+
+const ToolIconPan = () => (
+   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      {/* Grabby hand-ish glyph: simple outline of an open palm. */}
+      <path
+         d="M9 11V5a1.5 1.5 0 0 1 3 0v5M12 10V3.5a1.5 1.5 0 1 1 3 0V10M15 10V5a1.5 1.5 0 1 1 3 0v8.5M9 11V8a1.5 1.5 0 0 0-3 0v8c0 3 2 5 5.5 5h2C17 21 19 19 19 16v-3"
+         stroke="currentColor"
+         strokeWidth="1.6"
+         strokeLinecap="round"
+         strokeLinejoin="round"
+      />
+   </svg>
+);
+
+const ToolIconPaint = () => (
+   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      {/* Paintbrush glyph. */}
+      <path
+         d="M14 4l6 6-6 6-6-6 6-6zM8 10l-4 4a2 2 0 0 0 0 2.83l2.17 2.17a2 2 0 0 0 2.83 0L13 15"
+         stroke="currentColor"
+         strokeWidth="1.6"
+         strokeLinecap="round"
+         strokeLinejoin="round"
+      />
+   </svg>
+);

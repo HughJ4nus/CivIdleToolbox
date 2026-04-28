@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Annotations } from "./Annotations";
-import { exportPng, exportSvg } from "./export";
+import { Dropdown } from "./Dropdown";
+import { buildExportSvg, exportPng, exportSvg } from "./export";
+import { PreviewModal } from "./PreviewModal";
 import { computeCenterShift } from "./resize";
-import { HexGrid } from "./HexGrid";
+import { HexGrid, type Tool } from "./HexGrid";
 import { LabelEditor } from "./LabelEditor";
 import { Legend, newPaletteEntry } from "./Legend";
+import { sanitizeMapState } from "./sanitize";
 import { loadState, saveState } from "./storage";
 import {
    initialMapState,
@@ -14,16 +17,22 @@ import {
    type MapState,
 } from "./types";
 
-const STORAGE_KEYS_HEX_SIZE = "cividle-hex-map:hexSize";
+// Hex polygon size (world units). The on-screen view scales via zoom (handled
+// in HexGrid), so a single constant is enough — no user-facing control.
+const HEX_SIZE = 26;
+const STORAGE_KEYS_TOOL = "cividle-hex-map:tool";
+
+const isTool = (v: string | null): v is Tool => v === "pan" || v === "paint";
 
 export const App = (): JSX.Element => {
    const [state, setState] = useState<MapState>(() => loadState());
-   const [hexSize, setHexSize] = useState<number>(() => {
-      const stored = Number(localStorage.getItem(STORAGE_KEYS_HEX_SIZE));
-      return Number.isFinite(stored) && stored > 0 ? stored : 26;
+   const [tool, setTool] = useState<Tool>(() => {
+      const stored = localStorage.getItem(STORAGE_KEYS_TOOL);
+      return isTool(stored) ? stored : "pan";
    });
    const [selected, setSelected] = useState<string | null>(null);
    const [editorOpen, setEditorOpen] = useState(false);
+   const [previewSvg, setPreviewSvg] = useState<string | null>(null);
    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
    useEffect(() => {
@@ -31,8 +40,8 @@ export const App = (): JSX.Element => {
    }, [state]);
 
    useEffect(() => {
-      localStorage.setItem(STORAGE_KEYS_HEX_SIZE, String(hexSize));
-   }, [hexSize]);
+      localStorage.setItem(STORAGE_KEYS_TOOL, tool);
+   }, [tool]);
 
    const counts = useMemo(() => {
       const m = new Map<string, number>();
@@ -170,15 +179,14 @@ export const App = (): JSX.Element => {
       const reader = new FileReader();
       reader.onload = () => {
          try {
-            const parsed = JSON.parse(String(reader.result)) as MapState;
-            if (parsed.version !== 1 || !parsed.cells || !parsed.palette) {
+            const parsed = JSON.parse(String(reader.result));
+            if (!parsed || typeof parsed !== "object" || (parsed as MapState).version !== 1) {
                alert("That file doesn't look like a hex-map JSON.");
                return;
             }
-            // Backfill new fields if importing an older save.
-            if (typeof parsed.notes !== "string") parsed.notes = "";
-            if (!Array.isArray(parsed.annotations)) parsed.annotations = [];
-            setState(parsed);
+            // Coerce every field to a known-safe shape before it can reach the
+            // renderer or the export pipeline.
+            setState(sanitizeMapState(parsed));
          } catch (e) {
             alert(`Failed to import: ${(e as Error).message}`);
          }
@@ -224,15 +232,23 @@ export const App = (): JSX.Element => {
 
    const onExportPng = useCallback(async () => {
       try {
-         await exportPng(state, { hexSize: Math.max(28, hexSize), pixelRatio: 2 });
+         await exportPng(state, { hexSize: Math.max(28, HEX_SIZE), pixelRatio: 2 });
       } catch (e) {
          alert(`PNG export failed: ${(e as Error).message}`);
       }
-   }, [state, hexSize]);
+   }, [state]);
 
    const onExportImageSvg = useCallback(() => {
-      exportSvg(state, { hexSize: Math.max(28, hexSize) });
-   }, [state, hexSize]);
+      exportSvg(state, { hexSize: Math.max(28, HEX_SIZE) });
+   }, [state]);
+
+   const onPreview = useCallback(() => {
+      try {
+         setPreviewSvg(buildExportSvg(state, { hexSize: Math.max(28, HEX_SIZE) }));
+      } catch (e) {
+         alert(`Preview failed: ${(e as Error).message}`);
+      }
+   }, [state]);
 
    const selectedCell = selected ? state.cells[selected] : undefined;
 
@@ -246,68 +262,85 @@ export const App = (): JSX.Element => {
                className="title-input"
                aria-label="Map title"
             />
-            <div className="toolbar-group">
-               <label>
-                  cols
+
+            {/* Everything to the right of the title sits in `toolbar-right`,
+               which uses margin-left: auto to anchor to the right edge. */}
+            <div className="toolbar-right">
+               <div className="toolbar-group">
+                  <label>
+                     cols
+                     <input
+                        type="number"
+                        value={state.cols}
+                        min={1}
+                        max={80}
+                        onChange={(e) => onResize(Number(e.target.value), state.rows)}
+                     />
+                  </label>
+                  <label>
+                     rows
+                     <input
+                        type="number"
+                        value={state.rows}
+                        min={1}
+                        max={80}
+                        onChange={(e) => onResize(state.cols, Number(e.target.value))}
+                     />
+                  </label>
+               </div>
+               <div className="toolbar-group">
+                  <button type="button" onClick={onPreview} title="Preview the exported image">
+                     <EyeIcon />
+                     <span>Preview</span>
+                  </button>
+                  <Dropdown
+                     trigger={
+                        <>
+                           Export <span className="caret">▾</span>
+                        </>
+                     }
+                     triggerClassName="primary"
+                  >
+                     <button type="button" onClick={onExportPng} title="Render map + side panel as a PNG image">
+                        PNG image
+                     </button>
+                     <button type="button" onClick={onExportImageSvg} title="Render map + side panel as an SVG image">
+                        SVG image
+                     </button>
+                     <button type="button" onClick={onExport} title="Download the editable map data as JSON">
+                        JSON (editable)
+                     </button>
+                  </Dropdown>
+
+                  <button type="button" onClick={onImportClick}>
+                     Load JSON
+                  </button>
                   <input
-                     type="number"
-                     value={state.cols}
-                     min={1}
-                     max={80}
-                     onChange={(e) => onResize(Number(e.target.value), state.rows)}
+                     ref={fileInputRef}
+                     type="file"
+                     accept="application/json"
+                     style={{ display: "none" }}
+                     onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) onImportFile(file);
+                        e.target.value = "";
+                     }}
                   />
-               </label>
-               <label>
-                  rows
-                  <input
-                     type="number"
-                     value={state.rows}
-                     min={1}
-                     max={80}
-                     onChange={(e) => onResize(state.cols, Number(e.target.value))}
-                  />
-               </label>
-               <label>
-                  hex
-                  <input
-                     type="range"
-                     min={12}
-                     max={60}
-                     value={hexSize}
-                     onChange={(e) => setHexSize(Number(e.target.value))}
-                  />
-               </label>
-            </div>
-            <div className="toolbar-group">
-               <button type="button" onClick={onExportPng} className="primary" title="Render map + side panel to PNG">
-                  Export PNG
-               </button>
-               <button type="button" onClick={onExportImageSvg} title="Render map + side panel to SVG">
-                  Export SVG
-               </button>
-               <button type="button" onClick={onExport}>
-                  Save JSON
-               </button>
-               <button type="button" onClick={onImportClick}>
-                  Load JSON
-               </button>
-               <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="application/json"
-                  style={{ display: "none" }}
-                  onChange={(e) => {
-                     const file = e.target.files?.[0];
-                     if (file) onImportFile(file);
-                     e.target.value = "";
-                  }}
-               />
-               <button type="button" onClick={onClearAll}>
-                  Clear hexes
-               </button>
-               <button type="button" onClick={onResetAll} className="danger">
-                  Reset all
-               </button>
+
+                  <Dropdown
+                     trigger={<TrashIcon />}
+                     triggerClassName="icon-only danger-hover"
+                     ariaLabel="Clear / reset"
+                     align="right"
+                  >
+                     <button type="button" onClick={onClearAll} title="Clear placed colors + labels (palette kept)">
+                        Clear hexes
+                     </button>
+                     <button type="button" onClick={onResetAll} className="danger" title="Wipe everything to defaults">
+                        Reset all
+                     </button>
+                  </Dropdown>
+               </div>
             </div>
          </header>
 
@@ -355,13 +388,50 @@ export const App = (): JSX.Element => {
             <section className="canvas-wrap">
                <HexGrid
                   state={state}
-                  hexSize={hexSize}
+                  hexSize={HEX_SIZE}
                   selected={selected}
+                  tool={tool}
+                  onToolChange={setTool}
                   onHexClick={handleHexClick}
                   onHexContextMenu={handleHexContextMenu}
                />
             </section>
          </main>
+
+         {previewSvg && (
+            <PreviewModal
+               svg={previewSvg}
+               title={state.title}
+               onClose={() => setPreviewSvg(null)}
+               onExportPng={onExportPng}
+               onExportSvg={onExportImageSvg}
+            />
+         )}
       </div>
    );
 };
+
+const EyeIcon = (): JSX.Element => (
+   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+         d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"
+         stroke="currentColor"
+         strokeWidth="1.6"
+         strokeLinecap="round"
+         strokeLinejoin="round"
+      />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.6" />
+   </svg>
+);
+
+const TrashIcon = (): JSX.Element => (
+   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+         d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M10 11v6M14 11v6"
+         stroke="currentColor"
+         strokeWidth="1.6"
+         strokeLinecap="round"
+         strokeLinejoin="round"
+      />
+   </svg>
+);

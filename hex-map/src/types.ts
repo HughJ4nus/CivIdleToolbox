@@ -46,7 +46,7 @@ export const initialMapState = (cols = 45, rows = 45): MapState => ({
    palette: DEFAULT_PALETTE,
    activeColorId: DEFAULT_PALETTE[0].id,
    cells: {},
-   title: "Untitled map",
+   title: "Untitled Design",
    notes: "",
    annotations: [],
 });
