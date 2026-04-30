@@ -6,7 +6,7 @@
 // Requires the project to be built first (uses dist/assets if needed) — but it
 // imports source via tsx-friendly loader if available, otherwise compiles inline.
 
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createRequire } from "node:module";
@@ -36,12 +36,23 @@ try {
          },
       }).outputText;
 
+   const wonderPath = new URL("../src/wonderRange.ts", import.meta.url);
+   const buildingsPath = new URL("../src/data/buildings.json", import.meta.url);
+
    const tmp = mkdtempSync(join(tmpdir(), "hex-export-"));
+   mkdirSync(join(tmp, "data"), { recursive: true });
+   copyFileSync(buildingsPath, join(tmp, "data/buildings.json"));
    writeFileSync(join(tmp, "types.mjs"), compile(readFileSync(typesPath, "utf8")));
    writeFileSync(join(tmp, "hex.mjs"), compile(readFileSync(hexPath, "utf8")));
+   const wonderSrc = readFileSync(wonderPath, "utf8").replace(
+      /from ["']\.\/data\/buildings\.json["']/g,
+      `from "./data/buildings.json" with { type: "json" }`,
+   );
+   writeFileSync(join(tmp, "wonderRange.mjs"), compile(wonderSrc));
    const exportSrc = readFileSync(sourcePath, "utf8")
       .replace(/from ["']\.\/types["']/g, `from "./types.mjs"`)
-      .replace(/from ["']\.\/hex["']/g, `from "./hex.mjs"`);
+      .replace(/from ["']\.\/hex["']/g, `from "./hex.mjs"`)
+      .replace(/from ["']\.\/wonderRange["']/g, `from "./wonderRange.mjs"`);
    writeFileSync(join(tmp, "export.mjs"), compile(exportSrc));
    ({ buildExportSvg } = await import(`file://${tmp}/export.mjs`));
 } catch (err) {
@@ -67,9 +78,14 @@ const sample = {
       "6,5": { colorId: "p1", text: "Quote \"test\"" },
       "5,4": { colorId: null, text: "AT&T" },
       "3,3": { colorId: "p3", text: "Hostile color cell" },
+      // Wonder with a known tile range — exercises the range-ring renderer.
+      "8,8": { colorId: "p1", text: "Pantheon" },
    },
    title: 'My "Quoted" Map & Co.',
    notes: "Line 1\nLine 2 with <html-ish> & ampersands.",
+   showRanges: true,
+   activeFestivals: [],
+   activeUpgrades: [],
    annotations: [
       { id: "a1", tier: "I", colorId: "p1", label: 'Build "Petra" first' },
       { id: "a2", tier: "II", colorId: "p2", label: "Then a wheat farm <if possible>" },

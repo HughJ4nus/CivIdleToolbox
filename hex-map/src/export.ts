@@ -6,11 +6,15 @@ import {
    SQRT3,
    allCoords,
    center,
+   cornerPoints,
    gridDimensions,
    hexPolygonPoints,
+   neighborOffsets,
    tileKey,
+   tilesInRange,
 } from "./hex";
 import type { Annotation, MapState, PaletteEntry } from "./types";
+import { buildRangeContext, getEffectiveRange } from "./wonderRange";
 
 // ── Geometry constants for the exported side panel ──────────────────────────
 const PANEL_WIDTH = 520;
@@ -308,7 +312,54 @@ const renderMap = (state: MapState, hexSize: number): { svg: string; width: numb
          );
       }
    }
+   parts.push(...renderRangeRings(state, palette, hexSize));
    return { svg: parts.join("\n"), width: widthPx, height: heightPx };
+};
+
+const renderRangeRings = (
+   state: MapState,
+   palette: Map<string, PaletteEntry>,
+   hexSize: number,
+): string[] => {
+   if (!state.showRanges) return [];
+   const out: string[] = [];
+   const stroke = Math.max(2, hexSize / 8);
+   const ctx = buildRangeContext(state.activeFestivals, state.activeUpgrades);
+   for (const [key, cell] of Object.entries(state.cells)) {
+      if (!cell.text || !cell.colorId) continue;
+      const [col, row] = key.split(",").map(Number);
+      const neighborTexts = neighborOffsets(row).map(([dc, dr]) => {
+         const nk = `${col + dc},${row + dr}`;
+         return state.cells[nk]?.text ?? "";
+      });
+      const range = getEffectiveRange(cell.text, ctx, neighborTexts);
+      if (range == null || range < 1) continue;
+      const color = palette.get(cell.colorId)?.color;
+      if (!color) continue;
+      const tiles = tilesInRange(col, row, range, state.cols, state.rows);
+      const inRange = new Set(tiles.map((t) => `${t.col},${t.row}`));
+      const lines: string[] = [];
+      for (const t of tiles) {
+         const offsets = neighborOffsets(t.row);
+         const c = center(t.col, t.row, hexSize);
+         const corners = cornerPoints(c.x, c.y, hexSize);
+         for (let i = 0; i < 6; i++) {
+            const [dc, dr] = offsets[i];
+            const nKey = `${t.col + dc},${t.row + dr}`;
+            if (inRange.has(nKey)) continue;
+            const a = corners[i];
+            const b = corners[(i + 1) % 6];
+            lines.push(
+               `<line x1="${a.x.toFixed(2)}" y1="${a.y.toFixed(2)}" x2="${b.x.toFixed(2)}" y2="${b.y.toFixed(2)}" />`,
+            );
+         }
+      }
+      if (lines.length === 0) continue;
+      out.push(
+         `<g fill="none" stroke="${escapeXml(color)}" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round">${lines.join("")}</g>`,
+      );
+   }
+   return out;
 };
 
 // ── Public API ──────────────────────────────────────────────────────────────

@@ -118,6 +118,9 @@ export const sanitizeMapState = (raw: unknown): MapState => {
       isString(r.activeColorId) && palette.some((p) => p.id === r.activeColorId)
          ? r.activeColorId
          : null;
+   const showRanges = typeof r.showRanges === "boolean" ? r.showRanges : fallback.showRanges;
+   const activeFestivals = sanitizeIdList(r.activeFestivals);
+   const activeUpgrades = sanitizeIdList(r.activeUpgrades);
 
    return {
       version: 1,
@@ -129,5 +132,25 @@ export const sanitizeMapState = (raw: unknown): MapState => {
       annotations,
       cells,
       activeColorId,
+      showRanges,
+      activeFestivals,
+      activeUpgrades,
    };
+};
+
+const sanitizeIdList = (raw: unknown): string[] => {
+   if (!Array.isArray(raw)) return [];
+   const out: string[] = [];
+   const seen = new Set<string>();
+   for (const v of raw) {
+      if (!isString(v)) continue;
+      // Building keys / upgrade IDs are PascalCase identifiers — anything
+      // else is a corrupt save and gets dropped.
+      const id = cap(v, MAX.id);
+      if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(id)) continue;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      out.push(id);
+   }
+   return out;
 };

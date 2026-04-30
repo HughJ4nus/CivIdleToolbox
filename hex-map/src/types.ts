@@ -27,6 +27,12 @@ export interface MapState {
    title: string;
    notes: string;
    annotations: Annotation[];
+   /** Whether the perimeter outline of a wonder's tile range is drawn. */
+   showRanges: boolean;
+   /** Wonder building keys for which a festival is assumed active. */
+   activeFestivals: string[];
+   /** Upgrade IDs assumed unlocked (e.g. "SuffeteAdministration"). */
+   activeUpgrades: string[];
 }
 
 export const DEFAULT_PALETTE: PaletteEntry[] = [
@@ -49,6 +55,9 @@ export const initialMapState = (cols = 45, rows = 45): MapState => ({
    title: "Untitled Design",
    notes: "",
    annotations: [],
+   showRanges: true,
+   activeFestivals: [],
+   activeUpgrades: [],
 });
 
 export const newAnnotation = (existing: Annotation[], colorId: string | null = null): Annotation => {

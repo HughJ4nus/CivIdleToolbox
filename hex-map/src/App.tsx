@@ -7,6 +7,7 @@ import { computeCenterShift } from "./resize";
 import { HexGrid, type Tool } from "./HexGrid";
 import { LabelEditor } from "./LabelEditor";
 import { Legend, newPaletteEntry } from "./Legend";
+import { RangeControls } from "./RangeControls";
 import { sanitizeMapState } from "./sanitize";
 import { loadState, saveState } from "./storage";
 import {
@@ -217,6 +218,28 @@ export const App = (): JSX.Element => {
       setState((prev) => ({ ...prev, annotations: prev.annotations.filter((a) => a.id !== id) }));
    }, []);
 
+   const onToggleShowRanges = useCallback((next: boolean) => {
+      setState((prev) => ({ ...prev, showRanges: next }));
+   }, []);
+
+   const onToggleFestival = useCallback((wonderKey: string, next: boolean) => {
+      setState((prev) => {
+         const set = new Set(prev.activeFestivals);
+         if (next) set.add(wonderKey);
+         else set.delete(wonderKey);
+         return { ...prev, activeFestivals: [...set] };
+      });
+   }, []);
+
+   const onToggleUpgrade = useCallback((upgradeId: string, next: boolean) => {
+      setState((prev) => {
+         const set = new Set(prev.activeUpgrades);
+         if (next) set.add(upgradeId);
+         else set.delete(upgradeId);
+         return { ...prev, activeUpgrades: [...set] };
+      });
+   }, []);
+
    const onAnnotationMove = useCallback((id: string, dir: -1 | 1) => {
       setState((prev) => {
          const idx = prev.annotations.findIndex((a) => a.id === id);
@@ -372,6 +395,15 @@ export const App = (): JSX.Element => {
                      <strong>Tip.</strong> Right-click a hex to set a text label. The Wonders tab is pre-populated with all 106 wonders from the game.
                   </p>
                )}
+
+               <RangeControls
+                  showRanges={state.showRanges}
+                  activeFestivals={state.activeFestivals}
+                  activeUpgrades={state.activeUpgrades}
+                  onToggleShow={onToggleShowRanges}
+                  onToggleFestival={onToggleFestival}
+                  onToggleUpgrade={onToggleUpgrade}
+               />
 
                <Annotations
                   annotations={state.annotations}

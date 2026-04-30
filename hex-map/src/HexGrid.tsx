@@ -8,8 +8,19 @@ import {
    useState,
    type CSSProperties,
 } from "react";
-import { SQRT3, allCoords, center, gridDimensions, hexPolygonPoints, tileKey } from "./hex";
+import {
+   SQRT3,
+   allCoords,
+   center,
+   cornerPoints,
+   gridDimensions,
+   hexPolygonPoints,
+   neighborOffsets,
+   tileKey,
+   tilesInRange,
+} from "./hex";
 import type { HexCell, MapState, PaletteEntry } from "./types";
+import { buildRangeContext, getEffectiveRange } from "./wonderRange";
 
 // ────────────────────────────────────────────────────────────────────────────
 // Text fitting
@@ -137,6 +148,57 @@ const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v
 const paletteLookup = (palette: PaletteEntry[]): Map<string, PaletteEntry> =>
    new Map(palette.map((p) => [p.id, p]));
 
+interface RangeRing {
+   key: string;
+   color: string;
+   edges: ReadonlyArray<readonly [number, number, number, number]>;
+}
+
+/**
+ * For every cell whose label names a wonder with a tile range, build the
+ * outline of the area within that range. The outline is the set of hex edges
+ * that face *outside* the in-range set (or the grid boundary).
+ */
+const computeRangeRings = (
+   state: MapState,
+   palette: Map<string, PaletteEntry>,
+   hexSize: number,
+): RangeRing[] => {
+   if (!state.showRanges) return [];
+   const rings: RangeRing[] = [];
+   const ctx = buildRangeContext(state.activeFestivals, state.activeUpgrades);
+   for (const [key, cell] of Object.entries(state.cells)) {
+      if (!cell.text || !cell.colorId) continue;
+      const [col, row] = key.split(",").map(Number);
+      const neighborTexts = neighborOffsets(row).map(([dc, dr]) => {
+         const nk = `${col + dc},${row + dr}`;
+         return state.cells[nk]?.text ?? "";
+      });
+      const range = getEffectiveRange(cell.text, ctx, neighborTexts);
+      if (range == null || range < 1) continue;
+      const color = palette.get(cell.colorId)?.color;
+      if (!color) continue;
+      const tiles = tilesInRange(col, row, range, state.cols, state.rows);
+      const inRange = new Set(tiles.map((t) => `${t.col},${t.row}`));
+      const edges: Array<readonly [number, number, number, number]> = [];
+      for (const t of tiles) {
+         const offsets = neighborOffsets(t.row);
+         const c = center(t.col, t.row, hexSize);
+         const corners = cornerPoints(c.x, c.y, hexSize);
+         for (let i = 0; i < 6; i++) {
+            const [dc, dr] = offsets[i];
+            const nKey = `${t.col + dc},${t.row + dr}`;
+            if (inRange.has(nKey)) continue;
+            const a = corners[i];
+            const b = corners[(i + 1) % 6];
+            edges.push([a.x, a.y, b.x, b.y]);
+         }
+      }
+      rings.push({ key, color, edges });
+   }
+   return rings;
+};
+
 const HexCellNode = memo(function HexCellNode({
    col,
    row,
@@ -236,6 +298,10 @@ export const HexGrid = ({
    );
    const palette = useMemo(() => paletteLookup(state.palette), [state.palette]);
    const coords = useMemo(() => allCoords(state.cols, state.rows), [state.cols, state.rows]);
+   const rangeRings = useMemo(
+      () => computeRangeRings(state, palette, hexSize),
+      [state, palette, hexSize],
+   );
 
    const [viewport, setViewport] = useState({ w: 0, h: 0 });
    const [zoom, setZoom] = useState(1);
@@ -517,6 +583,23 @@ export const HexGrid = ({
                   />
                );
             })}
+            {rangeRings.length > 0 && (
+               <g
+                  className="range-rings"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ pointerEvents: "none" }}
+               >
+                  {rangeRings.map((ring) => (
+                     <g key={ring.key} stroke={ring.color} strokeWidth={Math.max(2, hexSize / 8)}>
+                        {ring.edges.map(([x1, y1, x2, y2], i) => (
+                           <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} />
+                        ))}
+                     </g>
+                  ))}
+               </g>
+            )}
          </svg>
 
          <div className="grid-controls" aria-label="View controls">
