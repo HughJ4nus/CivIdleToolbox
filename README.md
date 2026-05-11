@@ -15,8 +15,15 @@ Each tool is self-contained — run its own setup. For example:
 ```sh
 cd hex-map
 pnpm install
-pnpm dev          # http://localhost:5173
+pnpm dev          # http://localhost:5173, hex-map only
 pnpm build
+```
+
+To preview the **landing page with the tool iframed in** (the same shape that gets deployed to GitHub Pages), from the repo root:
+
+```sh
+pnpm preview      # builds every tool, assembles dist/, serves on http://localhost:3000
+pnpm build        # same build + assembly without the local server
 ```
 
 ## Working with the game's source

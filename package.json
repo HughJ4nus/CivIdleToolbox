@@ -1,0 +1,10 @@
+{
+   "name": "cividle-toolbox",
+   "private": true,
+   "version": "0.1.0",
+   "scripts": {
+      "build": "bash scripts/build.sh",
+      "preview": "bash scripts/build.sh && pnpm dlx serve dist",
+      "deploy": "bash scripts/deploy-pages.sh"
+   }
+}

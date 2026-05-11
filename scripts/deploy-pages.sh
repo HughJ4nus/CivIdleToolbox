@@ -23,29 +23,18 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-HEX_MAP_DIR="$REPO_ROOT/hex-map"
 DIST_DIR="$REPO_ROOT/dist"
 
 REPO_NAME="$(basename -s .git "$(git -C "$REPO_ROOT" remote get-url origin)")"
 
-echo "▶ Building hex-map (base = /${REPO_NAME}/hex-map/)"
-( cd "$HEX_MAP_DIR" && VITE_BASE="/${REPO_NAME}/hex-map/" pnpm build )
+# Delegate the build + assembly to scripts/build.sh, with the GitHub Pages
+# subpath as each tool's Vite base. (build.sh creates .nojekyll too.)
+HEX_MAP_BASE="/${REPO_NAME}/hex-map/" bash "$SCRIPT_DIR/build.sh"
 
-if [[ ! -f "$HEX_MAP_DIR/dist/index.html" ]]; then
-   echo "✗ hex-map build did not produce dist/index.html" >&2
+if [[ ! -f "$DIST_DIR/index.html" ]]; then
+   echo "✗ Assembly did not produce dist/index.html" >&2
    exit 1
 fi
-
-echo "▶ Assembling combined dist/"
-rm -rf "$DIST_DIR"
-mkdir -p "$DIST_DIR/hex-map"
-cp -R "$HEX_MAP_DIR/dist/." "$DIST_DIR/hex-map/"
-# Landing page is the repo-root index.html. Add more files (favicon etc.)
-# here if the landing grows.
-cp "$REPO_ROOT/index.html" "$DIST_DIR/"
-
-# Ensure GitHub Pages doesn't try to run Jekyll on the build output.
-touch "$DIST_DIR/.nojekyll"
 
 WORKTREE="$(mktemp -d -t cividle-ghpages.XXXXXX)"
 TMP_BRANCH="gh-pages-publish-$$"
