@@ -8,6 +8,7 @@ import { HexGrid, type Tool } from "./HexGrid";
 import { LabelEditor } from "./LabelEditor";
 import { Legend, newPaletteEntry } from "./Legend";
 import { RangeControls } from "./RangeControls";
+import { PRESETS, loadPreset } from "./presets";
 import { sanitizeMapState } from "./sanitize";
 import { loadState, saveState } from "./storage";
 import {
@@ -176,6 +177,21 @@ export const App = (): JSX.Element => {
 
    const onImportClick = useCallback(() => fileInputRef.current?.click(), []);
 
+   const onLoadPreset = useCallback(
+      (presetId: string) => {
+         const preset = PRESETS.find((p) => p.id === presetId);
+         if (!preset) return;
+         // Confirm only when the user has actual work that would be discarded.
+         const dirty =
+            Object.keys(state.cells).length > 0 ||
+            state.notes.trim().length > 0 ||
+            state.annotations.length > 0;
+         if (dirty && !confirm(`Replace the current design with "${preset.name}"?`)) return;
+         setState(loadPreset(preset));
+      },
+      [state.cells, state.notes, state.annotations],
+   );
+
    const onImportFile = useCallback((file: File) => {
       const reader = new FileReader();
       reader.onload = () => {
@@ -278,13 +294,27 @@ export const App = (): JSX.Element => {
    return (
       <div className="app">
          <header className="toolbar">
-            <input
-               type="text"
-               value={state.title}
-               onChange={(e) => setState((prev) => ({ ...prev, title: e.target.value }))}
-               className="title-input"
-               aria-label="Map title"
-            />
+            <div className="title-input-wrap">
+               <input
+                  type="text"
+                  value={state.title}
+                  onChange={(e) => setState((prev) => ({ ...prev, title: e.target.value }))}
+                  className="title-input"
+                  aria-label="Map title"
+               />
+               <Dropdown
+                  trigger={<span className="caret">▾</span>}
+                  ariaLabel="Load a premade design"
+                  triggerClassName="title-presets-trigger"
+                  align="right"
+               >
+                  {PRESETS.map((p) => (
+                     <button key={p.id} type="button" onClick={() => onLoadPreset(p.id)}>
+                        {p.name}
+                     </button>
+                  ))}
+               </Dropdown>
+            </div>
 
             {/* Everything to the right of the title sits in `toolbar-right`,
                which uses margin-left: auto to anchor to the right edge. */}

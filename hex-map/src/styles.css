@@ -91,13 +91,44 @@ input[type="number"] {
    border-bottom: 1px solid var(--border);
    flex-wrap: wrap;
 }
-.title-input {
+.title-input-wrap {
    /* Match the sidebar width so the title sits visually over its column. */
+   position: relative;
    flex: 0 0 var(--sidebar-width);
    width: var(--sidebar-width);
+   display: flex;
+   align-items: stretch;
+}
+.title-input {
+   flex: 1 1 auto;
+   width: auto;
    min-width: 0;
    font-size: 16px;
    font-weight: 600;
+   /* Reserve room on the right edge for the dropdown caret. */
+   padding-right: 28px;
+}
+.title-input-wrap .dropdown {
+   position: absolute;
+   top: 50%;
+   right: 4px;
+   transform: translateY(-50%);
+}
+.title-presets-trigger {
+   width: 22px;
+   height: 22px;
+   padding: 0;
+   border: 1px solid transparent;
+   background: transparent;
+   color: var(--text-dim);
+   cursor: pointer;
+   border-radius: 3px;
+}
+.title-presets-trigger:hover,
+.dropdown.open .title-presets-trigger {
+   color: var(--text);
+   border-color: var(--border);
+   background: var(--panel-2);
 }
 .toolbar-group {
    display: flex;
