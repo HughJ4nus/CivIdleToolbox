@@ -1,11 +1,12 @@
-name: Deploy hex-map to GitHub Pages
+name: Deploy CivIdle Toolbox to GitHub Pages
 
 on:
    push:
       branches: [main]
       paths:
          - "hex-map/**"
-         - ".github/workflows/deploy-hex-map.yml"
+         - "landing/**"
+         - ".github/workflows/deploy-pages.yml"
    workflow_dispatch:
 
 # peaceiris/actions-gh-pages pushes a commit to the gh-pages branch using
@@ -36,26 +37,33 @@ jobs:
               # Lockfile lives in the subdir, not the repo root.
               cache-dependency-path: hex-map/pnpm-lock.yaml
 
-         - name: Install
+         - name: Install hex-map
            run: pnpm install --frozen-lockfile
            working-directory: hex-map
 
-         - name: Build
-           # GitHub Pages serves project sites under https://<user>.github.io/<repo>/,
-           # so Vite needs that subpath as `base` when emitting asset URLs.
+         - name: Build hex-map
+           # GitHub Pages serves the toolbox under https://<user>.github.io/<repo>/.
+           # The landing page lives at the repo root and frames each tool from
+           # /<repo>/<tool-id>/, so each tool's Vite `base` includes its subdir.
            env:
-              VITE_BASE: /CivIdleToolbox/
+              VITE_BASE: /CivIdleToolbox/hex-map/
            run: pnpm build
            working-directory: hex-map
+
+         - name: Assemble combined dist/
+           run: |
+              mkdir -p dist/hex-map
+              cp -R hex-map/dist/. dist/hex-map/
+              cp -R landing/. dist/
 
          - name: Deploy to gh-pages
            uses: peaceiris/actions-gh-pages@v4
            with:
               github_token: ${{ secrets.GITHUB_TOKEN }}
-              publish_dir: hex-map/dist
+              publish_dir: dist
               # Same orphan-style commit our manual script uses, so the branch
               # contains exactly the build output and no accumulated history.
               force_orphan: true
               user_name: github-actions[bot]
               user_email: 41898282+github-actions[bot]@users.noreply.github.com
-              commit_message: "Deploy hex-map ${{ github.sha }}"
+              commit_message: "Deploy CivIdle Toolbox ${{ github.sha }}"

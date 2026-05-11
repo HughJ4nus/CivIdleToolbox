@@ -1,39 +1,47 @@
 #!/usr/bin/env bash
-# Build the hex-map and push it to the `gh-pages` branch as an orphan commit.
-# Run from the project root or from hex-map/.
+# Build the CivIdle Toolbox (landing page + each tool) and push the combined
+# output to the `gh-pages` branch as an orphan commit. Mirrors what the
+# .github/workflows/deploy-pages.yml workflow does, for manual deploys.
 #
-# Why a manual script instead of `gh-pages` (npm) or a GH Actions workflow?
-#   - The npm `gh-pages` package has been flaky about leaving stale files
-#     in the published branch when used with --no-history.
-#   - This script does an orphan-worktree commit, so the branch contains
-#     ONLY the freshly built dist/ contents at the root — no leftovers.
+# Layout produced under dist/:
+#   dist/index.html       — landing page with the tool dropdown
+#   dist/hex-map/         — built hex-map (Vite base = /<repo>/hex-map/)
+#
+# Why orphan commits instead of `gh-pages` (npm)?
+#   The npm package has been flaky about leaving stale files in the published
+#   branch when used with --no-history. An orphan-worktree commit keeps the
+#   branch as exactly the freshly built dist/ — no leftovers.
 #
 # Requires:
 #   - The remote `origin` points at the GitHub repo (SSH or HTTPS).
 #   - You can push to the repo (e.g. SSH key registered on GitHub).
 #
-# Usage:
-#   bash hex-map/scripts/deploy-pages.sh
+# Usage (from any directory inside the repo):
+#   bash scripts/deploy-pages.sh
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 HEX_MAP_DIR="$REPO_ROOT/hex-map"
-DIST_DIR="$HEX_MAP_DIR/dist"
+LANDING_DIR="$REPO_ROOT/landing"
+DIST_DIR="$REPO_ROOT/dist"
 
-# GitHub project sites live at https://<user>.github.io/<repo>/, so Vite
-# needs that subpath as `base` when building.
 REPO_NAME="$(basename -s .git "$(git -C "$REPO_ROOT" remote get-url origin)")"
-BASE="/${REPO_NAME}/"
 
-echo "▶ Building hex-map with VITE_BASE=$BASE"
-( cd "$HEX_MAP_DIR" && VITE_BASE="$BASE" pnpm build )
+echo "▶ Building hex-map (base = /${REPO_NAME}/hex-map/)"
+( cd "$HEX_MAP_DIR" && VITE_BASE="/${REPO_NAME}/hex-map/" pnpm build )
 
-if [[ ! -f "$DIST_DIR/index.html" ]]; then
-   echo "✗ Build did not produce $DIST_DIR/index.html" >&2
+if [[ ! -f "$HEX_MAP_DIR/dist/index.html" ]]; then
+   echo "✗ hex-map build did not produce dist/index.html" >&2
    exit 1
 fi
+
+echo "▶ Assembling combined dist/"
+rm -rf "$DIST_DIR"
+mkdir -p "$DIST_DIR/hex-map"
+cp -R "$HEX_MAP_DIR/dist/." "$DIST_DIR/hex-map/"
+cp -R "$LANDING_DIR/." "$DIST_DIR/"
 
 # Ensure GitHub Pages doesn't try to run Jekyll on the build output.
 touch "$DIST_DIR/.nojekyll"
@@ -59,7 +67,7 @@ git -C "$REPO_ROOT" worktree add --detach --no-checkout "$WORKTREE" HEAD >/dev/n
    git -c commit.gpgsign=false \
        -c user.name="$(git config user.name)" \
        -c user.email="$(git config user.email)" \
-       commit -m "Deploy hex-map $(date -u +%Y-%m-%dT%H:%M:%SZ)" >/dev/null
+       commit -m "Deploy CivIdle Toolbox $(date -u +%Y-%m-%dT%H:%M:%SZ)" >/dev/null
 )
 
 echo "▶ Force-pushing to origin/gh-pages"

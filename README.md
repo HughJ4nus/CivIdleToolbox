@@ -2,6 +2,8 @@
 
 A growing collection of small tools for the idle game [CivIdle](https://store.steampowered.com/app/2181940/CivIdle/).
 
+The deployed site at `<user>.github.io/CivIdleToolbox/` is a tiny landing page (see [`landing/`](./landing)) with a tool-picker dropdown. Each tool is built independently and served from its own subpath under the same site (e.g. `/CivIdleToolbox/hex-map/`); the landing page hosts the selected tool in an `<iframe>`.
+
 | Tool | What it does |
 |---|---|
 | [`hex-map/`](./hex-map) | Browser-based hex grid editor for sketching CivIdle city plans. Click to color, right-click to label (with quick-pick of all 285 buildings + 106 wonders + 39 natural wonders pulled from the game's source), pan + zoom the canvas, then export the map and a side panel of notes / build order to PNG or SVG. |
@@ -26,6 +28,16 @@ git clone https://github.com/fishpondstudio/CivIdle.git
 ```
 
 The upstream `CivIdle/` directory is intentionally `.gitignore`d here — it has its own license and asset restrictions.
+
+## Deploy
+
+The site auto-deploys when changes land on `main` under `hex-map/`, `landing/`, or the workflow itself (see `.github/workflows/deploy-pages.yml`). For a manual deploy from any branch:
+
+```sh
+bash scripts/deploy-pages.sh
+```
+
+That script builds each tool with the right Vite `base`, copies the landing page to the dist root, and force-pushes an orphan commit to `gh-pages`.
 
 ## License
 
