@@ -159,11 +159,47 @@ input[type="number"] {
    /* If two headers ever land back-to-back, tighten the gap. */
    padding-top: 0;
 }
-/* The currently-loaded design in the picker. */
-.dropdown-menu > button.active {
+/* Each user design gets a row with a switch button + a delete (×) button. */
+.dropdown-design-row {
+   display: flex;
+   align-items: stretch;
+}
+.dropdown-design-row > button {
+   /* Match the existing .dropdown-menu > button base style — these
+      buttons aren't direct children, so they don't inherit it. */
+   background: transparent;
+   border: 1px solid transparent;
+   padding: 6px 10px;
+   font-size: 13px;
+   border-radius: 4px;
+   white-space: nowrap;
+}
+.dropdown-design-row > .design-switch {
+   flex: 1 1 auto;
+   text-align: left;
+   min-width: 0;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+.dropdown-design-row > .design-switch:hover {
+   background: var(--panel-2);
+}
+.dropdown-design-row > .design-switch.active {
    background: var(--panel-2);
    color: var(--accent);
    font-weight: 600;
+}
+.dropdown-design-row > .design-delete {
+   flex: 0 0 auto;
+   width: 26px;
+   color: var(--text-dim);
+   font-size: 16px;
+   line-height: 1;
+   padding: 0;
+}
+.dropdown-design-row > .design-delete:hover {
+   color: var(--danger);
+   background: rgba(255, 93, 93, 0.12);
 }
 
 /* "+" new-design button to the right of the title input. */

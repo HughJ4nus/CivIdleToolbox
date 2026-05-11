@@ -85,6 +85,42 @@ export const App = (): JSX.Element => {
       setEditorOpen(false);
    }, []);
 
+   const deleteDesign = useCallback(
+      (id: string) => {
+         const designToDelete = collection.designs[id];
+         if (!designToDelete) return;
+         const name = designToDelete.title || "(Untitled)";
+         if (!confirm(`Delete design "${name}"?`)) return;
+
+         setCollection((prev) => {
+            if (!prev.designs[id]) return prev;
+            const remaining: typeof prev.designs = {};
+            for (const [k, v] of Object.entries(prev.designs)) {
+               if (k !== id) remaining[k] = v;
+            }
+            // If the deleted one was active, pick the first remaining as
+            // the new active. If nothing remains, mint a fresh blank
+            // design so the app never has zero designs.
+            let activeId = prev.activeId;
+            if (id === prev.activeId) {
+               const remainingIds = Object.keys(remaining);
+               if (remainingIds.length > 0) {
+                  activeId = remainingIds[0];
+               } else {
+                  const freshId = newDesignId();
+                  remaining[freshId] = initialMapState();
+                  activeId = freshId;
+               }
+            }
+            return { activeId, designs: remaining };
+         });
+         // Always clear hex selection in case the deleted design was active.
+         setSelected(null);
+         setEditorOpen(false);
+      },
+      [collection.designs],
+   );
+
    useEffect(() => {
       localStorage.setItem(STORAGE_KEYS_TOOL, tool);
    }, [tool]);
@@ -360,14 +396,29 @@ export const App = (): JSX.Element => {
                      Your designs
                   </div>
                   {Object.entries(collection.designs).map(([id, d]) => (
-                     <button
-                        key={id}
-                        type="button"
-                        className={id === collection.activeId ? "active" : ""}
-                        onClick={() => switchToDesign(id)}
-                     >
-                        {d.title || "(Untitled)"}
-                     </button>
+                     <div key={id} className="dropdown-design-row">
+                        <button
+                           type="button"
+                           className={`design-switch ${id === collection.activeId ? "active" : ""}`}
+                           onClick={() => switchToDesign(id)}
+                        >
+                           {d.title || "(Untitled)"}
+                        </button>
+                        <button
+                           type="button"
+                           className="design-delete"
+                           title={`Delete "${d.title || "(Untitled)"}"`}
+                           aria-label={`Delete design "${d.title || "(Untitled)"}"`}
+                           // Stop the menu from auto-closing — handy when
+                           // deleting several in a row.
+                           onClick={(e) => {
+                              e.stopPropagation();
+                              deleteDesign(id);
+                           }}
+                        >
+                           ×
+                        </button>
+                     </div>
                   ))}
                   {/* Then preset templates, grouped by category. Selecting one
                      spawns a NEW design from the preset and switches to it. */}
