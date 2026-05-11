@@ -23,10 +23,14 @@ HEX_MAP_BASE="${HEX_MAP_BASE:-/hex-map/}"
 echo "▶ Building hex-map (base = $HEX_MAP_BASE)"
 ( cd "$HEX_MAP_DIR" && VITE_BASE="$HEX_MAP_BASE" pnpm build )
 
+echo "▶ Copying egp-planner (single-file static tool)"
+EGP_DIR="$REPO_ROOT/egp-planner"
+
 echo "▶ Assembling combined dist/"
 rm -rf "$DIST_DIR"
-mkdir -p "$DIST_DIR/hex-map"
+mkdir -p "$DIST_DIR/hex-map" "$DIST_DIR/egp-planner"
 cp -R "$HEX_MAP_DIR/dist/." "$DIST_DIR/hex-map/"
+cp -R "$EGP_DIR/." "$DIST_DIR/egp-planner/"
 # Landing page (and any other root-level static assets) goes at dist root.
 cp "$REPO_ROOT/index.html" "$DIST_DIR/"
 touch "$DIST_DIR/.nojekyll"

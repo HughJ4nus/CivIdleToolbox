@@ -5,6 +5,7 @@ on:
       branches: [main]
       paths:
          - "hex-map/**"
+         - "egp-planner/**"
          - "index.html"
          - ".github/workflows/deploy-pages.yml"
    workflow_dispatch:
@@ -52,11 +53,13 @@ jobs:
            working-directory: hex-map
 
          - name: Assemble combined dist/
-           # Landing page is just index.html at the repo root. Add more files
-           # here (e.g. favicon, robots.txt) if the landing grows.
+           # Landing page is index.html at the repo root. Each tool gets its
+           # own dist/<tool-id>/ subdir. egp-planner is a single static file
+           # with no build step.
            run: |
-              mkdir -p dist/hex-map
+              mkdir -p dist/hex-map dist/egp-planner
               cp -R hex-map/dist/. dist/hex-map/
+              cp -R egp-planner/. dist/egp-planner/
               cp index.html dist/
 
          - name: Deploy to gh-pages

@@ -7,6 +7,7 @@ The deployed site at `<user>.github.io/CivIdleToolbox/` is a tiny landing page (
 | Tool | What it does |
 |---|---|
 | [`hex-map/`](./hex-map) | Browser-based hex grid editor for sketching CivIdle city plans. Click to color, right-click to label (with quick-pick of all 285 buildings + 106 wonders + 39 natural wonders pulled from the game's source), pan + zoom the canvas, then export the map and a side panel of notes / build order to PNG or SVG. |
+| [`egp-planner/`](./egp-planner) | EGP (Eternal Great Person) run planner — single-file static tool for laying out a great-person rebirth strategy. |
 
 ## Setup
 
