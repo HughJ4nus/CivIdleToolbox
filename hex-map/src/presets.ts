@@ -126,12 +126,6 @@ const cobPreset = (
 // `build` at that JSON. The Atlas Mountains preset below does this.
 
 export const PRESETS: Preset[] = [
-   {
-      id: "blank-45x45",
-      name: "Blank 45×45",
-      build: () => ({ ...initialMapState(45, 45), title: "Untitled Design" }),
-   },
-
    // ── Cathedral of Brasília: Research Labs by religion ─────────────────
    cobPreset(
       "cob-research-catholicism",

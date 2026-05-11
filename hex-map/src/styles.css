@@ -159,6 +159,28 @@ input[type="number"] {
    /* If two headers ever land back-to-back, tighten the gap. */
    padding-top: 0;
 }
+/* The currently-loaded design in the picker. */
+.dropdown-menu > button.active {
+   background: var(--panel-2);
+   color: var(--accent);
+   font-weight: 600;
+}
+
+/* "+" new-design button to the right of the title input. */
+.new-design-btn {
+   width: 32px;
+   height: 32px;
+   padding: 0;
+   font-size: 20px;
+   line-height: 1;
+   color: var(--text-dim);
+   /* Compensate for toolbar gap so it sits close to the title input. */
+   margin-left: -8px;
+}
+.new-design-btn:hover {
+   color: var(--text);
+   background: var(--panel-2);
+}
 .toolbar-group {
    display: flex;
    gap: 8px;

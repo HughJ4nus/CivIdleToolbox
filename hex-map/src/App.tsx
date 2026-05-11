@@ -10,7 +10,12 @@ import { Legend, newPaletteEntry } from "./Legend";
 import { RangeControls } from "./RangeControls";
 import { PRESETS, loadPreset } from "./presets";
 import { sanitizeMapState } from "./sanitize";
-import { loadState, saveState } from "./storage";
+import {
+   loadDesigns,
+   newDesignId,
+   saveDesigns,
+   type DesignCollection,
+} from "./storage";
 import {
    initialMapState,
    newAnnotation,
@@ -27,7 +32,29 @@ const STORAGE_KEYS_TOOL = "cividle-hex-map:tool";
 const isTool = (v: string | null): v is Tool => v === "pan" || v === "paint";
 
 export const App = (): JSX.Element => {
-   const [state, setState] = useState<MapState>(() => loadState());
+   const [collection, setCollection] = useState<DesignCollection>(() => loadDesigns());
+   const state = collection.designs[collection.activeId];
+
+   // Drop-in replacement for the old `setState(MapState | (prev) => MapState)`.
+   // Routes the update at the active design within the collection.
+   const setState = useCallback<React.Dispatch<React.SetStateAction<MapState>>>(
+      (updater) => {
+         setCollection((prev) => {
+            const current = prev.designs[prev.activeId];
+            const next =
+               typeof updater === "function"
+                  ? (updater as (p: MapState) => MapState)(current)
+                  : updater;
+            if (next === current) return prev;
+            return {
+               ...prev,
+               designs: { ...prev.designs, [prev.activeId]: next },
+            };
+         });
+      },
+      [],
+   );
+
    const [tool, setTool] = useState<Tool>(() => {
       const stored = localStorage.getItem(STORAGE_KEYS_TOOL);
       return isTool(stored) ? stored : "pan";
@@ -38,8 +65,25 @@ export const App = (): JSX.Element => {
    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
    useEffect(() => {
-      saveState(state);
-   }, [state]);
+      saveDesigns(collection);
+   }, [collection]);
+
+   const switchToDesign = useCallback((id: string) => {
+      setCollection((prev) => (prev.designs[id] ? { ...prev, activeId: id } : prev));
+      setSelected(null);
+      setEditorOpen(false);
+   }, []);
+
+   const createNewDesign = useCallback(() => {
+      const id = newDesignId();
+      const fresh = initialMapState();
+      setCollection((prev) => ({
+         activeId: id,
+         designs: { ...prev.designs, [id]: fresh },
+      }));
+      setSelected(null);
+      setEditorOpen(false);
+   }, []);
 
    useEffect(() => {
       localStorage.setItem(STORAGE_KEYS_TOOL, tool);
@@ -177,20 +221,20 @@ export const App = (): JSX.Element => {
 
    const onImportClick = useCallback(() => fileInputRef.current?.click(), []);
 
-   const onLoadPreset = useCallback(
-      (presetId: string) => {
-         const preset = PRESETS.find((p) => p.id === presetId);
-         if (!preset) return;
-         // Confirm only when the user has actual work that would be discarded.
-         const dirty =
-            Object.keys(state.cells).length > 0 ||
-            state.notes.trim().length > 0 ||
-            state.annotations.length > 0;
-         if (dirty && !confirm(`Replace the current design with "${preset.name}"?`)) return;
-         setState(loadPreset(preset));
-      },
-      [state.cells, state.notes, state.annotations],
-   );
+   // Selecting a preset always spawns a NEW user design and switches to it,
+   // so the user's existing work is never overwritten.
+   const onLoadPreset = useCallback((presetId: string) => {
+      const preset = PRESETS.find((p) => p.id === presetId);
+      if (!preset) return;
+      const id = newDesignId();
+      const fresh = loadPreset(preset);
+      setCollection((prev) => ({
+         activeId: id,
+         designs: { ...prev.designs, [id]: fresh },
+      }));
+      setSelected(null);
+      setEditorOpen(false);
+   }, []);
 
    const onImportFile = useCallback((file: File) => {
       const reader = new FileReader();
@@ -304,10 +348,29 @@ export const App = (): JSX.Element => {
                />
                <Dropdown
                   trigger={<span className="caret">▾</span>}
-                  ariaLabel="Load a premade design"
+                  ariaLabel="Switch design or load a preset"
                   triggerClassName="title-presets-trigger"
                   align="right"
                >
+                  {/* User-saved designs first — current is marked active. */}
+                  <div
+                     className="dropdown-section-header"
+                     onClick={(e) => e.stopPropagation()}
+                  >
+                     Your designs
+                  </div>
+                  {Object.entries(collection.designs).map(([id, d]) => (
+                     <button
+                        key={id}
+                        type="button"
+                        className={id === collection.activeId ? "active" : ""}
+                        onClick={() => switchToDesign(id)}
+                     >
+                        {d.title || "(Untitled)"}
+                     </button>
+                  ))}
+                  {/* Then preset templates, grouped by category. Selecting one
+                     spawns a NEW design from the preset and switches to it. */}
                   {PRESETS.flatMap((p, i) => {
                      const prevCategory = i > 0 ? PRESETS[i - 1].category : undefined;
                      const newSection = p.category && p.category !== prevCategory;
@@ -317,7 +380,6 @@ export const App = (): JSX.Element => {
                            <div
                               key={`hdr-${p.category}`}
                               className="dropdown-section-header"
-                              // Stop the menu from closing — header is just a label.
                               onClick={(e) => e.stopPropagation()}
                            >
                               {p.category}
@@ -337,6 +399,15 @@ export const App = (): JSX.Element => {
                   })}
                </Dropdown>
             </div>
+            <button
+               type="button"
+               className="new-design-btn"
+               onClick={createNewDesign}
+               title="New design"
+               aria-label="New design"
+            >
+               +
+            </button>
 
             {/* Everything to the right of the title sits in `toolbar-right`,
                which uses margin-left: auto to anchor to the right edge. */}
