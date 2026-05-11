@@ -5,7 +5,7 @@ on:
       branches: [main]
       paths:
          - "hex-map/**"
-         - "landing/**"
+         - "index.html"
          - ".github/workflows/deploy-pages.yml"
    workflow_dispatch:
 
@@ -43,18 +43,21 @@ jobs:
 
          - name: Build hex-map
            # GitHub Pages serves the toolbox under https://<user>.github.io/<repo>/.
-           # The landing page lives at the repo root and frames each tool from
-           # /<repo>/<tool-id>/, so each tool's Vite `base` includes its subdir.
+           # The landing page (index.html at the repo root) frames each tool
+           # from /<repo>/<tool-id>/, so each tool's Vite `base` includes
+           # its subdir.
            env:
               VITE_BASE: /CivIdleToolbox/hex-map/
            run: pnpm build
            working-directory: hex-map
 
          - name: Assemble combined dist/
+           # Landing page is just index.html at the repo root. Add more files
+           # here (e.g. favicon, robots.txt) if the landing grows.
            run: |
               mkdir -p dist/hex-map
               cp -R hex-map/dist/. dist/hex-map/
-              cp -R landing/. dist/
+              cp index.html dist/
 
          - name: Deploy to gh-pages
            uses: peaceiris/actions-gh-pages@v4

@@ -4,7 +4,7 @@
 # .github/workflows/deploy-pages.yml workflow does, for manual deploys.
 #
 # Layout produced under dist/:
-#   dist/index.html       — landing page with the tool dropdown
+#   dist/index.html       — landing page (copied from repo root index.html)
 #   dist/hex-map/         — built hex-map (Vite base = /<repo>/hex-map/)
 #
 # Why orphan commits instead of `gh-pages` (npm)?
@@ -24,7 +24,6 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 HEX_MAP_DIR="$REPO_ROOT/hex-map"
-LANDING_DIR="$REPO_ROOT/landing"
 DIST_DIR="$REPO_ROOT/dist"
 
 REPO_NAME="$(basename -s .git "$(git -C "$REPO_ROOT" remote get-url origin)")"
@@ -41,7 +40,9 @@ echo "▶ Assembling combined dist/"
 rm -rf "$DIST_DIR"
 mkdir -p "$DIST_DIR/hex-map"
 cp -R "$HEX_MAP_DIR/dist/." "$DIST_DIR/hex-map/"
-cp -R "$LANDING_DIR/." "$DIST_DIR/"
+# Landing page is the repo-root index.html. Add more files (favicon etc.)
+# here if the landing grows.
+cp "$REPO_ROOT/index.html" "$DIST_DIR/"
 
 # Ensure GitHub Pages doesn't try to run Jekyll on the build output.
 touch "$DIST_DIR/.nojekyll"

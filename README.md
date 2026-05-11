@@ -2,7 +2,7 @@
 
 A growing collection of small tools for the idle game [CivIdle](https://store.steampowered.com/app/2181940/CivIdle/).
 
-The deployed site at `<user>.github.io/CivIdleToolbox/` is a tiny landing page (see [`landing/`](./landing)) with a tool-picker dropdown. Each tool is built independently and served from its own subpath under the same site (e.g. `/CivIdleToolbox/hex-map/`); the landing page hosts the selected tool in an `<iframe>`.
+The deployed site at `<user>.github.io/CivIdleToolbox/` is a tiny landing page ([`index.html`](./index.html) at the repo root) with a tool-picker dropdown. Each tool is built independently and served from its own subpath under the same site (e.g. `/CivIdleToolbox/hex-map/`); the landing page hosts the selected tool in an `<iframe>`.
 
 | Tool | What it does |
 |---|---|
@@ -31,7 +31,7 @@ The upstream `CivIdle/` directory is intentionally `.gitignore`d here — it has
 
 ## Deploy
 
-The site auto-deploys when changes land on `main` under `hex-map/`, `landing/`, or the workflow itself (see `.github/workflows/deploy-pages.yml`). For a manual deploy from any branch:
+The site auto-deploys when changes land on `main` under `hex-map/`, `index.html`, or the workflow itself (see `.github/workflows/deploy-pages.yml`). For a manual deploy from any branch:
 
 ```sh
 bash scripts/deploy-pages.sh
