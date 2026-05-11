@@ -683,13 +683,13 @@ function drawChart(points, current, peak, rates, bounds) {
         x: 18, y: MARGIN.top + PLOT_HEIGHT / 2,
         'text-anchor': 'middle', class: 'axis-title',
         transform: `rotate(-90 18 ${MARGIN.top + PLOT_HEIGHT / 2})`,
-    }, 'EGP / total seconds'));
+    }, 'EGP / total minutes'));
 
     const rightTitleX = CHART_WIDTH - 18;
     svg.appendChild(svgEl('text', {
         x: rightTitleX, y: MARGIN.top + PLOT_HEIGHT / 2,
         'text-anchor': 'middle', class: 'axis-title',
-        transform: `rotate(90 ${rightTitleX} ${MARGIN.top + PLOT_HEIGHT / 2})`,
+        transform: `rotate(-90 ${rightTitleX} ${MARGIN.top + PLOT_HEIGHT / 2})`,
     }, 'Total EGP'));
 
     // ---- EGP curve (right axis) — drawn first so it sits behind the ratio --
