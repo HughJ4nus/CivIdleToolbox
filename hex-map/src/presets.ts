@@ -26,7 +26,13 @@ export interface Preset {
    id: string;
    name: string;
    build: () => MapState;
+   /** Optional category header shown above this preset in the dropdown.
+    *  When several adjacent presets share the same category, the header
+    *  is only rendered before the first one. */
+   category?: string;
 }
+
+const CEKAY = "Designs by @Cekay";
 
 // Each unique wonder gets its own palette entry so it stands out from the
 // supporting tiles. Add a new entry here per wonder you introduce.
@@ -109,6 +115,7 @@ const cobPreset = (
 ): Preset => ({
    id,
    name,
+   category: CEKAY,
    build: () =>
       buildOffsetPreset({ id, name, title, wonder: "Cathedral of Brasília", hexes }),
 });
@@ -288,6 +295,7 @@ export const PRESETS: Preset[] = [
    {
       id: "atlas-mountains-max",
       name: "Atlas Mountains (max range)",
+      category: CEKAY,
       build: () => atlasMountainsJson as unknown as MapState,
    },
 ];

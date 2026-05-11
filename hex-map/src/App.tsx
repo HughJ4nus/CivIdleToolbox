@@ -308,11 +308,33 @@ export const App = (): JSX.Element => {
                   triggerClassName="title-presets-trigger"
                   align="right"
                >
-                  {PRESETS.map((p) => (
-                     <button key={p.id} type="button" onClick={() => onLoadPreset(p.id)}>
-                        {p.name}
-                     </button>
-                  ))}
+                  {PRESETS.flatMap((p, i) => {
+                     const prevCategory = i > 0 ? PRESETS[i - 1].category : undefined;
+                     const newSection = p.category && p.category !== prevCategory;
+                     const items: JSX.Element[] = [];
+                     if (newSection) {
+                        items.push(
+                           <div
+                              key={`hdr-${p.category}`}
+                              className="dropdown-section-header"
+                              // Stop the menu from closing — header is just a label.
+                              onClick={(e) => e.stopPropagation()}
+                           >
+                              {p.category}
+                           </div>,
+                        );
+                     }
+                     items.push(
+                        <button
+                           key={p.id}
+                           type="button"
+                           onClick={() => onLoadPreset(p.id)}
+                        >
+                           {p.name}
+                        </button>,
+                     );
+                     return items;
+                  })}
                </Dropdown>
             </div>
 

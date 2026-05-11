@@ -143,6 +143,22 @@ input[type="number"] {
    min-width: max(220px, calc(100% + 32px));
    z-index: 100;
 }
+
+/* Non-clickable category label inside a dropdown menu. */
+.dropdown-section-header {
+   padding: 8px 10px 4px;
+   font-size: 11px;
+   text-transform: uppercase;
+   letter-spacing: 0.05em;
+   color: var(--text-dim);
+   opacity: 0.65;
+   cursor: default;
+   user-select: none;
+}
+.dropdown-section-header + .dropdown-section-header {
+   /* If two headers ever land back-to-back, tighten the gap. */
+   padding-top: 0;
+}
 .toolbar-group {
    display: flex;
    gap: 8px;
