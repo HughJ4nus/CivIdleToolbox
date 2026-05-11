@@ -17,3 +17,7 @@ dist/
 # Editor scratch
 .idea/
 .vscode/*.local.*
+
+# Source screenshots used to design hex-map presets — kept locally as
+# provenance, but not part of the published repo.
+hex-map/images/

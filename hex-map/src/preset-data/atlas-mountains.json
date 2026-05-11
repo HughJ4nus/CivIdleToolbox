@@ -1,0 +1,488 @@
+{
+  "version": 1,
+  "cols": 22,
+  "rows": 18,
+  "title": "Atlas Mountains — max range (festival + Suffete Administration)",
+  "notes": "",
+  "palette": [
+    {
+      "id": "p1",
+      "color": "#6b7280",
+      "label": "Atlas Mountains (centre)"
+    },
+    {
+      "id": "p2",
+      "color": "#bfdbfe",
+      "label": "Inner ring"
+    },
+    {
+      "id": "p3",
+      "color": "#fed7aa",
+      "label": "Outer ring"
+    },
+    {
+      "id": "p4",
+      "color": "#06b6d4",
+      "label": "Ancillary wonder"
+    }
+  ],
+  "annotations": [],
+  "cells": {
+    "11,8": {
+      "colorId": "p1",
+      "text": "Atlas Mountains"
+    },
+    "8,8": {
+      "colorId": "p4",
+      "text": "Swiss Bank"
+    },
+    "4,8": {
+      "colorId": "p4",
+      "text": "Sagrada Familia"
+    },
+    "18,8": {
+      "colorId": "p4",
+      "text": "Golden Gate Bridge"
+    },
+    "8,15": {
+      "colorId": "p4",
+      "text": "Statue of Liberty"
+    },
+    "9,6": {
+      "colorId": "p2",
+      "text": "Peace"
+    },
+    "10,6": {
+      "colorId": "p2",
+      "text": "Condo (Worker)"
+    },
+    "11,6": {
+      "colorId": "p2",
+      "text": "Reinforced Concrete"
+    },
+    "12,6": {
+      "colorId": "p2",
+      "text": "Biplane"
+    },
+    "13,6": {
+      "colorId": "p2"
+    },
+    "8,7": {
+      "colorId": "p2",
+      "text": "Hydro Dam (Water)"
+    },
+    "9,7": {
+      "colorId": "p2",
+      "text": "Television"
+    },
+    "10,7": {
+      "colorId": "p2",
+      "text": "Frigate"
+    },
+    "11,7": {
+      "colorId": "p2",
+      "text": "Politics"
+    },
+    "12,7": {
+      "colorId": "p2",
+      "text": "Train"
+    },
+    "13,7": {
+      "colorId": "p2",
+      "text": "CivGTP"
+    },
+    "14,7": {
+      "colorId": "p2",
+      "text": "Bitcoin"
+    },
+    "9,8": {
+      "colorId": "p2",
+      "text": "Nuclear Submarine"
+    },
+    "10,8": {
+      "colorId": "p2",
+      "text": "Mutual Fund"
+    },
+    "12,8": {
+      "colorId": "p2",
+      "text": "Magazine & Science"
+    },
+    "13,8": {
+      "colorId": "p2",
+      "text": "Artillery"
+    },
+    "14,8": {
+      "colorId": "p2",
+      "text": "Optical Fiber"
+    },
+    "15,8": {
+      "colorId": "p2",
+      "text": "Semiconductor"
+    },
+    "8,9": {
+      "colorId": "p2",
+      "text": "Robocar"
+    },
+    "9,9": {
+      "colorId": "p2",
+      "text": "Aircraft Carrier"
+    },
+    "10,9": {
+      "colorId": "p2",
+      "text": "Tank"
+    },
+    "11,9": {
+      "colorId": "p2",
+      "text": "News paper"
+    },
+    "12,9": {
+      "colorId": "p2",
+      "text": "Siege Ram"
+    },
+    "13,9": {
+      "colorId": "p2",
+      "text": "Atomic Bomb"
+    },
+    "14,9": {
+      "colorId": "p2",
+      "text": "Software"
+    },
+    "10,10": {
+      "colorId": "p2",
+      "text": "Spacecraft"
+    },
+    "11,10": {
+      "colorId": "p2",
+      "text": "Sword"
+    },
+    "12,10": {
+      "colorId": "p2",
+      "text": "Furniture"
+    },
+    "13,10": {
+      "colorId": "p2"
+    },
+    "8,2": {
+      "colorId": "p3",
+      "text": "Caravel"
+    },
+    "9,2": {
+      "colorId": "p3",
+      "text": "Shrine (Faith)"
+    },
+    "10,2": {
+      "colorId": "p3",
+      "text": "Chariot"
+    },
+    "11,2": {
+      "colorId": "p3",
+      "text": "Cheese"
+    },
+    "12,2": {
+      "colorId": "p3",
+      "text": "Flour"
+    },
+    "13,2": {
+      "colorId": "p3",
+      "text": "Coin"
+    },
+    "14,2": {
+      "colorId": "p3",
+      "text": "Bond"
+    },
+    "7,3": {
+      "colorId": "p3",
+      "text": "Poem (Poetry School)"
+    },
+    "8,3": {
+      "colorId": "p3",
+      "text": "Armor"
+    },
+    "9,3": {
+      "colorId": "p3",
+      "text": "Brick"
+    },
+    "10,3": {
+      "colorId": "p3",
+      "text": "Coal"
+    },
+    "11,3": {
+      "colorId": "p3",
+      "text": "Meat"
+    },
+    "12,3": {
+      "colorId": "p3",
+      "text": "Cotton"
+    },
+    "13,3": {
+      "colorId": "p3",
+      "text": "Sand"
+    },
+    "14,3": {
+      "colorId": "p3",
+      "text": "Garment"
+    },
+    "7,4": {
+      "colorId": "p3"
+    },
+    "14,4": {
+      "colorId": "p3",
+      "text": "Natural Gas"
+    },
+    "15,4": {
+      "colorId": "p3",
+      "text": "Marble"
+    },
+    "14,5": {
+      "colorId": "p3",
+      "text": "Oil"
+    },
+    "15,5": {
+      "colorId": "p3",
+      "text": "Music"
+    },
+    "15,6": {
+      "colorId": "p3",
+      "text": "Wood"
+    },
+    "16,7": {
+      "colorId": "p3"
+    },
+    "7,8": {
+      "colorId": "p2",
+      "text": "Planetery Rover"
+    },
+    "9,10": {
+      "colorId": "p2",
+      "text": "Rifle"
+    },
+    "16,6": {
+      "colorId": "p3",
+      "text": "Painting"
+    },
+    "15,7": {
+      "colorId": "p3"
+    },
+    "17,8": {
+      "colorId": "p3"
+    },
+    "16,8": {
+      "colorId": "p3"
+    },
+    "16,9": {
+      "colorId": "p3"
+    },
+    "15,9": {
+      "colorId": "p3"
+    },
+    "16,10": {
+      "colorId": "p3"
+    },
+    "15,10": {
+      "colorId": "p3"
+    },
+    "15,11": {
+      "colorId": "p3"
+    },
+    "14,11": {
+      "colorId": "p3"
+    },
+    "15,12": {
+      "colorId": "p3"
+    },
+    "14,13": {
+      "colorId": "p3"
+    },
+    "14,12": {
+      "colorId": "p3"
+    },
+    "13,13": {
+      "colorId": "p3"
+    },
+    "14,14": {
+      "colorId": "p3"
+    },
+    "13,14": {
+      "colorId": "p3"
+    },
+    "12,13": {
+      "colorId": "p3"
+    },
+    "11,13": {
+      "colorId": "p3"
+    },
+    "12,14": {
+      "colorId": "p3"
+    },
+    "11,14": {
+      "colorId": "p3"
+    },
+    "10,13": {
+      "colorId": "p3"
+    },
+    "9,13": {
+      "colorId": "p3"
+    },
+    "10,14": {
+      "colorId": "p3"
+    },
+    "9,14": {
+      "colorId": "p3"
+    },
+    "8,13": {
+      "colorId": "p3"
+    },
+    "7,13": {
+      "colorId": "p3"
+    },
+    "8,14": {
+      "colorId": "p3"
+    },
+    "8,12": {
+      "colorId": "p3"
+    },
+    "7,12": {
+      "colorId": "p3"
+    },
+    "7,11": {
+      "colorId": "p3"
+    },
+    "6,11": {
+      "colorId": "p3"
+    },
+    "7,10": {
+      "colorId": "p3"
+    },
+    "6,10": {
+      "colorId": "p3"
+    },
+    "6,9": {
+      "colorId": "p3"
+    },
+    "5,9": {
+      "colorId": "p3"
+    },
+    "6,8": {
+      "colorId": "p3"
+    },
+    "5,8": {
+      "colorId": "p3"
+    },
+    "6,7": {
+      "colorId": "p3"
+    },
+    "5,7": {
+      "colorId": "p3"
+    },
+    "6,6": {
+      "colorId": "p3"
+    },
+    "6,5": {
+      "colorId": "p3"
+    },
+    "7,6": {
+      "colorId": "p3"
+    },
+    "7,5": {
+      "colorId": "p3"
+    },
+    "8,4": {
+      "colorId": "p3",
+      "text": "Nuclear Fuel Rod"
+    },
+    "8,6": {
+      "colorId": "p2",
+      "text": "CivOasis"
+    },
+    "12,5": {
+      "colorId": "p2"
+    },
+    "11,5": {
+      "colorId": "p2"
+    },
+    "10,5": {
+      "colorId": "p2"
+    },
+    "9,5": {
+      "colorId": "p2"
+    },
+    "8,5": {
+      "colorId": "p2"
+    },
+    "9,4": {
+      "colorId": "p2"
+    },
+    "10,4": {
+      "colorId": "p2"
+    },
+    "11,4": {
+      "colorId": "p2"
+    },
+    "12,4": {
+      "colorId": "p2"
+    },
+    "13,4": {
+      "colorId": "p2"
+    },
+    "13,5": {
+      "colorId": "p2"
+    },
+    "14,6": {
+      "colorId": "p2"
+    },
+    "14,10": {
+      "colorId": "p2"
+    },
+    "13,11": {
+      "colorId": "p2"
+    },
+    "12,11": {
+      "colorId": "p2"
+    },
+    "11,11": {
+      "colorId": "p2"
+    },
+    "10,11": {
+      "colorId": "p2"
+    },
+    "9,11": {
+      "colorId": "p2"
+    },
+    "8,11": {
+      "colorId": "p2"
+    },
+    "8,10": {
+      "colorId": "p2"
+    },
+    "7,9": {
+      "colorId": "p2"
+    },
+    "7,7": {
+      "colorId": "p2"
+    },
+    "9,12": {
+      "colorId": "p2"
+    },
+    "10,12": {
+      "colorId": "p2"
+    },
+    "11,12": {
+      "colorId": "p2"
+    },
+    "13,12": {
+      "colorId": "p2"
+    },
+    "12,12": {
+      "colorId": "p2"
+    }
+  },
+  "activeColorId": "p3",
+  "showRanges": true,
+  "activeFestivals": [
+    "AtlasMountains"
+  ],
+  "activeUpgrades": [
+    "SuffeteAdministration",
+    "CothonDockyards"
+  ]
+}
