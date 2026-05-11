@@ -130,6 +130,19 @@ input[type="number"] {
    border-color: var(--border);
    background: var(--panel-2);
 }
+/* Make the preset menu more forgiving:
+   - extends past the input's right edge so a diagonal mouse path from the
+     caret button still lands inside the menu rather than the dead zone
+     between caret and menu (which would fire mouseleave + close it)
+   - no margin-top gap, for the same reason
+   - much higher z-index than the toolbar / canvas / sidebar so it always
+     sits on top of the editor */
+.title-input-wrap .dropdown-menu {
+   right: -16px;
+   margin-top: 0;
+   min-width: max(220px, calc(100% + 32px));
+   z-index: 100;
+}
 .toolbar-group {
    display: flex;
    gap: 8px;
