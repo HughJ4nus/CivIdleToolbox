@@ -264,7 +264,7 @@
 <div class="container">
     <header>
         <h1>EGP Run Planner</h1>
-        <p class="subtitle">Plot avg EGP/s across a run, find the optimum stopping point.</p>
+        <p class="subtitle">Plot avg EGP/min across a run, find the optimum stopping point.</p>
     </header>
 
     <div class="grid">
@@ -305,7 +305,7 @@
                     <dt>Speedup vs avg</dt><dd id="r-ratio">—</dd>
                     <dt>Optimal stop time</dt><dd id="r-opt-time" class="highlight">—</dd>
                     <dt>EGP at optimum</dt><dd id="r-opt-egp" class="highlight">—</dd>
-                    <dt>Peak EGP/s</dt><dd id="r-peak" class="highlight">—</dd>
+                    <dt>Peak EGP/min</dt><dd id="r-peak" class="highlight">—</dd>
                 </dl>
                 <div id="verdict"></div>
             </div>
@@ -831,8 +831,9 @@ function buildVerdict(current, peak, rates) {
         msg = `Keep going. Predicted peak in ${formatHoursMinutes(hoursLeft)} ` +
               `(at EGP ${peak.egp}, total ${formatHoursMinutes(peakHours)}).`;
     } else if (hoursLeft > -0.5) {
-        cls = 'warn';
-        msg = `At or near the peak. Watch for two consecutive declining unlocks, then end the run.`;
+        // At or near the peak — chart marker + headline numbers already
+        // make this obvious; suppress the verdict box.
+        return;
     } else {
         cls = 'warn';
         msg = `Past the predicted peak by ${formatHoursMinutes(-hoursLeft)}. Consider ending the run.`;
@@ -935,12 +936,12 @@ function compute() {
             formatHoursMinutes(peak.timeSeconds / 3600);
         document.getElementById('r-opt-egp').textContent = formatEgp(peak.egp);
         document.getElementById('r-peak').textContent =
-            `${formatScientific(peak.ratio)} /s`;
+            `${formatScientific(peak.ratio * 60)} /min`;
     } else {
         document.getElementById('r-opt-time').textContent = 'now';
         document.getElementById('r-opt-egp').textContent = formatEgp(currentEgp);
         document.getElementById('r-peak').textContent =
-            `${formatScientific(current.ratio)} /s`;
+            `${formatScientific(current.ratio * 60)} /min`;
     }
 
     drawChart(points, current, peak, rates, bounds);
