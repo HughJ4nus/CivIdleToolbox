@@ -340,6 +340,12 @@ export const PRESETS: Preset[] = [
    // Range comes from base 2 + AtlasMountains festival (+2) + Suffete
    // Administration upgrade (+2). Both flags are set on the state so the
    // range overlay draws the full circle correctly.
+   //
+   // The top peach band sits AT distance 6 (the very edge of max range —
+   // "backed up against" the boundary). The four ancillary wonders Sagrada
+   // Familia, Swiss Bank, Golden Gate Bridge, Statue of Liberty are at
+   // distance 7 (just outside the wonder's reach) — except Swiss Bank
+   // which sits inside at distance 3 (per the source image).
    {
       id: "atlas-mountains-max",
       name: "Atlas Mountains (max range)",
@@ -353,11 +359,12 @@ export const PRESETS: Preset[] = [
                [ 0,  0, "Atlas Mountains", "center"],
 
                // Ancillary wonders (cyan corner pieces)
-               [-3,  0, "Swiss Bank", "wonder"],
-               [ 6,  0, "Golden Gate Bridge", "wonder"],
-               [-3,  4, "Statue of Liberty", "wonder"],
+               [-3,  0, "Swiss Bank",          "wonder"], // d=3, INSIDE
+               [-7,  0, "Sagrada Familia",     "wonder"], // d=7, just OUTSIDE
+               [ 7,  0, "Golden Gate Bridge",  "wonder"], // d=7, just OUTSIDE
+               [-3,  7, "Statue of Liberty",   "wonder"], // d=7, just OUTSIDE
 
-               // Inner ring (blue) — ~30 tiles around the wonder
+               // Inner ring (blue) — 29 tiles around the wonder
                [-2, -2, "CivOasis", "inner"],
                [-1, -2, "Peace", "inner"],
                [ 0, -2, "Condo (Worker)", "inner"],
@@ -392,33 +399,36 @@ export const PRESETS: Preset[] = [
                [ 1,  2, "Sword", "inner"],
                [ 2,  2, "Furniture", "inner"],
 
-               // Outer ring (peach) — top edge of the design
-               [-3, -5, "Caravel", "outer"],
-               [-2, -5, "Shrine (Faith)", "outer"],
-               [-1, -5, "Chariot", "outer"],
-               [ 0, -5, "Cheese", "outer"],
-               [ 1, -5, "Flour", "outer"],
-               [ 2, -5, "Coin", "outer"],
-               [ 3, -5, "Bond", "outer"],
+               // Outer ring (peach) top — every cell at d=6 (max range)
+               [-3, -6, "Caravel", "outer"],
+               [-2, -6, "Shrine (Faith)", "outer"],
+               [-1, -6, "Chariot", "outer"],
+               [ 0, -6, "Cheese", "outer"],
+               [ 1, -6, "Flour", "outer"],
+               [ 2, -6, "Coin", "outer"],
+               [ 3, -6, "Bond", "outer"],
 
-               [-4, -4, "Poem (Poetry School)", "outer"],
-               [-3, -4, "Armor", "outer"],
-               [-2, -4, "Brick", "outer"],
-               [-1, -4, "Coal", "outer"],
-               [ 0, -4, "Meat", "outer"],
-               [ 1, -4, "Cotton", "outer"],
-               [ 2, -4, "Sand", "outer"],
-               [ 3, -4, "Garment", "outer"],
+               // Second peach row (8 cells, endpoints at d=6)
+               [-4, -5, "Poem (Poetry School)", "outer"],
+               [-3, -5, "Armor", "outer"],
+               [-2, -5, "Brick", "outer"],
+               [-1, -5, "Coal", "outer"],
+               [ 0, -5, "Meat", "outer"],
+               [ 1, -5, "Cotton", "outer"],
+               [ 2, -5, "Sand", "outer"],
+               [ 3, -5, "Garment", "outer"],
 
-               // Outer ring — sparser middle/right edge (the source has
-               // many empty tiles intentionally; only the labelled ones
+               // Sparser middle (the source has many empty tiles between
+               // the inner blue and the outer peach — only labelled ones
                // are reproduced here)
-               [-4, -3, "Nuclear Fuel Rod", "outer"],
-               [ 3, -3, "Natural Gas", "outer"],
-               [ 4, -3, "Marble", "outer"],
-               [ 4, -2, "Oil", "outer"],
-               [ 5, -2, "Music", "outer"],
-               [ 4, -1, "Wood", "outer"],
+               [-4, -4, "Nuclear Fuel Rod", "outer"],
+               [ 3, -4, "Natural Gas", "outer"],
+               [ 4, -4, "Marble", "outer"],
+
+               // Right-edge peach strip
+               [ 3, -3, "Oil", "outer"],
+               [ 4, -3, "Music", "outer"],
+               [ 4, -2, "Wood", "outer"],
                [ 5, -1, "Painting", "outer"],
 
                // Outer ring — left edge
