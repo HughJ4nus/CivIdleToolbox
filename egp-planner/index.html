@@ -319,7 +319,7 @@
                 </svg>
             </div>
             <div class="legend">
-                <span><span class="swatch" style="background: var(--line)"></span> EGP / total game time (left)</span>
+                <span><span class="swatch" style="background: var(--line)"></span> EGP / minute (left)</span>
                 <span><span class="swatch" style="background: var(--line-egp)"></span> Total EGP (right)</span>
                 <span><span class="swatch" style="background: #fca5a5"></span> Current</span>
                 <span><span class="swatch" style="background: var(--good)"></span> Predicted peak</span>
@@ -578,15 +578,17 @@ function drawChart(points, current, peak, rates, bounds) {
     const currentHours = current.timeSeconds / 3600;
     const peakHours = peak ? peak.timeSeconds / 3600 : null;
 
-    // ---- Left axis (ratio = EGP / total game time) -------------------------
+    // ---- Left axis (ratio = EGP / minute) ---------------------------------
+    // `point.ratio` is stored as EGP/s; convert here for display so the
+    // y-axis scale, ticks, and curve are all in EGP/min.
 
-    const visibleRatios = points
+    const visibleRatiosPerMin = points
         .filter(p => {
             const h = p.timeSeconds / 3600;
             return h >= xMinHours && h <= xMaxHours;
         })
-        .map(p => p.ratio);
-    const yMaxLeft = Math.max(...visibleRatios, current.ratio) * 1.15;
+        .map(p => p.ratio * 60);
+    const yMaxLeft = Math.max(...visibleRatiosPerMin, current.ratio * 60) * 1.15;
     const yMinLeft = 0;
 
     // ---- Right axis (Total EGP) --------------------------------------------
@@ -712,7 +714,7 @@ function drawChart(points, current, peak, rates, bounds) {
             const h = p.timeSeconds / 3600;
             return h >= xMinHours && h <= xMaxHours;
         })
-        .map(p => `${xScale(p.timeSeconds / 3600)},${yScaleLeft(p.ratio)}`);
+        .map(p => `${xScale(p.timeSeconds / 3600)},${yScaleLeft(p.ratio * 60)}`);
     if (ratioCurvePoints.length > 0) {
         svg.appendChild(svgEl('polyline', {
             points: ratioCurvePoints.join(' '),
@@ -728,7 +730,7 @@ function drawChart(points, current, peak, rates, bounds) {
 
     if (currentHours >= xMinHours && currentHours <= xMaxHours) {
         const cx = xScale(currentHours);
-        const cy = yScaleLeft(current.ratio);
+        const cy = yScaleLeft(current.ratio * 60);
         svg.appendChild(svgEl('circle', {
             cx: cx, cy: cy, r: 6, class: 'marker-current',
         }));
@@ -740,7 +742,7 @@ function drawChart(points, current, peak, rates, bounds) {
 
     if (peak && peakHours >= xMinHours && peakHours <= xMaxHours) {
         const px = xScale(peakHours);
-        const py = yScaleLeft(peak.ratio);
+        const py = yScaleLeft(peak.ratio * 60);
         svg.appendChild(svgEl('circle', {
             cx: px, cy: py, r: 7, class: 'marker-peak',
         }));
