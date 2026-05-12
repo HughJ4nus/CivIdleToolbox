@@ -404,10 +404,11 @@ export const resolveBuildingBonuses = (
 
    // Habitat 67 — targets AILab specifically. Wonder level grants
    // +wonderLevel output/worker/storage; an Information-Age-Wisdom
-   // value adds another +wisdom output/storage on top. The happiness-
-   // based level boost in upstream is intentionally skipped (we don't
-   // track happiness).
+   // value adds another +wisdom output/storage on top; and a non-zero
+   // happiness reading gives an additional +floor(happiness/5) level
+   // boost (per OnProductionComplete.tsx:2204).
    const habitatLevel = userState.wonders.Habitat67 ?? 0;
+   const happiness = Math.max(0, Math.floor(userState.finalHappiness ?? 0));
    if (habitatLevel > 0) {
       const baseSrc = `Habitat 67 (lvl ${habitatLevel})`;
       apply(out, "AILab", { source: baseSrc, kind: "output", value: habitatLevel });
@@ -418,6 +419,35 @@ export const resolveBuildingBonuses = (
          const wisdomSrc = `Habitat 67 + Information Age Wisdom (+${infoWisdom})`;
          apply(out, "AILab", { source: wisdomSrc, kind: "output", value: infoWisdom });
          apply(out, "AILab", { source: wisdomSrc, kind: "storage", value: infoWisdom });
+      }
+      if (happiness > 0) {
+         const levelBoost = Math.round(happiness / 5);
+         if (levelBoost > 0) {
+            apply(out, "AILab", {
+               source: `Habitat 67 + happiness (${happiness})`,
+               kind: "level",
+               value: levelBoost,
+            });
+         }
+      }
+   }
+
+   // Ziggurat of Ur — when owned and happiness > 0, every non-Worker-
+   // producing building gets +floor(happiness/10) output multiplier.
+   // In-game this is also capped to floor((currentAgeIdx+1)/2) and
+   // restricted to buildings unlocked before the current age. We don't
+   // track current age, so we drop the cap and apply to all non-worker
+   // production buildings — over-applies for late-game, mostly accurate
+   // for mid-game.
+   const ziggLevel = userState.wonders.ZigguratOfUr ?? 0;
+   if (ziggLevel > 0 && happiness > 0) {
+      const multiplier = Math.floor(happiness / 10);
+      if (multiplier > 0) {
+         const source = `Ziggurat of Ur (happiness ${happiness})`;
+         for (const b of prod) {
+            if ((b.output.Worker ?? 0) > 0) continue;
+            apply(out, b.key, { source, kind: "output", value: multiplier });
+         }
       }
    }
 

@@ -636,6 +636,18 @@ body {
    outline: none;
    border-color: var(--accent);
 }
+/* Inline "+X" badge next to a card's level input — same role as the
+   sidebar's per-GP wisdom badge: shows how much the building's effective
+   level is being boosted by Habitat 67 / Château Frontenac / Great Ocean
+   Road / Lake Louise. */
+.card-level-boost {
+   color: var(--accent);
+   font-size: 11px;
+   font-variant-numeric: tabular-nums;
+   font-weight: 600;
+   text-transform: none;
+   letter-spacing: 0;
+}
 
 /* ── Modal ──────────────────────────────────────────────────────────── */
 .modal-backdrop {

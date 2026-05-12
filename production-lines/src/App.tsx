@@ -376,7 +376,7 @@ const TierWorld = ({
                               +{Math.round(bonus!.outputMultiplier * 100)}% out
                            </span>
                         )}
-                        {bonus!.levelBoost > 0 && (
+                        {bonus!.levelBoost > 0 && !result && (
                            <span className="card-bonus-pill">
                               +{bonus!.levelBoost} lvl
                            </span>
@@ -438,6 +438,14 @@ const TierWorld = ({
                                  onLevelChange?.(c.building.key, v);
                               }}
                            />
+                           {bonus && bonus.levelBoost > 0 && (
+                              <span
+                                 className="card-level-boost"
+                                 title={`+${bonus.levelBoost} from bonuses (effective ${result.effectiveLevel})`}
+                              >
+                                 +{bonus.levelBoost}
+                              </span>
+                           )}
                         </label>
                      </div>
                   )}
@@ -614,6 +622,7 @@ export const App = (): JSX.Element => {
          tradeTiles: prev.tradeTiles ?? [],
          cathedralOfBrasiliaBuildings: prev.cathedralOfBrasiliaBuildings ?? [],
          chateauFrontenacBuildings: prev.chateauFrontenacBuildings ?? [],
+         finalHappiness: prev.finalHappiness ?? 0,
       }));
    }, []);
 
@@ -872,6 +881,27 @@ export const App = (): JSX.Element => {
                         <span className="modal-count">{subgraph.count} buildings</span>
                      </h3>
                      <div className="modal-header-actions">
+                        <label
+                           className="modal-bulk-level"
+                           title="Final happiness reading. Drives Habitat 67's level boost to AI Lab and Ziggurat of Ur's output multiplier."
+                        >
+                           Final happiness
+                           <input
+                              type="number"
+                              min={0}
+                              max={9999}
+                              value={userState.finalHappiness ?? 0}
+                              onChange={(e) =>
+                                 setUserState((prev) => ({
+                                    ...prev,
+                                    finalHappiness: Math.max(
+                                       0,
+                                       Math.floor(Number(e.target.value) || 0),
+                                    ),
+                                 }))
+                              }
+                           />
+                        </label>
                         <label
                            className="modal-bulk-level"
                            title="Apply this level to every building in the chain (clears per-card overrides)"

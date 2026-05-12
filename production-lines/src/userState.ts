@@ -34,6 +34,10 @@ export interface UserState {
     *  in-game wonder lets the player pick a few buildings; each picked
     *  building gets +1 effective level. */
    chateauFrontenacBuildings: string[];
+   /** Player's current happiness reading. Drives a few wonder bonuses
+    *  (Habitat 67's level boost to AI Lab, Ziggurat of Ur's output
+    *  multiplier to old-age buildings). 0 means "not set / no bonus". */
+   finalHappiness: number;
 }
 
 const empty = (): UserState => ({
@@ -43,6 +47,7 @@ const empty = (): UserState => ({
    tradeTiles: [],
    cathedralOfBrasiliaBuildings: [],
    chateauFrontenacBuildings: [],
+   finalHappiness: 0,
 });
 
 export const loadUserState = (): UserState => {
@@ -86,6 +91,10 @@ export const loadUserState = (): UserState => {
                  (s: unknown): s is string => typeof s === "string",
               )
             : [],
+         finalHappiness:
+            typeof parsed.finalHappiness === "number" && parsed.finalHappiness > 0
+               ? parsed.finalHappiness
+               : 0,
       };
    } catch {
       return empty();
