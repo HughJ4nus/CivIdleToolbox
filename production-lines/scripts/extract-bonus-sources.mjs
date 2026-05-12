@@ -154,7 +154,7 @@ greatPeople.sort((a, b) => {
 const wonderEntries = [
    // — All-buildings global output —
    { key: "DysonSphere", effect: "Global +5 output, +1 per wonder level" },
-   { key: "CentrePompidou", effect: "Global +1 output per unlocked city (×2 during festival)" },
+   { key: "CentrePompidou", effect: "Global +level output and +2×level storage to every building. Level = unlocked cities + 1 (the save importer reads this from the wonder's cities field)." },
 
    // — Per-building-type globals —
    { key: "CircusMaximus", effect: "+1 output to Musicians/Painters/Writers Guild" },
@@ -229,6 +229,11 @@ const LEVELABLE_WONDERS = new Set([
    "WorldTradeOrganization",
    "ChateauFrontenac",
    "Habitat67",
+   // Centre Pompidou's `level` field is hard-capped at 1 in the building
+   // definition, but its actual potency comes from `cities.size + 1`.
+   // The save importer translates that into a synthetic "level" so the
+   // sidebar can show a normal number input.
+   "CentrePompidou",
 ]);
 
 // Civilization-specific wonders. Sourced from each civ's `uniqueBuildings`

@@ -97,6 +97,16 @@ const WONDER_EFFECTS: Record<string, WonderEffect> = {
       const value = 5 + (level - 1);
       return ctx.prod.map((b) => ({ building: b.key, kind: "output", value }));
    },
+   // Per OnProductionComplete.tsx:1720 — Centre Pompidou pushes a
+   // global `+level` output multiplier and `+2×level` storage multiplier,
+   // where the in-game level is `cities.size + 1`. We treat that count
+   // as the wonder's "level" in the sidebar (set manually or filled in
+   // by the save importer), then apply the formula below.
+   CentrePompidou: (level, ctx) =>
+      ctx.prod.flatMap((b) => [
+         { building: b.key, kind: "output" as const, value: level },
+         { building: b.key, kind: "storage" as const, value: 2 * level },
+      ]),
 
    // ── Per-building-type globals (fixed magnitude) ─────────────────────
    CircusMaximus: () => [

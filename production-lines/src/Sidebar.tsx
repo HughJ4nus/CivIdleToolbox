@@ -4,6 +4,22 @@ import bonusData from "./data/bonus-sources.json";
 import { parseSaveFile, type ParsedSave } from "./saveImport";
 import type { TradeTileBonus } from "./userState";
 
+// Where CivIdle keeps its Steam saves on disk. The Electron app writes
+// to a custom dir (not its userData dir) so Steam Cloud can sync it.
+// Path is the same shape on every OS: <platform-prefix>/CivIdleSaves/<SteamID>/CivIdle.
+// SteamID is per-account so we just show "<SteamID>" as a placeholder.
+const detectSavePath = (): string => {
+   const ua =
+      typeof navigator !== "undefined" ? navigator.userAgent || "" : "";
+   if (/Win/i.test(ua)) {
+      return "%APPDATA%\\CivIdleSaves\\<SteamID>\\CivIdle";
+   }
+   if (/Mac|iPhone|iPad/i.test(ua)) {
+      return "~/Library/Application Support/CivIdleSaves/<SteamID>/CivIdle";
+   }
+   return "~/.config/CivIdleSaves/<SteamID>/CivIdle";
+};
+
 interface GreatPersonEntry {
    key: string;
    name: string;
@@ -302,6 +318,7 @@ export const Sidebar = ({
       kind: "ok" | "err";
       msg: string;
    } | null>(null);
+   const savePath = useMemo(() => detectSavePath(), []);
 
    const handleSaveFile = async (file: File): Promise<void> => {
       try {
@@ -421,6 +438,13 @@ export const Sidebar = ({
                   e.target.value = "";
                }}
             />
+            <div
+               className="sidebar-import-hint"
+               title="Browsers don't let websites pre-open arbitrary folders — copy this path into the file picker's location bar."
+            >
+               <span className="sidebar-import-hint-label">Save lives at</span>
+               <code>{savePath}</code>
+            </div>
             {importStatus && (
                <div className={`sidebar-import-status ${importStatus.kind}`}>
                   {importStatus.msg}

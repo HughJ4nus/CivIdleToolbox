@@ -1234,9 +1234,9 @@
     },
     {
       "key": "CentrePompidou",
-      "effect": "Global +1 output per unlocked city (×2 during festival)",
+      "effect": "Global +level output and +2×level storage to every building. Level = unlocked cities + 1 (the save importer reads this from the wonder's cities field).",
       "name": "Centre Pompidou",
-      "levelable": false,
+      "levelable": true,
       "civilization": "French"
     },
     {

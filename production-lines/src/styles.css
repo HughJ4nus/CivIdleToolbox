@@ -302,6 +302,35 @@ body {
 .sidebar-import-status.err {
    color: #ff8090;
 }
+/* Path hint shown under the import button. Browsers don't let websites
+   pre-open a folder, so the user has to navigate there manually — this
+   gives them the path to copy into their file picker's location bar. */
+.sidebar-import-hint {
+   margin-top: 6px;
+   font-size: 10.5px;
+   color: var(--text-dim);
+   line-height: 1.4;
+}
+.sidebar-import-hint-label {
+   display: block;
+   text-transform: uppercase;
+   letter-spacing: 0.05em;
+   font-size: 9.5px;
+   margin-bottom: 2px;
+}
+.sidebar-import-hint code {
+   display: block;
+   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+   font-size: 10.5px;
+   color: var(--text);
+   word-break: break-all;
+   background: var(--bg);
+   border: 1px solid var(--panel-edge);
+   border-radius: 3px;
+   padding: 3px 5px;
+   user-select: all;
+   cursor: text;
+}
 .sidebar-list {
    list-style: none;
    margin: 4px 0 8px;

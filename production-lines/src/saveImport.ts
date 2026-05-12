@@ -2,9 +2,11 @@
 // about: per-GP levels, built-wonder levels, Age of Wisdom values.
 //
 // Save format reference: shared/logic/GameStateLogic.ts in upstream.
-// Saves come in two shapes the user might hand us:
-//   • Steam / desktop: gzipped JSON (file name "CivIdle")
-//   • Browser: raw JSON string from IndexedDB
+// Saves come in three shapes the user might hand us:
+//   • Steam / desktop: raw DEFLATE-compressed JSON, written by fflate's
+//     deflateSync (no gzip wrapper, no zlib header). File name "CivIdle".
+//   • Older snapshots: gzip-wrapped JSON (some tooling produces these).
+//   • Browser: raw JSON string from IndexedDB.
 // Both serialise Maps and Sets via this convention:
 //   Map<K,V> → {"$type":"Map","value":[[k,v],...]}
 //   Set<V>   → {"$type":"Set","value":[v,...]}
@@ -17,10 +19,29 @@ interface BuildingLite {
    type: string;
    level?: number;
    status?: string;
+   /** Centre Pompidou's special field (Set<City> in upstream) — its
+    *  in-game potency is `cities.size + 1`, not the building.level. */
+   cities?: Set<unknown> | unknown[] | Record<string, unknown>;
 }
 interface TileLite {
    building?: BuildingLite;
 }
+
+// Some wonders store their effective "level" in a custom field rather
+// than the standard building.level (which is hard-capped at 1 for
+// non-upgradeable wonders). Returns the synthetic level when applicable.
+const wonderLevelOverride = (b: BuildingLite): number | null => {
+   if (b.type === "CentrePompidou") {
+      const c = b.cities;
+      let cityCount = 0;
+      if (c instanceof Set) cityCount = c.size;
+      else if (Array.isArray(c)) cityCount = c.length;
+      else if (c && typeof c === "object") cityCount = Object.keys(c).length;
+      // +1 for the player's own civ — matches OnProductionComplete.tsx:1723.
+      return cityCount + 1;
+   }
+   return null;
+};
 
 export interface ParsedSave {
    greatPeople: Record<string, number>;
@@ -50,14 +71,40 @@ const reviver = (_key: string, value: unknown): unknown => {
 const looksGzipped = (bytes: Uint8Array): boolean =>
    bytes.length >= 2 && bytes[0] === 0x1f && bytes[1] === 0x8b;
 
-const decodeBytes = async (bytes: Uint8Array): Promise<string> => {
-   if (!looksGzipped(bytes)) return new TextDecoder().decode(bytes);
-   // Browser-native gzip decode. Available in Chromium 80+ / Firefox 113+
-   // / Safari 16.4+ — that covers anyone running CivIdle in the first place.
+const looksLikeJson = (bytes: Uint8Array): boolean => {
+   // Skip leading whitespace / BOM; first non-blank char is { or [ for JSON.
+   for (let i = 0; i < Math.min(bytes.length, 8); i++) {
+      const c = bytes[i];
+      if (c === 0xef || c === 0xbb || c === 0xbf) continue; // UTF-8 BOM
+      if (c === 0x20 || c === 0x09 || c === 0x0a || c === 0x0d) continue;
+      return c === 0x7b /* { */ || c === 0x5b /* [ */;
+   }
+   return false;
+};
+
+const decompress = async (
+   bytes: Uint8Array,
+   format: "gzip" | "deflate-raw" | "deflate",
+): Promise<string> => {
    const stream = new Blob([bytes as BlobPart])
       .stream()
-      .pipeThrough(new DecompressionStream("gzip"));
+      .pipeThrough(new DecompressionStream(format));
    return await new Response(stream).text();
+};
+
+const decodeBytes = async (bytes: Uint8Array): Promise<string> => {
+   // Plain JSON (browser-IndexedDB exports): no decompression.
+   if (looksLikeJson(bytes)) return new TextDecoder().decode(bytes);
+   // gzip-wrapped (older snapshots, custom backups).
+   if (looksGzipped(bytes)) return decompress(bytes, "gzip");
+   // Otherwise it's the Steam save format: fflate deflateSync output,
+   // i.e. raw DEFLATE with no wrapper. Fall back to zlib-wrapped deflate
+   // if that fails (some tooling adds the 0x78 header).
+   try {
+      return await decompress(bytes, "deflate-raw");
+   } catch {
+      return await decompress(bytes, "deflate");
+   }
 };
 
 export const parseSaveFile = async (file: File): Promise<ParsedSave> => {
@@ -105,7 +152,8 @@ export const parseSaveFile = async (file: File): Promise<ParsedSave> => {
          if (!b) continue;
          if (!WONDER_KEYS.has(b.type)) continue;
          if (b.status && b.status !== "completed") continue;
-         const lvl = Math.max(1, b.level ?? 1);
+         const override = wonderLevelOverride(b);
+         const lvl = override ?? Math.max(1, b.level ?? 1);
          // If multiple cities ever stack the same wonder somehow, keep
          // the higher level — defensive, doesn't normally happen.
          wonders[b.type] = Math.max(wonders[b.type] ?? 0, lvl);
