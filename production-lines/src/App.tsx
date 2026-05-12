@@ -6,17 +6,10 @@ import {
    useState,
    type CSSProperties,
 } from "react";
+import type { Building } from "./buildingTypes";
+import { computeChainAmounts, type ChainResult } from "./chain";
 import buildingsData from "./data/buildings.json";
 import { countAdjacentCrossings, reorderByBarycenter, type Edge } from "./layout";
-
-interface Building {
-   key: string;
-   name: string;
-   special: "WorldWonder" | "NaturalWonder" | "HQ" | null;
-   tier: number | null;
-   input: Record<string, number>;
-   output: Record<string, number>;
-}
 
 interface Column {
    tier: number;
@@ -37,17 +30,21 @@ const NON_WALKABLE_INPUTS = new Set([
    "TradeValue",
 ]);
 
+// Base production per tick at building level 1, no modifiers — exactly
+// the output map in BuildingDefinitions.ts (e.g. House → "6× Worker",
+// WheatFarm → "1× Wheat"). Effective output in-game is then
+// baseOutput × level × (1 + Σ output multipliers).
 const subtitleFor = (b: Building): string => {
-   const outs = Object.keys(b.output);
-   if (outs.length === 0) return "—";
-   return outs.join(", ");
+   const entries = Object.entries(b.output);
+   if (entries.length === 0) return "—";
+   return entries.map(([m, n]) => `${n}× ${m}`).join(", ");
 };
 
 // Layout constants — must match the CSS variables.
 const CARD_W = 220;
-const CARD_H = 80;
+const CARD_H = 110;
 const GAP_X = 110;
-const GAP_Y = 40;
+const GAP_Y = 55; // half of CARD_H
 const HEADING_H = 30;
 const TOP_PAD = GAP_Y;
 
@@ -243,9 +240,26 @@ interface TierWorldProps {
    edges: Edge[];
    onCardClick?: (key: string) => void;
    highlightKey?: string;
+   /** When provided, each card shows its calculated amount + an editable level. */
+   chainResults?: Map<string, ChainResult>;
+   onLevelChange?: (key: string, level: number) => void;
+   /** Pass `null` as amount to clear an override; otherwise an integer. */
+   onAmountChange?: (key: string, amount: number | null) => void;
+   /** Set of building keys that have a user-set amount override (so the
+    *  card UI can show the input as "overridden" rather than computed). */
+   amountOverrideKeys?: Set<string>;
 }
 
-const TierWorld = ({ columns, edges, onCardClick, highlightKey }: TierWorldProps): JSX.Element => {
+const TierWorld = ({
+   columns,
+   edges,
+   onCardClick,
+   highlightKey,
+   chainResults,
+   onLevelChange,
+   onAmountChange,
+   amountOverrideKeys,
+}: TierWorldProps): JSX.Element => {
    const layout = useMemo(() => {
       const map = new Map<string, CardPos>();
       columns.forEach((col, colIdx) => {
@@ -315,7 +329,8 @@ const TierWorld = ({ columns, edges, onCardClick, highlightKey }: TierWorldProps
 
          {[...layout.values()].map((c) => {
             const isHighlight = highlightKey === c.building.key;
-            const className = `card${isHighlight ? " card-highlight" : ""}${onCardClick ? " card-clickable" : ""}`;
+            const result = chainResults?.get(c.building.key);
+            const className = `card${isHighlight ? " card-highlight" : ""}${onCardClick ? " card-clickable" : ""}${result ? " card-with-chain" : ""}`;
             return (
                <div
                   key={c.building.key}
@@ -325,6 +340,64 @@ const TierWorld = ({ columns, edges, onCardClick, highlightKey }: TierWorldProps
                >
                   <div className="card-title">{c.building.name}</div>
                   <div className="card-subtitle">{subtitleFor(c.building)}</div>
+                  {result && (
+                     <div className="card-chain-row">
+                        {/* Amount is editable on every card. The root's
+                            amount syncs with the modal header's Amount
+                            field — both edit the same state. Overridden
+                            (or root) cards render the input in cyan so
+                            user-set amounts are obvious at a glance. */}
+                        <label
+                           className={`card-amount-edit${
+                              c.building.key === highlightKey ||
+                              amountOverrideKeys?.has(c.building.key)
+                                 ? " overridden"
+                                 : ""
+                           }`}
+                           title={
+                              c.building.key === highlightKey
+                                 ? "Anchor of this production line — also editable from the modal header"
+                                 : amountOverrideKeys?.has(c.building.key)
+                                   ? "Manual override (clear the field to revert to computed)"
+                                   : "Computed from downstream demand — type to override"
+                           }
+                        >
+                           ×
+                           <input
+                              type="number"
+                              min={0}
+                              max={99999}
+                              value={result.amount}
+                              onClick={(e) => e.stopPropagation()}
+                              onMouseDown={(e) => e.stopPropagation()}
+                              onChange={(e) => {
+                                 const raw = e.target.value;
+                                 if (raw === "") {
+                                    onAmountChange?.(c.building.key, null);
+                                    return;
+                                 }
+                                 const v = Math.max(0, Math.floor(Number(raw) || 0));
+                                 onAmountChange?.(c.building.key, v);
+                              }}
+                           />
+                        </label>
+                        <label className="card-level">
+                           Lvl
+                           <input
+                              type="number"
+                              min={1}
+                              max={99}
+                              value={result.level}
+                              onClick={(e) => e.stopPropagation()}
+                              onMouseDown={(e) => e.stopPropagation()}
+                              onChange={(e) => {
+                                 const v = Math.max(1, Math.floor(Number(e.target.value) || 1));
+                                 onLevelChange?.(c.building.key, v);
+                              }}
+                           />
+                        </label>
+                     </div>
+                  )}
                </div>
             );
          })}
@@ -361,6 +434,10 @@ export const App = (): JSX.Element => {
 
    // ── Modal: clicking a card opens a filtered view of just that line ──
    const [selectedKey, setSelectedKey] = useState<string | null>(null);
+   const [rootAmount, setRootAmount] = useState(1);
+   const [rootLevel, setRootLevel] = useState(10);
+   const [perBuildingLevels, setPerBuildingLevels] = useState<Record<string, number>>({});
+   const [perBuildingAmounts, setPerBuildingAmounts] = useState<Record<string, number>>({});
 
    const subgraph = useMemo(() => {
       if (!selectedKey) return null;
@@ -370,8 +447,28 @@ export const App = (): JSX.Element => {
       const subEdges = computeEdgesFor(subBuildings);
       const ordered = reorderCols(subCols, subEdges);
       const root = allBuildings.find((b) => b.key === selectedKey);
-      return { columns: ordered, edges: subEdges, root, count: subBuildings.length };
+      return {
+         columns: ordered,
+         edges: subEdges,
+         root,
+         count: subBuildings.length,
+         buildings: subBuildings,
+      };
    }, [selectedKey, edges, allBuildings]);
+
+   // Run the chain math whenever the inputs change. Display only — no
+   // mutation of the columns themselves.
+   const chainResults = useMemo(() => {
+      if (!subgraph || !selectedKey) return undefined;
+      return computeChainAmounts({
+         rootKey: selectedKey,
+         rootAmount,
+         rootLevel,
+         levelOverrides: perBuildingLevels,
+         amountOverrides: perBuildingAmounts,
+         subgraph: subgraph.buildings,
+      });
+   }, [subgraph, selectedKey, rootAmount, rootLevel, perBuildingLevels, perBuildingAmounts]);
 
    useEffect(() => {
       if (!selectedKey) return;
@@ -381,6 +478,45 @@ export const App = (): JSX.Element => {
       window.addEventListener("keydown", onKey);
       return () => window.removeEventListener("keydown", onKey);
    }, [selectedKey]);
+
+   // Reset chain inputs whenever a new production line opens.
+   useEffect(() => {
+      if (!selectedKey) return;
+      setRootAmount(1);
+      setRootLevel(10);
+      setPerBuildingLevels({});
+      setPerBuildingAmounts({});
+   }, [selectedKey]);
+
+   const onLevelChange = useCallback((key: string, level: number) => {
+      setPerBuildingLevels((prev) => ({ ...prev, [key]: level }));
+   }, []);
+
+   // The root's amount lives in `rootAmount` so the modal header can edit
+   // it; non-root amounts go into `perBuildingAmounts`. Both paths funnel
+   // through this one callback so the card UI can stay uniform.
+   const onAmountChange = useCallback(
+      (key: string, amount: number | null) => {
+         if (key === selectedKey) {
+            // Root: empty input falls back to 0 (no production line).
+            setRootAmount(amount ?? 0);
+            return;
+         }
+         setPerBuildingAmounts((prev) => {
+            if (amount == null) {
+               const { [key]: _drop, ...rest } = prev;
+               return rest;
+            }
+            return { ...prev, [key]: amount };
+         });
+      },
+      [selectedKey],
+   );
+
+   const amountOverrideKeysSet = useMemo(
+      () => new Set(Object.keys(perBuildingAmounts)),
+      [perBuildingAmounts],
+   );
 
    // ── Pan + zoom: one independent state for the main view, one for the
    //    modal. The modal viewport is mounted/unmounted with selectedKey,
@@ -449,6 +585,34 @@ export const App = (): JSX.Element => {
                         <span className="modal-count">{subgraph.count} buildings</span>
                      </h3>
                      <div className="modal-header-actions">
+                        <label className="modal-input">
+                           Amount
+                           <input
+                              type="number"
+                              min={0}
+                              max={9999}
+                              value={rootAmount}
+                              onChange={(e) =>
+                                 setRootAmount(
+                                    Math.max(0, Math.floor(Number(e.target.value) || 0)),
+                                 )
+                              }
+                           />
+                        </label>
+                        <label className="modal-input">
+                           Level
+                           <input
+                              type="number"
+                              min={1}
+                              max={99}
+                              value={rootLevel}
+                              onChange={(e) =>
+                                 setRootLevel(
+                                    Math.max(1, Math.floor(Number(e.target.value) || 1)),
+                                 )
+                              }
+                           />
+                        </label>
                         <div className="zoom-readout">
                            <span>{Math.round(modal.zoom * 100)}%</span>
                            <button type="button" onClick={modal.reset}>
@@ -482,6 +646,10 @@ export const App = (): JSX.Element => {
                            columns={subgraph.columns}
                            edges={subgraph.edges}
                            highlightKey={selectedKey ?? undefined}
+                           chainResults={chainResults}
+                           onLevelChange={onLevelChange}
+                           onAmountChange={onAmountChange}
+                           amountOverrideKeys={amountOverrideKeysSet}
                         />
                      </div>
                   </div>
