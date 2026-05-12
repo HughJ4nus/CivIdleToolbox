@@ -1492,6 +1492,20 @@
       "civilization": "Brazilian"
     },
     {
+      "key": "ChateauFrontenac",
+      "effect": "Each user-selected building gets +1 level boost (×2 during Winter Carnival festival, which we don't model)",
+      "name": "Chateau Frontenac",
+      "levelable": true,
+      "civilization": "Canadian"
+    },
+    {
+      "key": "Habitat67",
+      "effect": "+wonderLevel output/worker/storage to AI Lab; +InformationAge Wisdom adds +wisdom output/storage on top (happiness-based level boost not modelled)",
+      "name": "Habitat 67",
+      "levelable": true,
+      "civilization": "Canadian"
+    },
+    {
       "key": "Poseidon",
       "effect": "Global +1 output during festival",
       "name": "Poseidon",

@@ -571,6 +571,37 @@ export const App = (): JSX.Element => {
       [],
    );
 
+   // Château Frontenac — same UX as Cathedral of Brasília but a different
+   // effect (each user-selected target gets +1 level boost).
+   const onChateauAddBuilding = useCallback(() => {
+      setUserState((prev) => ({
+         ...prev,
+         chateauFrontenacBuildings: [
+            ...(prev.chateauFrontenacBuildings ?? []),
+            "",
+         ],
+      }));
+   }, []);
+   const onChateauRemoveBuilding = useCallback((index: number) => {
+      setUserState((prev) => ({
+         ...prev,
+         chateauFrontenacBuildings: (
+            prev.chateauFrontenacBuildings ?? []
+         ).filter((_, i) => i !== index),
+      }));
+   }, []);
+   const onChateauBuildingChange = useCallback(
+      (index: number, building: string) => {
+         setUserState((prev) => ({
+            ...prev,
+            chateauFrontenacBuildings: (
+               prev.chateauFrontenacBuildings ?? []
+            ).map((b, i) => (i === index ? building : b)),
+         }));
+      },
+      [],
+   );
+
    // Save import: replace GPs / wonders / Age of Wisdom with values from
    // a parsed save file, but keep trade tiles + CoB list intact (they're
    // either multiplayer state or a manual user-curated approximation
@@ -582,6 +613,7 @@ export const App = (): JSX.Element => {
          ageWisdom: parsed.ageWisdom,
          tradeTiles: prev.tradeTiles ?? [],
          cathedralOfBrasiliaBuildings: prev.cathedralOfBrasiliaBuildings ?? [],
+         chateauFrontenacBuildings: prev.chateauFrontenacBuildings ?? [],
       }));
    }, []);
 
@@ -790,6 +822,7 @@ export const App = (): JSX.Element => {
                ageWisdom={userState.ageWisdom}
                tradeTiles={userState.tradeTiles ?? []}
                cobBuildings={userState.cathedralOfBrasiliaBuildings ?? []}
+               chateauBuildings={userState.chateauFrontenacBuildings ?? []}
                allBuildings={allBuildings}
                onGpChange={onGpChange}
                onWonderChange={onWonderChange}
@@ -800,6 +833,9 @@ export const App = (): JSX.Element => {
                onCobAddBuilding={onCobAddBuilding}
                onCobRemoveBuilding={onCobRemoveBuilding}
                onCobBuildingChange={onCobBuildingChange}
+               onChateauAddBuilding={onChateauAddBuilding}
+               onChateauRemoveBuilding={onChateauRemoveBuilding}
+               onChateauBuildingChange={onChateauBuildingChange}
                onSetAllGpLevels={onSetAllGpLevels}
                onImportSave={onImportSave}
             />

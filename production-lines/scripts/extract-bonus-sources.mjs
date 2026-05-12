@@ -203,8 +203,12 @@ const wonderEntries = [
    { key: "LakeLouise", effect: "+2 level boost to every ally trade tile's target building (modelled here as +2 per trade tile since we don't track ally state)" },
 
    // — Wonders with a user-curated building list (manual approximation
-   //   of an adjacency-based effect we can't model directly) —
+   //   of an adjacency-based or in-game-target-picker effect) —
    { key: "CathedralOfBrasilia", effect: "Each listed building gets +N output multiplier where N = list length (manual stand-in for the in-game 2-tile production-chain effect)" },
+   { key: "ChateauFrontenac", effect: "Each user-selected building gets +1 level boost (×2 during Winter Carnival festival, which we don't model)" },
+
+   // — Wonders that target a specific building globally —
+   { key: "Habitat67", effect: "+wonderLevel output/worker/storage to AI Lab; +InformationAge Wisdom adds +wisdom output/storage on top (happiness-based level boost not modelled)" },
 
    // — Festival-only output globals —
    { key: "Poseidon", effect: "Global +1 output during festival" },
@@ -223,6 +227,8 @@ const LEVELABLE_WONDERS = new Set([
    "SydneyHarbourBridge",
    "UnitedNations",
    "WorldTradeOrganization",
+   "ChateauFrontenac",
+   "Habitat67",
 ]);
 
 // Civilization-specific wonders. Sourced from each civ's `uniqueBuildings`
@@ -264,8 +270,10 @@ const WONDER_CIVILIZATION = {
    // Australian — uniqueBuildings
    SydneyHarbourBridge: "Australian",
    GreatOceanRoad: "Australian",
-   // Canadian — naturalWonders
+   // Canadian — naturalWonders + uniqueBuildings
    LakeLouise: "Canadian",
+   ChateauFrontenac: "Canadian",
+   Habitat67: "Canadian",
    // Russian — uniqueBuildings
    Sputnik1: "Russian",
    // Brazilian — uniqueBuildings

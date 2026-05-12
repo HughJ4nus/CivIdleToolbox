@@ -386,5 +386,40 @@ export const resolveBuildingBonuses = (
       }
    }
 
+   // Château Frontenac — same UX as CoB. Each user-selected target
+   // building gets +1 effective level. (In-game it's ×2 during the
+   // Winter Carnival festival; we don't model festivals.)
+   const hasChateau = (userState.wonders.ChateauFrontenac ?? 0) > 0;
+   const chateauList = userState.chateauFrontenacBuildings ?? [];
+   if (hasChateau && chateauList.length > 0) {
+      for (const buildingKey of chateauList) {
+         if (!buildingKey) continue;
+         apply(out, buildingKey, {
+            source: "Château Frontenac",
+            kind: "level",
+            value: 1,
+         });
+      }
+   }
+
+   // Habitat 67 — targets AILab specifically. Wonder level grants
+   // +wonderLevel output/worker/storage; an Information-Age-Wisdom
+   // value adds another +wisdom output/storage on top. The happiness-
+   // based level boost in upstream is intentionally skipped (we don't
+   // track happiness).
+   const habitatLevel = userState.wonders.Habitat67 ?? 0;
+   if (habitatLevel > 0) {
+      const baseSrc = `Habitat 67 (lvl ${habitatLevel})`;
+      apply(out, "AILab", { source: baseSrc, kind: "output", value: habitatLevel });
+      apply(out, "AILab", { source: baseSrc, kind: "worker", value: habitatLevel });
+      apply(out, "AILab", { source: baseSrc, kind: "storage", value: habitatLevel });
+      const infoWisdom = userState.ageWisdom.InformationAge ?? 0;
+      if (infoWisdom > 0) {
+         const wisdomSrc = `Habitat 67 + Information Age Wisdom (+${infoWisdom})`;
+         apply(out, "AILab", { source: wisdomSrc, kind: "output", value: infoWisdom });
+         apply(out, "AILab", { source: wisdomSrc, kind: "storage", value: infoWisdom });
+      }
+   }
+
    return out;
 };

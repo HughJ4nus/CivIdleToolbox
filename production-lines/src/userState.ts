@@ -30,6 +30,10 @@ export interface UserState {
     *  where N is the list length (manual stand-in for the in-game
     *  adjacency-based effect we don't model). */
    cathedralOfBrasiliaBuildings: string[];
+   /** Buildings the user has selected as Château Frontenac targets. The
+    *  in-game wonder lets the player pick a few buildings; each picked
+    *  building gets +1 effective level. */
+   chateauFrontenacBuildings: string[];
 }
 
 const empty = (): UserState => ({
@@ -38,6 +42,7 @@ const empty = (): UserState => ({
    ageWisdom: {},
    tradeTiles: [],
    cathedralOfBrasiliaBuildings: [],
+   chateauFrontenacBuildings: [],
 });
 
 export const loadUserState = (): UserState => {
@@ -71,6 +76,13 @@ export const loadUserState = (): UserState => {
             parsed.cathedralOfBrasiliaBuildings,
          )
             ? parsed.cathedralOfBrasiliaBuildings.filter(
+                 (s: unknown): s is string => typeof s === "string",
+              )
+            : [],
+         chateauFrontenacBuildings: Array.isArray(
+            parsed.chateauFrontenacBuildings,
+         )
+            ? parsed.chateauFrontenacBuildings.filter(
                  (s: unknown): s is string => typeof s === "string",
               )
             : [],

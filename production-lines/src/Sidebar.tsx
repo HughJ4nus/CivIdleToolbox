@@ -100,11 +100,12 @@ const WonderRow = ({
    </li>
 );
 
-// Special-cased wonder row for Cathedral of Brasília. Same checkbox UX
-// as a normal non-levelable wonder, but with an inline expandable list
-// of buildings the user has added to the production chain. Each listed
-// building gets +N output multiplier where N = list length.
-const CathedralOfBrasiliaRow = ({
+// Special-cased wonder row that owns a user-curated building list. Used
+// by Cathedral of Brasília (each listed building gets +N output where
+// N=list length) and Château Frontenac (each listed building gets +1
+// level boost). The row is a checkbox + inline expandable list with
+// add/remove — bulk-set isn't useful here so it's just per-row dropdowns.
+const WonderWithBuildingListRow = ({
    wonder,
    level,
    onChange,
@@ -115,6 +116,8 @@ const CathedralOfBrasiliaRow = ({
    onAdd,
    onRemove,
    onBuildingChange,
+   listLabel,
+   summary,
 }: {
    wonder: WonderEntry;
    level: number;
@@ -126,6 +129,10 @@ const CathedralOfBrasiliaRow = ({
    onAdd: () => void;
    onRemove: (index: number) => void;
    onBuildingChange: (index: number, building: string) => void;
+   /** Heading for the expandable list (e.g. "Buildings in chain"). */
+   listLabel: string;
+   /** Right-side summary in the toggle (e.g. "+18 to each" or "+1 level each"). */
+   summary: (count: number) => string;
 }): JSX.Element => {
    const owned = level > 0;
    return (
@@ -136,13 +143,28 @@ const CathedralOfBrasiliaRow = ({
                   <div className="sidebar-row-name">{wonder.name}</div>
                   <div className="sidebar-row-effect">{wonder.effect}</div>
                </div>
-               <input
-                  type="checkbox"
-                  className="sidebar-checkbox"
-                  checked={owned}
-                  onChange={(e) => onChange(wonder.key, e.target.checked ? 1 : 0)}
-                  title="Owned (this wonder isn't upgradeable in-game)"
-               />
+               {wonder.levelable ? (
+                  <input
+                     type="number"
+                     min={0}
+                     max={999}
+                     value={level}
+                     onChange={(e) =>
+                        onChange(
+                           wonder.key,
+                           Math.max(0, Math.floor(Number(e.target.value) || 0)),
+                        )
+                     }
+                  />
+               ) : (
+                  <input
+                     type="checkbox"
+                     className="sidebar-checkbox"
+                     checked={owned}
+                     onChange={(e) => onChange(wonder.key, e.target.checked ? 1 : 0)}
+                     title="Owned (this wonder isn't upgradeable in-game)"
+                  />
+               )}
             </div>
             {owned && (
                <>
@@ -153,11 +175,9 @@ const CathedralOfBrasiliaRow = ({
                      aria-expanded={isOpen}
                   >
                      <span className="caret">{isOpen ? "▾" : "▸"}</span>
-                     Buildings in chain
+                     {listLabel}
                      <span className="sidebar-age-count">
-                        {buildings.length > 0
-                           ? `${buildings.length} · +${buildings.length} to each`
-                           : 0}
+                        {buildings.length > 0 ? summary(buildings.length) : 0}
                      </span>
                   </button>
                   {isOpen && (
@@ -218,6 +238,9 @@ interface SidebarProps {
    /** Cathedral of Brasília chain buildings — manual list the user
     *  curates to stand in for the in-game adjacency-based effect. */
    cobBuildings: string[];
+   /** Château Frontenac target buildings — user picks which buildings
+    *  the wonder boosts (each gets +1 effective level). */
+   chateauBuildings: string[];
    /** All non-special production buildings, used to populate the trade
     *  tile dropdown. */
    allBuildings: Building[];
@@ -230,6 +253,9 @@ interface SidebarProps {
    onCobAddBuilding: () => void;
    onCobRemoveBuilding: (index: number) => void;
    onCobBuildingChange: (index: number, building: string) => void;
+   onChateauAddBuilding: () => void;
+   onChateauRemoveBuilding: (index: number) => void;
+   onChateauBuildingChange: (index: number, building: string) => void;
    /** Bulk-set every GP's level (testing helper). */
    onSetAllGpLevels: (level: number) => void;
    /** Replace GPs / wonders / Age of Wisdom with values parsed from a
@@ -248,12 +274,16 @@ export const Sidebar = ({
    onWonderChange,
    onAgeWisdomChange,
    cobBuildings,
+   chateauBuildings,
    onAddTradeTile,
    onRemoveTradeTile,
    onTradeTileBuildingChange,
    onCobAddBuilding,
    onCobRemoveBuilding,
    onCobBuildingChange,
+   onChateauAddBuilding,
+   onChateauRemoveBuilding,
+   onChateauBuildingChange,
    onSetAllGpLevels,
    onImportSave,
 }: SidebarProps): JSX.Element => {
@@ -463,36 +493,66 @@ export const Sidebar = ({
                                     </button>
                                     {open && (
                                        <ul className="sidebar-list">
-                                          {entries.map((w) =>
-                                             w.key === "CathedralOfBrasilia" ? (
-                                                <CathedralOfBrasiliaRow
-                                                   key={w.key}
-                                                   wonder={w}
-                                                   level={wonderLevels[w.key] ?? 0}
-                                                   onChange={onWonderChange}
-                                                   buildings={cobBuildings}
-                                                   buildingOptions={tradeTileOptions}
-                                                   isOpen={
-                                                      openSections.cobChain ?? false
-                                                   }
-                                                   onToggleOpen={() =>
-                                                      toggle("cobChain")
-                                                   }
-                                                   onAdd={onCobAddBuilding}
-                                                   onRemove={onCobRemoveBuilding}
-                                                   onBuildingChange={
-                                                      onCobBuildingChange
-                                                   }
-                                                />
-                                             ) : (
+                                          {entries.map((w) => {
+                                             if (w.key === "CathedralOfBrasilia") {
+                                                return (
+                                                   <WonderWithBuildingListRow
+                                                      key={w.key}
+                                                      wonder={w}
+                                                      level={wonderLevels[w.key] ?? 0}
+                                                      onChange={onWonderChange}
+                                                      buildings={cobBuildings}
+                                                      buildingOptions={tradeTileOptions}
+                                                      isOpen={
+                                                         openSections.cobChain ?? false
+                                                      }
+                                                      onToggleOpen={() =>
+                                                         toggle("cobChain")
+                                                      }
+                                                      onAdd={onCobAddBuilding}
+                                                      onRemove={onCobRemoveBuilding}
+                                                      onBuildingChange={
+                                                         onCobBuildingChange
+                                                      }
+                                                      listLabel="Buildings in chain"
+                                                      summary={(n) => `${n} · +${n} to each`}
+                                                   />
+                                                );
+                                             }
+                                             if (w.key === "ChateauFrontenac") {
+                                                return (
+                                                   <WonderWithBuildingListRow
+                                                      key={w.key}
+                                                      wonder={w}
+                                                      level={wonderLevels[w.key] ?? 0}
+                                                      onChange={onWonderChange}
+                                                      buildings={chateauBuildings}
+                                                      buildingOptions={tradeTileOptions}
+                                                      isOpen={
+                                                         openSections.chateauTargets ?? false
+                                                      }
+                                                      onToggleOpen={() =>
+                                                         toggle("chateauTargets")
+                                                      }
+                                                      onAdd={onChateauAddBuilding}
+                                                      onRemove={onChateauRemoveBuilding}
+                                                      onBuildingChange={
+                                                         onChateauBuildingChange
+                                                      }
+                                                      listLabel="Selected buildings"
+                                                      summary={(n) => `${n} · +1 level each`}
+                                                   />
+                                                );
+                                             }
+                                             return (
                                                 <WonderRow
                                                    key={w.key}
                                                    wonder={w}
                                                    level={wonderLevels[w.key] ?? 0}
                                                    onChange={onWonderChange}
                                                 />
-                                             ),
-                                          )}
+                                             );
+                                          })}
                                        </ul>
                                     )}
                                  </div>
