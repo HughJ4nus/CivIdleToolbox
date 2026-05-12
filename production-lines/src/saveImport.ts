@@ -22,10 +22,24 @@ interface BuildingLite {
    /** Centre Pompidou's special field (Set<City> in upstream) — its
     *  in-game potency is `cities.size + 1`, not the building.level. */
    cities?: Set<unknown> | unknown[] | Record<string, unknown>;
+   /** Picked path on directional wonders. Each is a string like
+    *  "Cultivation" / "Christianity" / "Liberalism". */
+   tradition?: string;
+   religion?: string;
+   ideology?: string;
 }
 interface TileLite {
    building?: BuildingLite;
 }
+
+// Wonders that store their picked "direction" in a custom field on the
+// building data. The save importer maps each one onto a single
+// `wonderDirections` map keyed by wonder type.
+const DIRECTION_FIELDS: Record<string, "tradition" | "religion" | "ideology"> = {
+   ChoghaZanbil: "tradition",
+   LuxorTemple: "religion",
+   BigBen: "ideology",
+};
 
 // Some wonders store their effective "level" in a custom field rather
 // than the standard building.level (which is hard-capped at 1 for
@@ -47,6 +61,8 @@ export interface ParsedSave {
    greatPeople: Record<string, number>;
    wonders: Record<string, number>;
    ageWisdom: Record<string, number>;
+   /** Picked path per directional wonder (ChoghaZanbil/LuxorTemple/BigBen). */
+   wonderDirections: Record<string, string>;
    /** Stats so the user can sanity-check the import. */
    stats: {
       gpCount: number;
@@ -145,6 +161,7 @@ export const parseSaveFile = async (file: File): Promise<ParsedSave> => {
    //    resolver expects. Skip in-progress wonders so the user only
    //    gets credit for what's actually built.
    const wonders: Record<string, number> = {};
+   const wonderDirections: Record<string, string> = {};
    const tiles = save.current?.tiles;
    if (tiles instanceof Map) {
       for (const tile of tiles.values()) {
@@ -157,6 +174,14 @@ export const parseSaveFile = async (file: File): Promise<ParsedSave> => {
          // If multiple cities ever stack the same wonder somehow, keep
          // the higher level — defensive, doesn't normally happen.
          wonders[b.type] = Math.max(wonders[b.type] ?? 0, lvl);
+         // Pull the chosen path on directional wonders.
+         const dirField = DIRECTION_FIELDS[b.type];
+         if (dirField) {
+            const picked = b[dirField];
+            if (typeof picked === "string" && picked.length > 0) {
+               wonderDirections[b.type] = picked;
+            }
+         }
       }
    }
 
@@ -164,6 +189,7 @@ export const parseSaveFile = async (file: File): Promise<ParsedSave> => {
       greatPeople,
       wonders,
       ageWisdom,
+      wonderDirections,
       stats: {
          gpCount: Object.keys(greatPeople).length,
          wonderCount: Object.keys(wonders).length,

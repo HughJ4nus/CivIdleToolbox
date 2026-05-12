@@ -12,6 +12,20 @@ import type { Building } from "./buildingTypes";
 import bonusData from "./data/bonus-sources.json";
 import type { UserState } from "./userState";
 
+interface UpgradeEffect {
+   [buildingKey: string]: { output?: number; worker?: number; storage?: number };
+}
+interface DirectionalWonderDef {
+   kindLabel: string;
+   paths: Record<string, string[]>;
+}
+const EXT = bonusData as unknown as {
+   directionalWonders?: Record<string, DirectionalWonderDef>;
+   upgrades?: Record<string, UpgradeEffect>;
+};
+const DIRECTIONAL = EXT.directionalWonders ?? {};
+const UPGRADES = EXT.upgrades ?? {};
+
 interface GreatPersonEntry {
    key: string;
    name: string;
@@ -453,6 +467,55 @@ export const resolveBuildingBonuses = (
                kind: "level",
                value: levelBoost,
             });
+         }
+      }
+   }
+
+   // ChoghaZanbil / LuxorTemple / BigBen — directional wonders. Each
+   // picks one of several "paths" (Tradition / Religion / Ideology);
+   // every level reached unlocks the path's upgrade at index level-1.
+   // We look up each unlocked upgrade's buildingMultiplier and stack
+   // them additively. Source: OnProductionComplete.tsx:1061..1113 +
+   // UpgradeDefinitions.ts.
+   for (const [wonderKey, def] of Object.entries(DIRECTIONAL)) {
+      const wonderLevel = userState.wonders[wonderKey] ?? 0;
+      if (wonderLevel <= 0) continue;
+      const direction = userState.wonderDirections?.[wonderKey];
+      if (!direction) continue;
+      const path = def.paths[direction];
+      if (!path) continue;
+      const wonderName =
+         DATA.wonders.find((w) => w.key === wonderKey)?.name ?? wonderKey;
+      // Walk every unlocked upgrade (indices 0..wonderLevel-1, capped at
+      // path length so an over-typed level doesn't crash).
+      const reached = Math.min(wonderLevel, path.length);
+      for (let i = 0; i < reached; i++) {
+         const upgradeKey = path[i];
+         const effects = UPGRADES[upgradeKey];
+         if (!effects) continue;
+         const source = `${wonderName} · ${direction} ${["I", "II", "III", "IV", "V"][i] ?? i + 1}`;
+         for (const [buildingKey, kinds] of Object.entries(effects)) {
+            if (typeof kinds.output === "number" && kinds.output !== 0) {
+               apply(out, buildingKey, {
+                  source,
+                  kind: "output",
+                  value: kinds.output,
+               });
+            }
+            if (typeof kinds.worker === "number" && kinds.worker !== 0) {
+               apply(out, buildingKey, {
+                  source,
+                  kind: "worker",
+                  value: kinds.worker,
+               });
+            }
+            if (typeof kinds.storage === "number" && kinds.storage !== 0) {
+               apply(out, buildingKey, {
+                  source,
+                  kind: "storage",
+                  value: kinds.storage,
+               });
+            }
          }
       }
    }

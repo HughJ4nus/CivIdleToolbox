@@ -207,6 +207,13 @@ const wonderEntries = [
    { key: "CathedralOfBrasilia", effect: "Each listed building gets +N output multiplier where N = list length (manual stand-in for the in-game 2-tile production-chain effect)" },
    { key: "ChateauFrontenac", effect: "Each user-selected building gets +1 level boost (×2 during Winter Carnival festival, which we don't model)" },
 
+   // — Wonders with a chosen "direction" (tradition / religion / ideology
+   //   path). Each wonder level unlocks the upgrade at index level-1 in
+   //   the chosen path; multipliers stack across all levels reached. —
+   { key: "ChoghaZanbil", effect: "Pick a Tradition (Cultivation / Commerce / Expansion / Honor). Each level unlocks one upgrade in that path; multipliers stack." },
+   { key: "LuxorTemple", effect: "Pick a Religion (Christianity / Islam / Buddhism / Polytheism). Each level unlocks one upgrade in that path. Also adds +1 sciencePerBusyWorker globally (not modelled — affects science income, not building output)." },
+   { key: "BigBen", effect: "Pick an Ideology (Liberalism / Conservatism / Socialism / Communism). Each level unlocks one upgrade in that path. Also adds +2 sciencePerBusyWorker globally (not modelled)." },
+
    // — Wonders that target a specific building globally —
    { key: "Habitat67", effect: "+wonderLevel output/worker/storage to AI Lab; +InformationAge Wisdom adds +wisdom output/storage on top (happiness-based level boost not modelled)" },
 
@@ -229,6 +236,9 @@ const LEVELABLE_WONDERS = new Set([
    "WorldTradeOrganization",
    "ChateauFrontenac",
    "Habitat67",
+   "ChoghaZanbil",
+   "LuxorTemple",
+   "BigBen",
    // Centre Pompidou's `level` field is hard-capped at 1 in the building
    // definition, but its actual potency comes from `cities.size + 1`.
    // The save importer translates that into a synthetic "level" so the
@@ -292,8 +302,95 @@ const wonders = wonderEntries.map((w) => ({
    civilization: WONDER_CIVILIZATION[w.key] ?? null,
 }));
 
+// ── Directional wonders (ChoghaZanbil/LuxorTemple/BigBen) ──────────────
+//
+// Each of these wonders picks a "direction" (Tradition / Religion /
+// Ideology). For each level the wonder reaches, the upgrade at that
+// index in the chosen path's `content` array is unlocked. Each unlocked
+// upgrade contributes its `buildingMultiplier` map to the affected
+// buildings; the contributions stack additively. We extract the path
+// content + per-upgrade multipliers here so the resolver can do the
+// math at runtime without needing to import any game source.
+
+const parsePathFile = (filePath) => {
+   const src = readFileSync(filePath, "utf8");
+   const out = {};
+   const re = /^\s+([A-Za-z]+):\s+IUpgradeGroup\s*=/gm;
+   let m;
+   while ((m = re.exec(src)) !== null) {
+      const key = m[1];
+      const blockStart = src.indexOf("{", m.index);
+      const blockEnd = matchBraces(src, blockStart);
+      const body = src.slice(blockStart, blockEnd);
+      const contentMatch = body.match(/content:\s*\[([^\]]+)\]/);
+      if (contentMatch) {
+         const items = contentMatch[1]
+            .split(",")
+            .map((s) => s.trim().replace(/^["']|["']$/g, ""))
+            .filter(Boolean);
+         out[key] = items;
+      }
+   }
+   return out;
+};
+
+const parseUpgradeFile = (filePath) => {
+   const src = readFileSync(filePath, "utf8");
+   const out = {};
+   const re = /^\s+([A-Za-z0-9]+):\s+IUpgradeDefinition\s*=/gm;
+   let m;
+   while ((m = re.exec(src)) !== null) {
+      const key = m[1];
+      const blockStart = src.indexOf("{", m.index);
+      const blockEnd = matchBraces(src, blockStart);
+      const body = src.slice(blockStart, blockEnd);
+      // Find buildingMultiplier: { ... } block within body
+      const fieldIdx = body.indexOf("buildingMultiplier:");
+      if (fieldIdx === -1) continue;
+      const objStart = body.indexOf("{", fieldIdx);
+      const objEnd = matchBraces(body, objStart);
+      const objBody = body.slice(objStart + 1, objEnd - 1);
+      // Parse each row: BuildingKey: { output: 1, worker: 2, storage: 3 },
+      const rowRe = /([A-Za-z0-9_]+):\s*\{\s*([^}]+)\s*\}/g;
+      const buildings = {};
+      let rm;
+      while ((rm = rowRe.exec(objBody)) !== null) {
+         const buildingKey = rm[1];
+         const fields = rm[2];
+         const eff = {};
+         const fieldRe = /(output|worker|storage):\s*(-?\d+(?:\.\d+)?)/g;
+         let fm;
+         while ((fm = fieldRe.exec(fields)) !== null) {
+            eff[fm[1]] = Number(fm[2]);
+         }
+         if (Object.keys(eff).length > 0) buildings[buildingKey] = eff;
+      }
+      if (Object.keys(buildings).length > 0) out[key] = buildings;
+   }
+   return out;
+};
+
+const traditions = parsePathFile(
+   resolve(CIVIDLE, "shared/definitions/TraditionDefinitions.ts"),
+);
+const religions = parsePathFile(
+   resolve(CIVIDLE, "shared/definitions/ReligionDefinitions.ts"),
+);
+const ideologies = parsePathFile(
+   resolve(CIVIDLE, "shared/definitions/IdeologyDefinitions.ts"),
+);
+const upgrades = parseUpgradeFile(
+   resolve(CIVIDLE, "shared/definitions/UpgradeDefinitions.ts"),
+);
+
+const directionalWonders = {
+   ChoghaZanbil: { kindLabel: "Tradition", paths: traditions },
+   LuxorTemple: { kindLabel: "Religion", paths: religions },
+   BigBen: { kindLabel: "Ideology", paths: ideologies },
+};
+
 // ── Write ───────────────────────────────────────────────────────────────
-const out = { greatPeople, wonders };
+const out = { greatPeople, wonders, directionalWonders, upgrades };
 const dest = resolve(ROOT, "src/data/bonus-sources.json");
 mkdirSync(dirname(dest), { recursive: true });
 writeFileSync(dest, `${JSON.stringify(out, null, 2)}\n`);

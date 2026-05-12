@@ -339,6 +339,21 @@ body {
 .sidebar-cob-list {
    margin: 4px 0 4px 12px;
 }
+/* Direction picker row used by ChoghaZanbil/LuxorTemple/BigBen. Sits
+   directly under the wonder header when level > 0. */
+.sidebar-direction-row {
+   margin-top: 6px;
+   display: flex;
+   align-items: center;
+   gap: 6px;
+}
+.sidebar-direction-label {
+   font-size: 10.5px;
+   color: var(--text-dim);
+   text-transform: uppercase;
+   letter-spacing: 0.05em;
+   white-space: nowrap;
+}
 
 /* Save import: button + status line. Lives just under the sidebar
    tagline so the user notices it without scrolling. */

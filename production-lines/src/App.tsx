@@ -754,6 +754,18 @@ export const App = (): JSX.Element => {
       [],
    );
 
+   // Direction pick for the directional wonders (ChoghaZanbil/LuxorTemple/
+   // BigBen). Empty string clears the pick.
+   const onWonderDirectionChange = useCallback(
+      (key: string, direction: string) => {
+         setUserState((prev) => ({
+            ...prev,
+            wonderDirections: { ...(prev.wonderDirections ?? {}), [key]: direction },
+         }));
+      },
+      [],
+   );
+
    // Save import: replace GPs / wonders / Age of Wisdom with values from
    // a parsed save file, but keep trade tiles + CoB list intact (they're
    // either multiplayer state or a manual user-curated approximation
@@ -768,6 +780,12 @@ export const App = (): JSX.Element => {
          chateauFrontenacBuildings: prev.chateauFrontenacBuildings ?? [],
          unitedNationsBuildings: prev.unitedNationsBuildings ?? [],
          finalHappiness: prev.finalHappiness ?? 0,
+         // Merge: keep manually-picked directions, overlay with anything
+         // the save importer pulled out of the wonder building data.
+         wonderDirections: {
+            ...(prev.wonderDirections ?? {}),
+            ...parsed.wonderDirections,
+         },
       }));
    }, []);
 
@@ -1009,6 +1027,8 @@ export const App = (): JSX.Element => {
                onUnAddBuilding={onUnAddBuilding}
                onUnRemoveBuilding={onUnRemoveBuilding}
                onUnBuildingChange={onUnBuildingChange}
+               wonderDirections={userState.wonderDirections ?? {}}
+               onWonderDirectionChange={onWonderDirectionChange}
                onSetAllGpLevels={onSetAllGpLevels}
                onImportSave={onImportSave}
             />

@@ -48,6 +48,18 @@ interface BonusData {
 
 const DATA = bonusData as unknown as BonusData;
 
+// Directional wonders metadata extracted from upstream — used by the
+// per-wonder direction dropdown.
+interface DirectionalDef {
+   kindLabel: string;
+   paths: Record<string, string[]>;
+}
+const DIRECTIONAL_WONDERS = (
+   bonusData as unknown as {
+      directionalWonders?: Record<string, DirectionalDef>;
+   }
+).directionalWonders ?? {};
+
 const AGE_ORDER = [
    "StoneAge",
    "BronzeAge",
@@ -246,6 +258,68 @@ const WonderWithBuildingListRow = ({
    );
 };
 
+// Wonder row for ChoghaZanbil / LuxorTemple / BigBen — each picks a
+// path (Tradition / Religion / Ideology), and each level unlocks one
+// upgrade in that path. The row pairs the standard number input with a
+// dropdown for the chosen direction.
+const WonderWithDirectionRow = ({
+   wonder,
+   level,
+   onChange,
+   direction,
+   onDirectionChange,
+   kindLabel,
+   pathKeys,
+}: {
+   wonder: WonderEntry;
+   level: number;
+   onChange: (key: string, level: number) => void;
+   direction: string;
+   onDirectionChange: (key: string, direction: string) => void;
+   kindLabel: string;
+   pathKeys: string[];
+}): JSX.Element => (
+   <li className="sidebar-row sidebar-row-cob">
+      <div className="sidebar-row-text" style={{ flex: "1 1 100%" }}>
+         <div className="sidebar-cob-header">
+            <div>
+               <div className="sidebar-row-name">{wonder.name}</div>
+               <div className="sidebar-row-effect">{wonder.effect}</div>
+            </div>
+            <input
+               type="number"
+               min={0}
+               max={pathKeys.length === 0 ? 99 : 5}
+               value={level}
+               onChange={(e) =>
+                  onChange(
+                     wonder.key,
+                     Math.max(0, Math.floor(Number(e.target.value) || 0)),
+                  )
+               }
+            />
+         </div>
+         {level > 0 && (
+            <div className="sidebar-direction-row">
+               <span className="sidebar-direction-label">{kindLabel}</span>
+               <select
+                  className="sidebar-trade-tile-select"
+                  value={direction}
+                  onChange={(e) => onDirectionChange(wonder.key, e.target.value)}
+               >
+                  <option value="">— pick a {kindLabel.toLowerCase()} —</option>
+                  {pathKeys.map((p) => (
+                     <option key={p} value={p}>
+                        {p}
+                     </option>
+                  ))}
+               </select>
+            </div>
+         )}
+      </div>
+   </li>
+);
+
 interface SidebarProps {
    gpLevels: Record<string, number>;
    wonderLevels: Record<string, number>;
@@ -278,6 +352,9 @@ interface SidebarProps {
    onUnAddBuilding: () => void;
    onUnRemoveBuilding: (index: number) => void;
    onUnBuildingChange: (index: number, building: string) => void;
+   /** Picked path per directional wonder (ChoghaZanbil/LuxorTemple/BigBen). */
+   wonderDirections: Record<string, string>;
+   onWonderDirectionChange: (key: string, direction: string) => void;
    /** Bulk-set every GP's level (testing helper). */
    onSetAllGpLevels: (level: number) => void;
    /** Replace GPs / wonders / Age of Wisdom with values parsed from a
@@ -310,6 +387,8 @@ export const Sidebar = ({
    onUnAddBuilding,
    onUnRemoveBuilding,
    onUnBuildingChange,
+   wonderDirections,
+   onWonderDirectionChange,
    onSetAllGpLevels,
    onImportSave,
 }: SidebarProps): JSX.Element => {
@@ -470,6 +549,21 @@ export const Sidebar = ({
                <>
                   <ul className="sidebar-list">
                      {universalWonders.map((w) => {
+                        const dirDef = DIRECTIONAL_WONDERS[w.key];
+                        if (dirDef) {
+                           return (
+                              <WonderWithDirectionRow
+                                 key={w.key}
+                                 wonder={w}
+                                 level={wonderLevels[w.key] ?? 0}
+                                 onChange={onWonderChange}
+                                 direction={wonderDirections[w.key] ?? ""}
+                                 onDirectionChange={onWonderDirectionChange}
+                                 kindLabel={dirDef.kindLabel}
+                                 pathKeys={Object.keys(dirDef.paths)}
+                              />
+                           );
+                        }
                         if (w.key === "UnitedNations") {
                            return (
                               <WonderWithBuildingListRow

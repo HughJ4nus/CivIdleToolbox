@@ -44,6 +44,10 @@ export interface UserState {
     *  (Habitat 67's level boost to AI Lab, Ziggurat of Ur's output
     *  multiplier to old-age buildings). 0 means "not set / no bonus". */
    finalHappiness: number;
+   /** Picked "direction" for wonders that branch into one of several
+    *  paths — ChoghaZanbil (Tradition), LuxorTemple (Religion), BigBen
+    *  (Ideology). Empty / missing = no path picked yet. */
+   wonderDirections: Record<string, string>;
 }
 
 const empty = (): UserState => ({
@@ -55,6 +59,7 @@ const empty = (): UserState => ({
    chateauFrontenacBuildings: [],
    unitedNationsBuildings: [],
    finalHappiness: 0,
+   wonderDirections: {},
 });
 
 export const loadUserState = (): UserState => {
@@ -107,6 +112,10 @@ export const loadUserState = (): UserState => {
             typeof parsed.finalHappiness === "number" && parsed.finalHappiness > 0
                ? parsed.finalHappiness
                : 0,
+         wonderDirections:
+            parsed.wonderDirections && typeof parsed.wonderDirections === "object"
+               ? parsed.wonderDirections
+               : {},
       };
    } catch {
       return empty();

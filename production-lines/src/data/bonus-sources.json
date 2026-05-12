@@ -1499,6 +1499,27 @@
       "civilization": "Canadian"
     },
     {
+      "key": "ChoghaZanbil",
+      "effect": "Pick a Tradition (Cultivation / Commerce / Expansion / Honor). Each level unlocks one upgrade in that path; multipliers stack.",
+      "name": "Chogha Zanbil",
+      "levelable": true,
+      "civilization": null
+    },
+    {
+      "key": "LuxorTemple",
+      "effect": "Pick a Religion (Christianity / Islam / Buddhism / Polytheism). Each level unlocks one upgrade in that path. Also adds +1 sciencePerBusyWorker globally (not modelled — affects science income, not building output).",
+      "name": "Luxor Temple",
+      "levelable": true,
+      "civilization": null
+    },
+    {
+      "key": "BigBen",
+      "effect": "Pick an Ideology (Liberalism / Conservatism / Socialism / Communism). Each level unlocks one upgrade in that path. Also adds +2 sciencePerBusyWorker globally (not modelled).",
+      "name": "Big Ben",
+      "levelable": true,
+      "civilization": null
+    },
+    {
       "key": "Habitat67",
       "effect": "+wonderLevel output/worker/storage to AI Lab; +InformationAge Wisdom adds +wisdom output/storage on top (happiness-based level boost not modelled)",
       "name": "Habitat 67",
@@ -1519,5 +1540,592 @@
       "levelable": false,
       "civilization": "American"
     }
-  ]
+  ],
+  "directionalWonders": {
+    "ChoghaZanbil": {
+      "kindLabel": "Tradition",
+      "paths": {
+        "Cultivation": [
+          "Cultivation1",
+          "Cultivation2",
+          "Cultivation3",
+          "Cultivation4"
+        ],
+        "Commerce": [
+          "Commerce1",
+          "Commerce2",
+          "Commerce3",
+          "Commerce4"
+        ],
+        "Expansion": [
+          "Expansion1",
+          "Expansion2",
+          "Expansion3",
+          "Expansion4"
+        ],
+        "Honor": [
+          "Honor1",
+          "Honor2",
+          "Honor3",
+          "Honor4"
+        ]
+      }
+    },
+    "LuxorTemple": {
+      "kindLabel": "Religion",
+      "paths": {
+        "Christianity": [
+          "Christianity1",
+          "Christianity2",
+          "Christianity3",
+          "Christianity4",
+          "Christianity5"
+        ],
+        "Islam": [
+          "Islam1",
+          "Islam2",
+          "Islam3",
+          "Islam4",
+          "Islam5"
+        ],
+        "Buddhism": [
+          "Buddhism1",
+          "Buddhism2",
+          "Buddhism3",
+          "Buddhism4",
+          "Buddhism5"
+        ],
+        "Polytheism": [
+          "Polytheism1",
+          "Polytheism2",
+          "Polytheism3",
+          "Polytheism4",
+          "Polytheism5"
+        ]
+      }
+    },
+    "BigBen": {
+      "kindLabel": "Ideology",
+      "paths": {
+        "Liberalism": [
+          "Liberalism1",
+          "Liberalism2",
+          "Liberalism3",
+          "Liberalism4",
+          "Liberalism5"
+        ],
+        "Conservatism": [
+          "Conservatism1",
+          "Conservatism2",
+          "Conservatism3",
+          "Conservatism4",
+          "Conservatism5"
+        ],
+        "Socialism": [
+          "Socialism1",
+          "Socialism2",
+          "Socialism3",
+          "Socialism4",
+          "Socialism5"
+        ],
+        "Communism": [
+          "Communism1",
+          "Communism2",
+          "Communism3",
+          "Communism4",
+          "Communism5"
+        ]
+      }
+    }
+  },
+  "upgrades": {
+    "Cultivation1": {
+      "Aqueduct": {
+        "output": 1
+      }
+    },
+    "Cultivation2": {
+      "Aqueduct": {
+        "output": 1
+      },
+      "PaperMaker": {
+        "output": 1
+      }
+    },
+    "Cultivation3": {
+      "Aqueduct": {
+        "output": 1
+      },
+      "PaperMaker": {
+        "output": 1
+      },
+      "Library": {
+        "output": 1
+      }
+    },
+    "Cultivation4": {
+      "Aqueduct": {
+        "output": 1
+      },
+      "PaperMaker": {
+        "output": 1
+      },
+      "Library": {
+        "output": 1
+      },
+      "School": {
+        "output": 1
+      }
+    },
+    "Commerce1": {
+      "StoneQuarry": {
+        "output": 1
+      }
+    },
+    "Commerce2": {
+      "StoneQuarry": {
+        "output": 1
+      },
+      "Brickworks": {
+        "output": 1
+      }
+    },
+    "Commerce3": {
+      "StoneQuarry": {
+        "output": 1
+      },
+      "Brickworks": {
+        "output": 1
+      },
+      "GoldMiningCamp": {
+        "output": 1
+      }
+    },
+    "Commerce4": {
+      "StoneQuarry": {
+        "output": 1
+      },
+      "Brickworks": {
+        "output": 1
+      },
+      "GoldMiningCamp": {
+        "output": 1
+      },
+      "CoinMint": {
+        "output": 1
+      }
+    },
+    "Honor1": {
+      "LoggingCamp": {
+        "output": 1
+      }
+    },
+    "Honor2": {
+      "LoggingCamp": {
+        "output": 1
+      },
+      "LumberMill": {
+        "output": 1
+      }
+    },
+    "Honor3": {
+      "LoggingCamp": {
+        "output": 1
+      },
+      "LumberMill": {
+        "output": 1
+      },
+      "SiegeWorkshop": {
+        "output": 1
+      }
+    },
+    "Honor4": {
+      "LoggingCamp": {
+        "output": 1
+      },
+      "LumberMill": {
+        "output": 1
+      },
+      "SiegeWorkshop": {
+        "output": 1
+      },
+      "KnightCamp": {
+        "output": 1
+      }
+    },
+    "Expansion1": {
+      "WheatFarm": {
+        "output": 1
+      }
+    },
+    "Expansion2": {
+      "WheatFarm": {
+        "output": 1
+      },
+      "FlourMill": {
+        "output": 1
+      }
+    },
+    "Expansion3": {
+      "WheatFarm": {
+        "output": 1
+      },
+      "FlourMill": {
+        "output": 1
+      },
+      "Bakery": {
+        "output": 1
+      }
+    },
+    "Expansion4": {
+      "WheatFarm": {
+        "output": 1
+      },
+      "FlourMill": {
+        "output": 1
+      },
+      "Bakery": {
+        "output": 1
+      },
+      "Apartment": {
+        "output": 1
+      }
+    },
+    "Christianity2": {
+      "Church": {
+        "output": 1
+      }
+    },
+    "Christianity3": {
+      "Church": {
+        "output": 1
+      },
+      "KnightCamp": {
+        "output": 1
+      }
+    },
+    "Christianity4": {
+      "Church": {
+        "output": 1
+      },
+      "KnightCamp": {
+        "output": 1
+      },
+      "Bank": {
+        "output": 1
+      }
+    },
+    "Christianity5": {
+      "Church": {
+        "output": 1
+      },
+      "KnightCamp": {
+        "output": 1
+      },
+      "Bank": {
+        "output": 1
+      }
+    },
+    "Islam2": {
+      "Mosque": {
+        "output": 1
+      }
+    },
+    "Islam3": {
+      "Mosque": {
+        "output": 1
+      },
+      "CaravelBuilder": {
+        "output": 1
+      }
+    },
+    "Islam4": {
+      "Mosque": {
+        "output": 1
+      },
+      "CaravelBuilder": {
+        "output": 1
+      },
+      "Museum": {
+        "output": 1
+      }
+    },
+    "Islam5": {
+      "Mosque": {
+        "output": 1
+      },
+      "CaravelBuilder": {
+        "output": 1
+      },
+      "Museum": {
+        "output": 1
+      }
+    },
+    "Buddhism2": {
+      "Pagoda": {
+        "output": 1
+      }
+    },
+    "Buddhism3": {
+      "Pagoda": {
+        "output": 1
+      },
+      "CoinMint": {
+        "output": 1
+      }
+    },
+    "Buddhism4": {
+      "Pagoda": {
+        "output": 1
+      },
+      "CoinMint": {
+        "output": 1
+      },
+      "GunpowderMill": {
+        "output": 1
+      }
+    },
+    "Buddhism5": {
+      "Pagoda": {
+        "output": 1
+      },
+      "CoinMint": {
+        "output": 1
+      },
+      "GunpowderMill": {
+        "output": 1
+      }
+    },
+    "Polytheism1": {
+      "Shrine": {
+        "output": 1
+      }
+    },
+    "Polytheism2": {
+      "Shrine": {
+        "output": 1
+      }
+    },
+    "Polytheism3": {
+      "Shrine": {
+        "output": 1
+      },
+      "School": {
+        "output": 1
+      }
+    },
+    "Polytheism4": {
+      "Shrine": {
+        "output": 1
+      },
+      "School": {
+        "output": 1
+      },
+      "PrintingHouse": {
+        "output": 1
+      }
+    },
+    "Polytheism5": {
+      "Shrine": {
+        "output": 1
+      },
+      "School": {
+        "output": 1
+      },
+      "PrintingHouse": {
+        "output": 1
+      }
+    },
+    "Liberalism1": {
+      "BondMarket": {
+        "output": 1
+      }
+    },
+    "Liberalism2": {
+      "BondMarket": {
+        "output": 1
+      },
+      "Warehouse": {
+        "storage": 1
+      },
+      "Caravansary": {
+        "storage": 1
+      }
+    },
+    "Liberalism3": {
+      "BondMarket": {
+        "output": 1
+      },
+      "Warehouse": {
+        "storage": 1
+      },
+      "Caravansary": {
+        "storage": 1
+      }
+    },
+    "Liberalism4": {
+      "BondMarket": {
+        "output": 1
+      },
+      "Warehouse": {
+        "storage": 1
+      },
+      "Caravansary": {
+        "storage": 1
+      }
+    },
+    "Liberalism5": {
+      "BondMarket": {
+        "output": 1
+      },
+      "StockExchange": {
+        "output": 1
+      },
+      "Warehouse": {
+        "storage": 1
+      },
+      "Caravansary": {
+        "storage": 1
+      }
+    },
+    "Conservatism1": {
+      "LocomotiveFactory": {
+        "output": 1
+      }
+    },
+    "Conservatism2": {
+      "LocomotiveFactory": {
+        "output": 1
+      }
+    },
+    "Conservatism3": {
+      "LocomotiveFactory": {
+        "output": 1
+      },
+      "Stadium": {
+        "output": 1
+      }
+    },
+    "Conservatism4": {
+      "LocomotiveFactory": {
+        "output": 1
+      },
+      "Stadium": {
+        "output": 1
+      },
+      "MovieStudio": {
+        "output": 1
+      }
+    },
+    "Conservatism5": {
+      "LocomotiveFactory": {
+        "output": 1
+      },
+      "Stadium": {
+        "output": 1
+      },
+      "MovieStudio": {
+        "output": 1
+      },
+      "RadioStation": {
+        "output": 1
+      }
+    },
+    "Socialism1": {
+      "PublishingHouse": {
+        "output": 1
+      }
+    },
+    "Socialism2": {
+      "PublishingHouse": {
+        "output": 1
+      },
+      "MagazinePublisher": {
+        "output": 1
+      }
+    },
+    "Socialism3": {
+      "PublishingHouse": {
+        "output": 1
+      },
+      "MagazinePublisher": {
+        "output": 1
+      },
+      "ResearchLab": {
+        "output": 1
+      }
+    },
+    "Socialism4": {
+      "PublishingHouse": {
+        "output": 1
+      },
+      "MagazinePublisher": {
+        "output": 1
+      },
+      "ResearchLab": {
+        "output": 1
+      }
+    },
+    "Socialism5": {
+      "PublishingHouse": {
+        "output": 1
+      },
+      "MagazinePublisher": {
+        "output": 1
+      },
+      "ResearchLab": {
+        "output": 1
+      }
+    },
+    "Communism1": {
+      "GatlingGunFactory": {
+        "output": 1
+      }
+    },
+    "Communism2": {
+      "GatlingGunFactory": {
+        "output": 1
+      }
+    },
+    "Communism3": {
+      "GatlingGunFactory": {
+        "output": 1
+      },
+      "IroncladBuilder": {
+        "output": 1
+      }
+    },
+    "Communism4": {
+      "GatlingGunFactory": {
+        "output": 1
+      },
+      "IroncladBuilder": {
+        "output": 1
+      },
+      "BiplaneFactory": {
+        "output": 1
+      }
+    },
+    "Communism5": {
+      "GatlingGunFactory": {
+        "output": 1
+      },
+      "IroncladBuilder": {
+        "output": 1
+      },
+      "BiplaneFactory": {
+        "output": 1
+      }
+    },
+    "SpaceshipIdle": {
+      "SpaceCenter": {
+        "output": 1,
+        "storage": 1
+      },
+      "SpacecraftFactory": {
+        "output": 1,
+        "storage": 1
+      }
+    }
+  }
 }
