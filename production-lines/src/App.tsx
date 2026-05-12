@@ -585,34 +585,6 @@ export const App = (): JSX.Element => {
                         <span className="modal-count">{subgraph.count} buildings</span>
                      </h3>
                      <div className="modal-header-actions">
-                        <label className="modal-input">
-                           Amount
-                           <input
-                              type="number"
-                              min={0}
-                              max={9999}
-                              value={rootAmount}
-                              onChange={(e) =>
-                                 setRootAmount(
-                                    Math.max(0, Math.floor(Number(e.target.value) || 0)),
-                                 )
-                              }
-                           />
-                        </label>
-                        <label className="modal-input">
-                           Level
-                           <input
-                              type="number"
-                              min={1}
-                              max={99}
-                              value={rootLevel}
-                              onChange={(e) =>
-                                 setRootLevel(
-                                    Math.max(1, Math.floor(Number(e.target.value) || 1)),
-                                 )
-                              }
-                           />
-                        </label>
                         <div className="zoom-readout">
                            <span>{Math.round(modal.zoom * 100)}%</span>
                            <button type="button" onClick={modal.reset}>
