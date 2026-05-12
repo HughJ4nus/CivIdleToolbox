@@ -34,6 +34,12 @@ export interface UserState {
     *  in-game wonder lets the player pick a few buildings; each picked
     *  building gets +1 effective level. */
    chateauFrontenacBuildings: string[];
+   /** Buildings the user has marked as recipients of the United Nations
+    *  General Assembly voted boost (changes weekly in-game). Each gets
+    *  +(UN level + 4) output multiplier. The universal +1 to all
+    *  tier-4..6 buildings is applied separately and doesn't depend
+    *  on this list. */
+   unitedNationsBuildings: string[];
    /** Player's current happiness reading. Drives a few wonder bonuses
     *  (Habitat 67's level boost to AI Lab, Ziggurat of Ur's output
     *  multiplier to old-age buildings). 0 means "not set / no bonus". */
@@ -47,6 +53,7 @@ const empty = (): UserState => ({
    tradeTiles: [],
    cathedralOfBrasiliaBuildings: [],
    chateauFrontenacBuildings: [],
+   unitedNationsBuildings: [],
    finalHappiness: 0,
 });
 
@@ -88,6 +95,11 @@ export const loadUserState = (): UserState => {
             parsed.chateauFrontenacBuildings,
          )
             ? parsed.chateauFrontenacBuildings.filter(
+                 (s: unknown): s is string => typeof s === "string",
+              )
+            : [],
+         unitedNationsBuildings: Array.isArray(parsed.unitedNationsBuildings)
+            ? parsed.unitedNationsBuildings.filter(
                  (s: unknown): s is string => typeof s === "string",
               )
             : [],

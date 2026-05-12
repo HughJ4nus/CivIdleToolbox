@@ -610,6 +610,35 @@ export const App = (): JSX.Element => {
       [],
    );
 
+   // United Nations General Assembly voted-boost targets — same UX as
+   // Château Frontenac and Cathedral of Brasília. Each picked building
+   // gets +(UN level + 4) output multiplier.
+   const onUnAddBuilding = useCallback(() => {
+      setUserState((prev) => ({
+         ...prev,
+         unitedNationsBuildings: [...(prev.unitedNationsBuildings ?? []), ""],
+      }));
+   }, []);
+   const onUnRemoveBuilding = useCallback((index: number) => {
+      setUserState((prev) => ({
+         ...prev,
+         unitedNationsBuildings: (prev.unitedNationsBuildings ?? []).filter(
+            (_, i) => i !== index,
+         ),
+      }));
+   }, []);
+   const onUnBuildingChange = useCallback(
+      (index: number, building: string) => {
+         setUserState((prev) => ({
+            ...prev,
+            unitedNationsBuildings: (prev.unitedNationsBuildings ?? []).map(
+               (b, i) => (i === index ? building : b),
+            ),
+         }));
+      },
+      [],
+   );
+
    // Save import: replace GPs / wonders / Age of Wisdom with values from
    // a parsed save file, but keep trade tiles + CoB list intact (they're
    // either multiplayer state or a manual user-curated approximation
@@ -622,6 +651,7 @@ export const App = (): JSX.Element => {
          tradeTiles: prev.tradeTiles ?? [],
          cathedralOfBrasiliaBuildings: prev.cathedralOfBrasiliaBuildings ?? [],
          chateauFrontenacBuildings: prev.chateauFrontenacBuildings ?? [],
+         unitedNationsBuildings: prev.unitedNationsBuildings ?? [],
          finalHappiness: prev.finalHappiness ?? 0,
       }));
    }, []);
@@ -832,6 +862,7 @@ export const App = (): JSX.Element => {
                tradeTiles={userState.tradeTiles ?? []}
                cobBuildings={userState.cathedralOfBrasiliaBuildings ?? []}
                chateauBuildings={userState.chateauFrontenacBuildings ?? []}
+               unBuildings={userState.unitedNationsBuildings ?? []}
                allBuildings={allBuildings}
                onGpChange={onGpChange}
                onWonderChange={onWonderChange}
@@ -845,6 +876,9 @@ export const App = (): JSX.Element => {
                onChateauAddBuilding={onChateauAddBuilding}
                onChateauRemoveBuilding={onChateauRemoveBuilding}
                onChateauBuildingChange={onChateauBuildingChange}
+               onUnAddBuilding={onUnAddBuilding}
+               onUnRemoveBuilding={onUnRemoveBuilding}
+               onUnBuildingChange={onUnBuildingChange}
                onSetAllGpLevels={onSetAllGpLevels}
                onImportSave={onImportSave}
             />

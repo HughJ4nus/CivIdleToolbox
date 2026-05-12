@@ -1353,7 +1353,7 @@
     },
     {
       "key": "UnitedNations",
-      "effect": "+1 output/worker/storage to every tier-4..6 building",
+      "effect": "+1 output/worker/storage to every tier-4..6 building. Each General Assembly voted-boost target additionally gets +(UN level + 4) output.",
       "name": "United Nations",
       "levelable": true,
       "civilization": null

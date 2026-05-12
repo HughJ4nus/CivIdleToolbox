@@ -402,6 +402,21 @@ export const resolveBuildingBonuses = (
       }
    }
 
+   // United Nations — General Assembly weekly voted boost: each picked
+   // building gets +5 + (UN level − 1) = +(UN level + 4) output. The
+   // universal +1 to all tier-4..6 buildings is handled by UN's entry
+   // in WONDER_EFFECTS; this is the additional voted-boost layer.
+   const unLevel = userState.wonders.UnitedNations ?? 0;
+   const unList = userState.unitedNationsBuildings ?? [];
+   if (unLevel > 0 && unList.length > 0) {
+      const value = unLevel + 4;
+      const source = `United Nations General Assembly (lvl ${unLevel})`;
+      for (const buildingKey of unList) {
+         if (!buildingKey) continue;
+         apply(out, buildingKey, { source, kind: "output", value });
+      }
+   }
+
    // Habitat 67 — targets AILab specifically. Wonder level grants
    // +wonderLevel output/worker/storage; an Information-Age-Wisdom
    // value adds another +wisdom output/storage on top; and a non-zero

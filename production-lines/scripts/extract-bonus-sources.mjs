@@ -175,7 +175,7 @@ const wonderEntries = [
    { key: "Rijksmuseum", effect: "+1 output/worker/storage to every building touching Culture" },
    { key: "SummerPalace", effect: "+1 output/worker/storage to every building touching Gunpowder" },
    { key: "GoldenGateBridge", effect: "+1 output to every building producing Power" },
-   { key: "UnitedNations", effect: "+1 output/worker/storage to every tier-4..6 building" },
+   { key: "UnitedNations", effect: "+1 output/worker/storage to every tier-4..6 building. Each General Assembly voted-boost target additionally gets +(UN level + 4) output." },
    { key: "MountTai", effect: "+1 output to every Science-producing building" },
    { key: "YangtzeRiver", effect: "+1 output/worker to every building consuming Water" },
    { key: "Shenandoah", effect: "+2 output (unstable) to every building unlocked in current age" },

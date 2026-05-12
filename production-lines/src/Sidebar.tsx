@@ -241,6 +241,9 @@ interface SidebarProps {
    /** Château Frontenac target buildings — user picks which buildings
     *  the wonder boosts (each gets +1 effective level). */
    chateauBuildings: string[];
+   /** United Nations General Assembly voted-boost targets — each gets
+    *  +(UN level + 4) output multiplier. */
+   unBuildings: string[];
    /** All non-special production buildings, used to populate the trade
     *  tile dropdown. */
    allBuildings: Building[];
@@ -256,6 +259,9 @@ interface SidebarProps {
    onChateauAddBuilding: () => void;
    onChateauRemoveBuilding: (index: number) => void;
    onChateauBuildingChange: (index: number, building: string) => void;
+   onUnAddBuilding: () => void;
+   onUnRemoveBuilding: (index: number) => void;
+   onUnBuildingChange: (index: number, building: string) => void;
    /** Bulk-set every GP's level (testing helper). */
    onSetAllGpLevels: (level: number) => void;
    /** Replace GPs / wonders / Age of Wisdom with values parsed from a
@@ -275,6 +281,7 @@ export const Sidebar = ({
    onAgeWisdomChange,
    cobBuildings,
    chateauBuildings,
+   unBuildings,
    onAddTradeTile,
    onRemoveTradeTile,
    onTradeTileBuildingChange,
@@ -284,6 +291,9 @@ export const Sidebar = ({
    onChateauAddBuilding,
    onChateauRemoveBuilding,
    onChateauBuildingChange,
+   onUnAddBuilding,
+   onUnRemoveBuilding,
+   onUnBuildingChange,
    onSetAllGpLevels,
    onImportSave,
 }: SidebarProps): JSX.Element => {
@@ -435,14 +445,38 @@ export const Sidebar = ({
             {openSections.wonders && (
                <>
                   <ul className="sidebar-list">
-                     {universalWonders.map((w) => (
-                        <WonderRow
-                           key={w.key}
-                           wonder={w}
-                           level={wonderLevels[w.key] ?? 0}
-                           onChange={onWonderChange}
-                        />
-                     ))}
+                     {universalWonders.map((w) => {
+                        if (w.key === "UnitedNations") {
+                           return (
+                              <WonderWithBuildingListRow
+                                 key={w.key}
+                                 wonder={w}
+                                 level={wonderLevels[w.key] ?? 0}
+                                 onChange={onWonderChange}
+                                 buildings={unBuildings}
+                                 buildingOptions={tradeTileOptions}
+                                 isOpen={openSections.unTargets ?? false}
+                                 onToggleOpen={() => toggle("unTargets")}
+                                 onAdd={onUnAddBuilding}
+                                 onRemove={onUnRemoveBuilding}
+                                 onBuildingChange={onUnBuildingChange}
+                                 listLabel="General Assembly targets"
+                                 summary={(n) => {
+                                    const lvl = wonderLevels[w.key] ?? 0;
+                                    return `${n} · +${lvl + 4} output each`;
+                                 }}
+                              />
+                           );
+                        }
+                        return (
+                           <WonderRow
+                              key={w.key}
+                              wonder={w}
+                              level={wonderLevels[w.key] ?? 0}
+                              onChange={onWonderChange}
+                           />
+                        );
+                     })}
                   </ul>
                   {civWonders.length > 0 && (
                      <div className="sidebar-subsection">
