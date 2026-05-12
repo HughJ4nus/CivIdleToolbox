@@ -111,32 +111,26 @@ const reorderCols = (cols: Column[], edges: Edge[]): Column[] => {
    return cols.map((c, i) => ({ tier: c.tier, buildings: reordered[i] }));
 };
 
-// BFS upstream + downstream from `root` along edges, returning the set
-// of building keys that participate in the production line through it.
+// BFS upstream from `root` along edges. The clicked card is treated as
+// the end of the production line, so we only collect the buildings that
+// directly or transitively *produce* what root needs — not any downstream
+// consumers of root's output.
 const computeProductionLine = (root: string, edges: Edge[]): Set<string> => {
    const out = new Set<string>([root]);
-   // Index edges for O(1) neighbour lookups.
    const upFromConsumer = new Map<string, string[]>();
-   const downFromProducer = new Map<string, string[]>();
    for (const e of edges) {
       if (!upFromConsumer.has(e.consumer)) upFromConsumer.set(e.consumer, []);
       upFromConsumer.get(e.consumer)!.push(e.producer);
-      if (!downFromProducer.has(e.producer)) downFromProducer.set(e.producer, []);
-      downFromProducer.get(e.producer)!.push(e.consumer);
    }
-   const walk = (start: string, neighbours: Map<string, string[]>) => {
-      const queue = [start];
-      while (queue.length) {
-         const k = queue.shift()!;
-         for (const n of neighbours.get(k) ?? []) {
-            if (out.has(n)) continue;
-            out.add(n);
-            queue.push(n);
-         }
+   const queue = [root];
+   while (queue.length) {
+      const k = queue.shift()!;
+      for (const p of upFromConsumer.get(k) ?? []) {
+         if (out.has(p)) continue;
+         out.add(p);
+         queue.push(p);
       }
-   };
-   walk(root, upFromConsumer);
-   walk(root, downFromProducer);
+   }
    return out;
 };
 
