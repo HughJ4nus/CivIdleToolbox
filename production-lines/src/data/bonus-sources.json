@@ -1237,7 +1237,7 @@
       "effect": "Global +level output and +2×level storage to every building. Level = unlocked cities + 1 (the save importer reads this from the wonder's cities field).",
       "name": "Centre Pompidou",
       "levelable": true,
-      "civilization": "French"
+      "civilization": null
     },
     {
       "key": "CircusMaximus",

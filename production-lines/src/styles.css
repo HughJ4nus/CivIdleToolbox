@@ -60,6 +60,74 @@ body {
    font-size: 18px;
    letter-spacing: 0.02em;
 }
+/* Search bar in the middle of the topbar — substring-matches building
+   names; picking a result pans the main viewport to that card. */
+.search-bar {
+   position: relative;
+   flex: 0 1 320px;
+}
+.search-bar input {
+   width: 100%;
+   background: var(--panel-2);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 4px;
+   padding: 6px 10px;
+   font-size: 13px;
+   font-family: inherit;
+}
+.search-bar input::placeholder {
+   color: var(--text-dim);
+}
+.search-bar input:focus {
+   outline: none;
+   border-color: var(--accent);
+}
+.search-results {
+   position: absolute;
+   top: calc(100% + 4px);
+   left: 0;
+   right: 0;
+   margin: 0;
+   padding: 4px 0;
+   list-style: none;
+   background: var(--panel);
+   border: 1px solid var(--panel-edge);
+   border-radius: 4px;
+   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+   max-height: 320px;
+   overflow-y: auto;
+   z-index: 5;
+}
+.search-results li button {
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   align-items: baseline;
+   gap: 10px;
+   background: transparent;
+   border: 0;
+   color: var(--text);
+   text-align: left;
+   padding: 5px 10px;
+   font-size: 13px;
+   cursor: pointer;
+   font-family: inherit;
+}
+.search-results li button:hover {
+   background: var(--panel-2);
+   color: var(--accent);
+}
+.search-name {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+.search-tier {
+   color: var(--text-dim);
+   font-size: 11px;
+   font-variant-numeric: tabular-nums;
+}
 .topbar .tagline {
    color: var(--text-dim);
    margin-left: 12px;

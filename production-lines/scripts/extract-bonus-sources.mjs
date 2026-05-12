@@ -270,8 +270,9 @@ const WONDER_CIVILIZATION = {
    // German — uniqueBuildings + naturalWonders
    CologneCathedral: "German",
    BlackForest: "German",
-   // French — uniqueBuildings
-   CentrePompidou: "French",
+   // (Centre Pompidou is technically a French unique building, but its
+   //  effect is global and behaves like a universal wonder for our
+   //  modelling purposes — kept in the universal list for visibility.)
    // Australian — uniqueBuildings
    SydneyHarbourBridge: "Australian",
    GreatOceanRoad: "Australian",

@@ -154,6 +154,9 @@ interface PanZoomState {
    /** True if the most recent mousedown was followed by any movement. Used
     *  to suppress card-clicks at the end of a drag. */
    movedThisDrag: () => boolean;
+   /** Imperatively centre the viewport on a world-space point. Used by
+    *  the search bar to jump to a building. Optionally clamps zoom. */
+   panTo: (worldX: number, worldY: number, opts?: { zoom?: number }) => void;
 }
 
 const usePanZoom = (
@@ -226,7 +229,103 @@ const usePanZoom = (
 
    const movedThisDrag = useCallback(() => dragRef.current.moved, []);
 
-   return { viewportRef, zoom, pan, onMouseDown, reset, movedThisDrag };
+   const panTo = useCallback(
+      (worldX: number, worldY: number, opts?: { zoom?: number }) => {
+         if (!viewport) return;
+         const rect = viewport.getBoundingClientRect();
+         const targetZoom = Math.max(
+            ZOOM_MIN,
+            Math.min(ZOOM_MAX, opts?.zoom ?? zoom),
+         );
+         setZoom(targetZoom);
+         setPan({
+            x: rect.width / 2 - worldX * targetZoom,
+            y: rect.height / 2 - worldY * targetZoom,
+         });
+      },
+      [viewport, zoom],
+   );
+
+   return { viewportRef, zoom, pan, onMouseDown, reset, movedThisDrag, panTo };
+};
+
+// ────────────────────────────────────────────────────────────────────────
+// SearchBar — substring-matches building names, jumps the main viewport
+// to the picked result. Lives in the top bar.
+// ────────────────────────────────────────────────────────────────────────
+
+interface SearchBarProps {
+   buildings: Building[];
+   onPick: (b: Building) => void;
+}
+
+const SearchBar = ({ buildings, onPick }: SearchBarProps): JSX.Element => {
+   const [query, setQuery] = useState("");
+   const [open, setOpen] = useState(false);
+   // Substring match (case-insensitive); cap at 12 results so the dropdown
+   // stays usable. Shown in the order the columns walk the buildings.
+   const matches = useMemo(() => {
+      const q = query.trim().toLowerCase();
+      if (!q) return [];
+      const out: Building[] = [];
+      for (const b of buildings) {
+         if (b.name.toLowerCase().includes(q)) {
+            out.push(b);
+            if (out.length >= 12) break;
+         }
+      }
+      return out;
+   }, [query, buildings]);
+
+   const pick = (b: Building): void => {
+      onPick(b);
+      setQuery(b.name);
+      setOpen(false);
+   };
+
+   return (
+      <div className="search-bar">
+         <input
+            type="search"
+            value={query}
+            placeholder="Search buildings…"
+            onChange={(e) => {
+               setQuery(e.target.value);
+               setOpen(true);
+            }}
+            onFocus={() => setOpen(true)}
+            // Delay close so a click inside the dropdown still fires.
+            onBlur={() => window.setTimeout(() => setOpen(false), 120)}
+            onKeyDown={(e) => {
+               if (e.key === "Enter" && matches.length > 0) {
+                  e.preventDefault();
+                  pick(matches[0]);
+               } else if (e.key === "Escape") {
+                  setOpen(false);
+               }
+            }}
+         />
+         {open && matches.length > 0 && (
+            <ul className="search-results">
+               {matches.map((b) => (
+                  <li key={b.key}>
+                     <button
+                        type="button"
+                        // onMouseDown so it fires before the input's blur.
+                        onMouseDown={(e) => {
+                           e.preventDefault();
+                           pick(b);
+                        }}
+                     >
+                        <span className="search-name">{b.name}</span>
+                        <span className="search-tier">T{b.tier}</span>
+                     </button>
+                  </li>
+               ))}
+            </ul>
+         )}
+      </div>
+   );
 };
 
 // ────────────────────────────────────────────────────────────────────────
@@ -482,6 +581,22 @@ export const App = (): JSX.Element => {
       () => columns.reduce((acc, c) => acc + c.buildings.length, 0),
       [columns],
    );
+
+   // Mirror of the layout calculation TierWorld does internally, kept up
+   // here so the topbar search can pan/zoom directly to a specific card.
+   // Must stay in lockstep with TierWorld's layout — same constants, same
+   // ordering rules.
+   const mainLayout = useMemo(() => {
+      const map = new Map<string, { x: number; y: number; building: Building }>();
+      columns.forEach((col, colIdx) => {
+         const x = colIdx * (CARD_W + GAP_X);
+         col.buildings.forEach((b, rowIdx) => {
+            const y = HEADING_H + TOP_PAD + rowIdx * (CARD_H + GAP_Y);
+            map.set(b.key, { x, y, building: b });
+         });
+      });
+      return map;
+   }, [columns]);
 
    // ── Sidebar: user-set GP + wonder levels, persisted to localStorage.
    // Resolves into per-building output / level bonuses below; the chain
@@ -836,6 +951,20 @@ export const App = (): JSX.Element => {
       setSelectedKey(key);
    };
 
+   // Search-bar handler: centre the picked card in the main viewport.
+   // Bumps zoom up to at least 0.9 if the user is zoomed out so the
+   // landing card is actually readable.
+   const handleSearchPick = useCallback(
+      (b: Building) => {
+         const pos = mainLayout.get(b.key);
+         if (!pos) return;
+         const cx = pos.x + CARD_W / 2;
+         const cy = pos.y + CARD_H / 2;
+         main.panTo(cx, cy, { zoom: Math.max(main.zoom, 0.9) });
+      },
+      [mainLayout, main],
+   );
+
    return (
       <div className="app">
          <header className="topbar">
@@ -847,6 +976,7 @@ export const App = (): JSX.Element => {
                   zoom · drag to pan
                </span>
             </div>
+            <SearchBar buildings={allBuildings} onPick={handleSearchPick} />
             <div className="zoom-readout">
                <span>{Math.round(main.zoom * 100)}%</span>
                <button type="button" onClick={main.reset}>
