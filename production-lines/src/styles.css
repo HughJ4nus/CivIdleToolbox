@@ -93,17 +93,21 @@ body {
    touch-action: none;
 }
 
-/* The world is the transformable surface. Cards and the SVG line layer
-   are positioned absolutely inside it so we can compute connection paths
-   from the same numbers React uses to lay out the cards. */
-.world {
+/* The transform wrapper — pan/zoom is applied to this element so the
+   inner TierWorld stays at its natural pixel coordinates. */
+.world-transform {
    position: absolute;
    top: 0;
    left: 0;
    will-change: transform;
 }
 
-/* Connection layer sits at z=0; cards sit on top at z=1. */
+/* TierWorld is the inner content: cards + svg lines. Used both inside
+   .world-transform (main view) and inside .modal-body (filtered view). */
+.tier-world {
+   position: relative;
+}
+
 .connection-layer {
    position: absolute;
    top: 0;
@@ -157,6 +161,22 @@ body {
    gap: 4px;
    box-shadow: inset 0 0 0 4px transparent, inset 0 0 0 5px rgba(255, 255, 255, 0.05);
    z-index: 1;
+   transition: border-color 80ms ease, box-shadow 80ms ease;
+}
+.card-clickable {
+   cursor: pointer;
+}
+.card-clickable:hover {
+   border-color: var(--accent);
+   box-shadow:
+      inset 0 0 0 4px transparent,
+      inset 0 0 0 5px rgba(125, 211, 252, 0.18);
+}
+.card-highlight {
+   border-color: var(--accent);
+   box-shadow:
+      inset 0 0 0 4px transparent,
+      inset 0 0 0 5px rgba(125, 211, 252, 0.32);
 }
 .card-title {
    font-family: "Marcellus", Georgia, serif;
@@ -168,4 +188,93 @@ body {
    font-size: 11.5px;
    color: var(--text-dim);
    line-height: 1.3;
+}
+
+/* ── Modal ──────────────────────────────────────────────────────────── */
+.modal-backdrop {
+   position: fixed;
+   inset: 0;
+   background: rgba(5, 10, 16, 0.72);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   z-index: 200;
+   padding: 32px;
+}
+.modal-content {
+   background: var(--bg);
+   border: 1px solid var(--border);
+   border-radius: 8px;
+   width: min(96vw, 1700px);
+   height: min(92vh, 1200px);
+   display: flex;
+   flex-direction: column;
+   overflow: hidden;
+   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+}
+.modal-header {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 14px 20px;
+   border-bottom: 1px solid var(--border);
+   background: var(--panel);
+   flex-shrink: 0;
+}
+.modal-header h3 {
+   margin: 0;
+   font-size: 14px;
+   font-weight: 500;
+   color: var(--text-dim);
+   display: flex;
+   align-items: baseline;
+   gap: 12px;
+}
+.modal-root-name {
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 18px;
+   color: var(--text);
+}
+.modal-count {
+   font-size: 11px;
+   color: var(--text-dim);
+   background: var(--panel-2);
+   border: 1px solid var(--border);
+   padding: 2px 8px;
+   border-radius: 10px;
+}
+.modal-close {
+   background: transparent;
+   color: var(--text-dim);
+   border: 1px solid transparent;
+   border-radius: 4px;
+   width: 32px;
+   height: 32px;
+   font-size: 22px;
+   line-height: 1;
+   cursor: pointer;
+   padding: 0;
+}
+.modal-close:hover {
+   color: var(--text);
+   border-color: var(--border);
+   background: var(--panel-2);
+}
+.modal-body {
+   flex: 1 1 auto;
+   background: var(--bg);
+}
+/* When the body acts as a pan/zoom viewport, lock overflow and disable
+   text-selection on drags. The transformed world inside is positioned
+   absolutely the same way as the main view's. */
+.modal-viewport {
+   position: relative;
+   overflow: hidden;
+   touch-action: none;
+}
+.modal-header-actions {
+   display: flex;
+   align-items: center;
+   gap: 12px;
 }

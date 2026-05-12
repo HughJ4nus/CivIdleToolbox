@@ -1,4 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+   useCallback,
+   useEffect,
+   useMemo,
+   useRef,
+   useState,
+   type CSSProperties,
+} from "react";
 import buildingsData from "./data/buildings.json";
 import { countAdjacentCrossings, reorderByBarycenter, type Edge } from "./layout";
 
@@ -11,11 +18,13 @@ interface Building {
    output: Record<string, number>;
 }
 
+interface Column {
+   tier: number;
+   buildings: Building[];
+}
+
 const ALL_BUILDINGS = buildingsData as unknown as Building[];
 
-// Inputs that don't represent a tangible upstream building (workers come
-// from population, power from the grid, etc.). Drawing lines for these
-// would clutter the chart without explaining a production chain.
 const NON_WALKABLE_INPUTS = new Set([
    "Worker",
    "Power",
@@ -34,7 +43,7 @@ const subtitleFor = (b: Building): string => {
    return outs.join(", ");
 };
 
-// Layout constants — must match the CSS variables in styles.css.
+// Layout constants — must match the CSS variables.
 const CARD_W = 220;
 const CARD_H = 80;
 const GAP_X = 110;
@@ -51,93 +60,192 @@ interface CardPos {
    building: Building;
 }
 
-export const App = (): JSX.Element => {
-   // Bucket non-wonder buildings by tier, alphabetised within each tier as
-   // the seed ordering. Crossing-min reorders this in a moment.
-   const initialColumns = useMemo(() => {
-      const byTier = new Map<number, Building[]>();
-      for (const b of ALL_BUILDINGS) {
-         if (b.special) continue;
-         if (b.tier == null) continue;
-         if (!byTier.has(b.tier)) byTier.set(b.tier, []);
-         byTier.get(b.tier)!.push(b);
+// ────────────────────────────────────────────────────────────────────────
+// Pure helpers
+// ────────────────────────────────────────────────────────────────────────
+
+const computeColumnsFor = (buildings: Building[]): Column[] => {
+   const byTier = new Map<number, Building[]>();
+   for (const b of buildings) {
+      if (b.special) continue;
+      if (b.tier == null) continue;
+      if (!byTier.has(b.tier)) byTier.set(b.tier, []);
+      byTier.get(b.tier)!.push(b);
+   }
+   return [...byTier.entries()]
+      .sort(([a], [b]) => a - b)
+      .map(([tier, bs]) => ({
+         tier,
+         buildings: bs.slice().sort((a, b) => a.name.localeCompare(b.name)),
+      }));
+};
+
+const computeEdgesFor = (buildings: Building[]): Edge[] => {
+   const skip = NON_WALKABLE_INPUTS;
+   const allow = new Set(buildings.map((b) => b.key));
+   const producersFor = new Map<string, string[]>();
+   for (const b of buildings) {
+      for (const m of Object.keys(b.output)) {
+         if (skip.has(m)) continue;
+         if (!producersFor.has(m)) producersFor.set(m, []);
+         producersFor.get(m)!.push(b.key);
       }
-      return [...byTier.entries()]
-         .sort(([a], [b]) => a - b)
-         .map(([tier, buildings]) => ({
-            tier,
-            buildings: buildings.slice().sort((a, b) => a.name.localeCompare(b.name)),
-         }));
+   }
+   const out: Edge[] = [];
+   for (const b of buildings) {
+      for (const m of Object.keys(b.input)) {
+         if (skip.has(m)) continue;
+         const ps = producersFor.get(m);
+         if (!ps) continue;
+         for (const p of ps) {
+            if (p !== b.key && allow.has(p)) out.push({ producer: p, consumer: b.key });
+         }
+      }
+   }
+   return out;
+};
+
+const reorderCols = (cols: Column[], edges: Edge[]): Column[] => {
+   const reordered = reorderByBarycenter(
+      cols.map((c) => ({ buildings: c.buildings })),
+      edges,
+      { keyOf: (b: Building) => b.key },
+   );
+   return cols.map((c, i) => ({ tier: c.tier, buildings: reordered[i] }));
+};
+
+// BFS upstream + downstream from `root` along edges, returning the set
+// of building keys that participate in the production line through it.
+const computeProductionLine = (root: string, edges: Edge[]): Set<string> => {
+   const out = new Set<string>([root]);
+   // Index edges for O(1) neighbour lookups.
+   const upFromConsumer = new Map<string, string[]>();
+   const downFromProducer = new Map<string, string[]>();
+   for (const e of edges) {
+      if (!upFromConsumer.has(e.consumer)) upFromConsumer.set(e.consumer, []);
+      upFromConsumer.get(e.consumer)!.push(e.producer);
+      if (!downFromProducer.has(e.producer)) downFromProducer.set(e.producer, []);
+      downFromProducer.get(e.producer)!.push(e.consumer);
+   }
+   const walk = (start: string, neighbours: Map<string, string[]>) => {
+      const queue = [start];
+      while (queue.length) {
+         const k = queue.shift()!;
+         for (const n of neighbours.get(k) ?? []) {
+            if (out.has(n)) continue;
+            out.add(n);
+            queue.push(n);
+         }
+      }
+   };
+   walk(root, upFromConsumer);
+   walk(root, downFromProducer);
+   return out;
+};
+
+// ────────────────────────────────────────────────────────────────────────
+// usePanZoom — drag-to-pan + scroll-to-zoom for any viewport element.
+// ────────────────────────────────────────────────────────────────────────
+
+interface PanZoomState {
+   /** Callback ref — assign to the viewport element. Re-binds wheel
+    *  listener when the element mounts/unmounts (matters for the modal). */
+   viewportRef: (el: HTMLDivElement | null) => void;
+   zoom: number;
+   pan: { x: number; y: number };
+   onMouseDown: (e: React.MouseEvent) => void;
+   reset: () => void;
+   /** True if the most recent mousedown was followed by any movement. Used
+    *  to suppress card-clicks at the end of a drag. */
+   movedThisDrag: () => boolean;
+}
+
+const usePanZoom = (
+   initialZoom: number,
+   initialPan: { x: number; y: number },
+): PanZoomState => {
+   // Track the viewport element via state so effects can react to it
+   // mounting (a regular useRef doesn't trigger re-renders, which means
+   // the wheel-listener effect runs once with `null` and never re-binds
+   // when a lazily-mounted viewport — like the modal — appears).
+   const [viewport, setViewport] = useState<HTMLDivElement | null>(null);
+   const viewportRef = useCallback((el: HTMLDivElement | null) => setViewport(el), []);
+
+   const [zoom, setZoom] = useState(initialZoom);
+   const [pan, setPan] = useState(initialPan);
+   const dragRef = useRef({ active: false, lastX: 0, lastY: 0, moved: false });
+
+   const onMouseDown = useCallback((e: React.MouseEvent) => {
+      if (e.button !== 0) return;
+      dragRef.current = { active: true, lastX: e.clientX, lastY: e.clientY, moved: false };
    }, []);
 
-   // Edges are derived from the data, not positions, so reorderByBarycenter
-   // can reshuffle columns without us re-deriving the graph.
-   const edges = useMemo<Edge[]>(() => {
-      const skip = NON_WALKABLE_INPUTS;
-      const producersFor = new Map<string, string[]>();
-      for (const col of initialColumns) {
-         for (const b of col.buildings) {
-            for (const m of Object.keys(b.output)) {
-               if (skip.has(m)) continue;
-               if (!producersFor.has(m)) producersFor.set(m, []);
-               producersFor.get(m)!.push(b.key);
-            }
-         }
-      }
-      const out: Edge[] = [];
-      for (const col of initialColumns) {
-         for (const b of col.buildings) {
-            for (const m of Object.keys(b.input)) {
-               if (skip.has(m)) continue;
-               const ps = producersFor.get(m);
-               if (!ps) continue;
-               for (const p of ps) {
-                  if (p !== b.key) out.push({ producer: p, consumer: b.key });
-               }
-            }
-         }
-      }
-      return out;
-   }, [initialColumns]);
+   useEffect(() => {
+      const onMove = (e: MouseEvent) => {
+         if (!dragRef.current.active) return;
+         const dx = e.clientX - dragRef.current.lastX;
+         const dy = e.clientY - dragRef.current.lastY;
+         if (Math.abs(dx) + Math.abs(dy) > 0) dragRef.current.moved = true;
+         dragRef.current.lastX = e.clientX;
+         dragRef.current.lastY = e.clientY;
+         setPan((p) => ({ x: p.x + dx, y: p.y + dy }));
+      };
+      const onUp = () => {
+         dragRef.current.active = false;
+      };
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup", onUp);
+      return () => {
+         window.removeEventListener("mousemove", onMove);
+         window.removeEventListener("mouseup", onUp);
+      };
+   }, []);
 
-   // Apply Sugiyama-style barycenter sweeps to minimise edge crossings.
-   const columns = useMemo(() => {
-      const reordered = reorderByBarycenter(
-         initialColumns.map((c) => ({ buildings: c.buildings })),
-         edges,
-         { keyOf: (b) => b.key },
-      );
-      return initialColumns.map((c, i) => ({ tier: c.tier, buildings: reordered[i] }));
-   }, [initialColumns, edges]);
+   useEffect(() => {
+      if (!viewport) return;
+      const onWheel = (e: WheelEvent) => {
+         e.preventDefault();
+         const rect = viewport.getBoundingClientRect();
+         const screenX = e.clientX - rect.left;
+         const screenY = e.clientY - rect.top;
+         const factor = e.deltaY < 0 ? 1.025 : 1 / 1.025;
+         setZoom((prev) => {
+            const next = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, prev * factor));
+            const ratio = next / prev;
+            setPan((p) => ({
+               x: screenX - (screenX - p.x) * ratio,
+               y: screenY - (screenY - p.y) * ratio,
+            }));
+            return next;
+         });
+      };
+      viewport.addEventListener("wheel", onWheel, { passive: false });
+      return () => viewport.removeEventListener("wheel", onWheel);
+   }, [viewport]);
 
-   // Diagnostics — exposed in the topbar so we can see the heuristic working.
-   const crossingsBefore = useMemo(
-      () =>
-         countAdjacentCrossings(
-            initialColumns.map((c) => c.buildings),
-            edges,
-            (b) => b.key,
-         ),
-      [initialColumns, edges],
-   );
-   const crossingsAfter = useMemo(
-      () =>
-         countAdjacentCrossings(
-            columns.map((c) => c.buildings),
-            edges,
-            (b) => b.key,
-         ),
-      [columns, edges],
-   );
+   const reset = useCallback(() => {
+      setZoom(initialZoom);
+      setPan(initialPan);
+   }, [initialZoom, initialPan.x, initialPan.y]);
 
-   const totalCount = useMemo(
-      () => columns.reduce((acc, c) => acc + c.buildings.length, 0),
-      [columns],
-   );
+   const movedThisDrag = useCallback(() => dragRef.current.moved, []);
 
-   // Card positions: laid out by hand so we can compute connection paths.
-   // Each column starts at x = colIdx * (CARD_W + GAP_X). The first card in
-   // a column sits below the heading at y = HEADING_H + TOP_PAD.
+   return { viewportRef, zoom, pan, onMouseDown, reset, movedThisDrag };
+};
+
+// ────────────────────────────────────────────────────────────────────────
+// TierWorld — renders cards + bezier lines for a given column set.
+// Used both inside the pan/zoom main viewport AND inside the modal body.
+// ────────────────────────────────────────────────────────────────────────
+
+interface TierWorldProps {
+   columns: Column[];
+   edges: Edge[];
+   onCardClick?: (key: string) => void;
+   highlightKey?: string;
+}
+
+const TierWorld = ({ columns, edges, onCardClick, highlightKey }: TierWorldProps): JSX.Element => {
    const layout = useMemo(() => {
       const map = new Map<string, CardPos>();
       columns.forEach((col, colIdx) => {
@@ -154,14 +262,11 @@ export const App = (): JSX.Element => {
       const colCount = columns.length;
       const maxRows = columns.reduce((m, c) => Math.max(m, c.buildings.length), 0);
       return {
-         width: colCount * CARD_W + (colCount - 1) * GAP_X,
-         height: HEADING_H + TOP_PAD + maxRows * CARD_H + (maxRows - 1) * GAP_Y,
+         width: Math.max(1, colCount * CARD_W + Math.max(0, colCount - 1) * GAP_X),
+         height: Math.max(1, HEADING_H + TOP_PAD + maxRows * CARD_H + Math.max(0, maxRows - 1) * GAP_Y),
       };
    }, [columns]);
 
-   // Map each edge to a cubic bezier between producer's right edge and
-   // consumer's left edge. Control points are pulled horizontally by half
-   // the gap, yielding the smooth "S" that leaves/arrives horizontally.
    const connections = useMemo(() => {
       const lines: Array<{ d: string; key: string }> = [];
       for (let i = 0; i < edges.length; i++) {
@@ -180,68 +285,123 @@ export const App = (): JSX.Element => {
       return lines;
    }, [edges, layout]);
 
-   // ── Pan + zoom ────────────────────────────────────────────────────────
-   const viewportRef = useRef<HTMLDivElement | null>(null);
-   const [zoom, setZoom] = useState(0.7);
-   const [pan, setPan] = useState({ x: 80, y: 40 });
-   const dragRef = useRef<{ active: boolean; lastX: number; lastY: number }>({
-      active: false,
-      lastX: 0,
-      lastY: 0,
-   });
+   return (
+      <div
+         className="tier-world"
+         style={{ width: worldDims.width, height: worldDims.height }}
+      >
+         <svg
+            className="connection-layer"
+            width={worldDims.width}
+            height={worldDims.height}
+            viewBox={`0 0 ${worldDims.width} ${worldDims.height}`}
+            pointerEvents="none"
+         >
+            {connections.map((c) => (
+               <path key={c.key} d={c.d} />
+            ))}
+         </svg>
 
-   const onMouseDown = (e: React.MouseEvent) => {
-      if (e.button !== 0) return;
-      dragRef.current = { active: true, lastX: e.clientX, lastY: e.clientY };
-   };
+         {columns.map(({ tier, buildings }, colIdx) => (
+            <div
+               key={`hdr-${tier}`}
+               className="tier-heading"
+               style={{ left: colIdx * (CARD_W + GAP_X), width: CARD_W }}
+            >
+               Tier {tier}
+               <span className="count">{buildings.length}</span>
+            </div>
+         ))}
+
+         {[...layout.values()].map((c) => {
+            const isHighlight = highlightKey === c.building.key;
+            const className = `card${isHighlight ? " card-highlight" : ""}${onCardClick ? " card-clickable" : ""}`;
+            return (
+               <div
+                  key={c.building.key}
+                  className={className}
+                  style={{ left: c.x, top: c.y } as CSSProperties}
+                  onClick={onCardClick ? () => onCardClick(c.building.key) : undefined}
+               >
+                  <div className="card-title">{c.building.name}</div>
+                  <div className="card-subtitle">{subtitleFor(c.building)}</div>
+               </div>
+            );
+         })}
+      </div>
+   );
+};
+
+// ────────────────────────────────────────────────────────────────────────
+// App
+// ────────────────────────────────────────────────────────────────────────
+
+export const App = (): JSX.Element => {
+   const allBuildings = useMemo(
+      () => ALL_BUILDINGS.filter((b) => !b.special && b.tier != null),
+      [],
+   );
+   const initialColumns = useMemo(() => computeColumnsFor(allBuildings), [allBuildings]);
+   const edges = useMemo(() => computeEdgesFor(allBuildings), [allBuildings]);
+   const columns = useMemo(() => reorderCols(initialColumns, edges), [initialColumns, edges]);
+
+   const crossingsBefore = useMemo(
+      () => countAdjacentCrossings(initialColumns.map((c) => c.buildings), edges, (b) => b.key),
+      [initialColumns, edges],
+   );
+   const crossingsAfter = useMemo(
+      () => countAdjacentCrossings(columns.map((c) => c.buildings), edges, (b) => b.key),
+      [columns, edges],
+   );
+
+   const totalCount = useMemo(
+      () => columns.reduce((acc, c) => acc + c.buildings.length, 0),
+      [columns],
+   );
+
+   // ── Modal: clicking a card opens a filtered view of just that line ──
+   const [selectedKey, setSelectedKey] = useState<string | null>(null);
+
+   const subgraph = useMemo(() => {
+      if (!selectedKey) return null;
+      const lineKeys = computeProductionLine(selectedKey, edges);
+      const subBuildings = allBuildings.filter((b) => lineKeys.has(b.key));
+      const subCols = computeColumnsFor(subBuildings);
+      const subEdges = computeEdgesFor(subBuildings);
+      const ordered = reorderCols(subCols, subEdges);
+      const root = allBuildings.find((b) => b.key === selectedKey);
+      return { columns: ordered, edges: subEdges, root, count: subBuildings.length };
+   }, [selectedKey, edges, allBuildings]);
 
    useEffect(() => {
-      const onMove = (e: MouseEvent) => {
-         if (!dragRef.current.active) return;
-         const dx = e.clientX - dragRef.current.lastX;
-         const dy = e.clientY - dragRef.current.lastY;
-         dragRef.current.lastX = e.clientX;
-         dragRef.current.lastY = e.clientY;
-         setPan((p) => ({ x: p.x + dx, y: p.y + dy }));
+      if (!selectedKey) return;
+      const onKey = (e: KeyboardEvent) => {
+         if (e.key === "Escape") setSelectedKey(null);
       };
-      const onUp = () => {
-         dragRef.current.active = false;
-      };
-      window.addEventListener("mousemove", onMove);
-      window.addEventListener("mouseup", onUp);
-      return () => {
-         window.removeEventListener("mousemove", onMove);
-         window.removeEventListener("mouseup", onUp);
-      };
-   }, []);
+      window.addEventListener("keydown", onKey);
+      return () => window.removeEventListener("keydown", onKey);
+   }, [selectedKey]);
 
+   // ── Pan + zoom: one independent state for the main view, one for the
+   //    modal. The modal viewport is mounted/unmounted with selectedKey,
+   //    so its hook restarts each time you open a different production line.
+   const main = usePanZoom(0.7, { x: 80, y: 40 });
+   const modal = usePanZoom(1, { x: 40, y: 40 });
+
+   // Reset the modal view each time you open a new production line, so a
+   // small chain doesn't inherit a heavily-zoomed/panned state from the
+   // previous one.
    useEffect(() => {
-      const el = viewportRef.current;
-      if (!el) return;
-      const onWheel = (e: WheelEvent) => {
-         e.preventDefault();
-         const rect = el.getBoundingClientRect();
-         const screenX = e.clientX - rect.left;
-         const screenY = e.clientY - rect.top;
-         // 1.025 per notch — gentle zoom step.
-         const factor = e.deltaY < 0 ? 1.025 : 1 / 1.025;
-         setZoom((prev) => {
-            const next = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, prev * factor));
-            const ratio = next / prev;
-            setPan((p) => ({
-               x: screenX - (screenX - p.x) * ratio,
-               y: screenY - (screenY - p.y) * ratio,
-            }));
-            return next;
-         });
-      };
-      el.addEventListener("wheel", onWheel, { passive: false });
-      return () => el.removeEventListener("wheel", onWheel);
-   }, []);
+      if (selectedKey) modal.reset();
+      // intentionally only on selectedKey change — modal.reset is stable
+      // enough that chasing it as a dep would just churn.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [selectedKey]);
 
-   const resetView = () => {
-      setZoom(0.7);
-      setPan({ x: 80, y: 40 });
+   // Suppress card click if the user actually dragged on the main viewport.
+   const handleCardClick = (key: string) => {
+      if (main.movedThisDrag()) return;
+      setSelectedKey(key);
    };
 
    return (
@@ -250,74 +410,84 @@ export const App = (): JSX.Element => {
             <div className="brand">
                <h1>CivIdle production buildings</h1>
                <span className="tagline">
-                  {totalCount} buildings · {connections.length} input lines ·{" "}
-                  {crossingsAfter} crossings ({crossingsBefore} before reorder) ·
-                  scroll to zoom · drag to pan
+                  {totalCount} buildings · {edges.length} input lines · {crossingsAfter}{" "}
+                  crossings ({crossingsBefore} before reorder) · click a card · scroll to
+                  zoom · drag to pan
                </span>
             </div>
             <div className="zoom-readout">
-               <span>{Math.round(zoom * 100)}%</span>
-               <button type="button" onClick={resetView}>
+               <span>{Math.round(main.zoom * 100)}%</span>
+               <button type="button" onClick={main.reset}>
                   Reset
                </button>
             </div>
          </header>
          <div
             className="viewport"
-            ref={viewportRef}
-            onMouseDown={onMouseDown}
-            style={{ cursor: dragRef.current.active ? "grabbing" : "grab" }}
+            ref={main.viewportRef}
+            onMouseDown={main.onMouseDown}
+            style={{ cursor: "grab" }}
          >
             <div
-               className="world"
+               className="world-transform"
                style={{
-                  width: worldDims.width,
-                  height: worldDims.height,
-                  transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+                  transform: `translate(${main.pan.x}px, ${main.pan.y}px) scale(${main.zoom})`,
                   transformOrigin: "0 0",
                }}
             >
-               {/* Connection layer sits behind the cards. */}
-               <svg
-                  className="connection-layer"
-                  width={worldDims.width}
-                  height={worldDims.height}
-                  viewBox={`0 0 ${worldDims.width} ${worldDims.height}`}
-                  pointerEvents="none"
-               >
-                  {connections.map((c) => (
-                     <path key={c.key} d={c.d} />
-                  ))}
-               </svg>
-
-               {/* Column headings (text only, positioned over the world). */}
-               {columns.map(({ tier, buildings }, colIdx) => (
-                  <div
-                     key={`hdr-${tier}`}
-                     className="tier-heading"
-                     style={{
-                        left: colIdx * (CARD_W + GAP_X),
-                        width: CARD_W,
-                     }}
-                  >
-                     Tier {tier}
-                     <span className="count">{buildings.length}</span>
-                  </div>
-               ))}
-
-               {/* Cards. */}
-               {[...layout.values()].map((c) => (
-                  <div
-                     key={c.building.key}
-                     className="card"
-                     style={{ left: c.x, top: c.y }}
-                  >
-                     <div className="card-title">{c.building.name}</div>
-                     <div className="card-subtitle">{subtitleFor(c.building)}</div>
-                  </div>
-               ))}
+               <TierWorld columns={columns} edges={edges} onCardClick={handleCardClick} />
             </div>
          </div>
+
+         {subgraph && (
+            <div className="modal-backdrop" onClick={() => setSelectedKey(null)}>
+               <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                  <header className="modal-header">
+                     <h3>
+                        Production line for{" "}
+                        <span className="modal-root-name">{subgraph.root?.name}</span>
+                        <span className="modal-count">{subgraph.count} buildings</span>
+                     </h3>
+                     <div className="modal-header-actions">
+                        <div className="zoom-readout">
+                           <span>{Math.round(modal.zoom * 100)}%</span>
+                           <button type="button" onClick={modal.reset}>
+                              Reset
+                           </button>
+                        </div>
+                        <button
+                           type="button"
+                           className="modal-close"
+                           aria-label="Close"
+                           onClick={() => setSelectedKey(null)}
+                        >
+                           ×
+                        </button>
+                     </div>
+                  </header>
+                  <div
+                     className="modal-body modal-viewport"
+                     ref={modal.viewportRef}
+                     onMouseDown={modal.onMouseDown}
+                     style={{ cursor: "grab" }}
+                  >
+                     <div
+                        className="world-transform"
+                        style={{
+                           transform: `translate(${modal.pan.x}px, ${modal.pan.y}px) scale(${modal.zoom})`,
+                           transformOrigin: "0 0",
+                        }}
+                     >
+                        <TierWorld
+                           columns={subgraph.columns}
+                           edges={subgraph.edges}
+                           highlightKey={selectedKey ?? undefined}
+                        />
+                     </div>
+                  </div>
+               </div>
+            </div>
+         )}
       </div>
    );
 };
