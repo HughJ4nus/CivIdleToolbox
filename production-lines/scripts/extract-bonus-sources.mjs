@@ -166,7 +166,6 @@ const wonderEntries = [
    { key: "NileRiver", effect: "+1 output to Wheat Farm" },
    { key: "ManhattanProject", effect: "+2 output to Uranium Mine" },
    { key: "ApolloProgram", effect: "+2 output to Rocket Factory" },
-   { key: "PortOfSingapore", effect: "Output of Warehouse/Caravansary/Market scales with wonder level" },
    { key: "Sputnik1", effect: "+level output/storage to Cosmodrome AND +level effective level to every Cold War Age GP" },
 
    // — Filter-based globals —
@@ -193,11 +192,19 @@ const wonderEntries = [
    { key: "TempleOfHeaven", effect: "+1 worker to every placed building with level ≥ 10" },
    { key: "TajMahal", effect: "+5 worker to every under-construction building with level ≥ 20" },
    { key: "Neuschwanstein", effect: "+10 worker to every incomplete world wonder" },
-   { key: "GreatOceanRoad", effect: "Level-boost equal to wonder level on every placed building (festival adds output too)" },
 
    // — Wonders that boost GP effective levels (LHC-style) —
    { key: "LargeHadronCollider", effect: "+(level+1) effective level to every Information Age GP this run (excl. level-boost GPs)" },
    { key: "Aphrodite", effect: "+1 effective level to every Classical Age GP this run (also has under-construction worker bonus we don't model)" },
+
+   // — Wonders that interact with trade tiles —
+   { key: "WorldTradeOrganization", effect: "+wtoLevel output multiplier to every trade tile bonus's target building (stacks per tile)" },
+   { key: "GreatOceanRoad", effect: "+wonderLevel level boost to every trade tile bonus's target building (Moomba festival adds +wonderLevel output too)" },
+   { key: "LakeLouise", effect: "+2 level boost to every ally trade tile's target building (modelled here as +2 per trade tile since we don't track ally state)" },
+
+   // — Wonders with a user-curated building list (manual approximation
+   //   of an adjacency-based effect we can't model directly) —
+   { key: "CathedralOfBrasilia", effect: "Each listed building gets +N output multiplier where N = list length (manual stand-in for the in-game 2-tile production-chain effect)" },
 
    // — Festival-only output globals —
    { key: "Poseidon", effect: "Global +1 output during festival" },
@@ -212,10 +219,10 @@ const LEVELABLE_WONDERS = new Set([
    "GreatOceanRoad",
    "LargeHadronCollider",
    "MatrioshkaBrain",
-   "PortOfSingapore",
    "Sputnik1",
    "SydneyHarbourBridge",
    "UnitedNations",
+   "WorldTradeOrganization",
 ]);
 
 // Civilization-specific wonders. Sourced from each civ's `uniqueBuildings`
@@ -257,8 +264,12 @@ const WONDER_CIVILIZATION = {
    // Australian — uniqueBuildings
    SydneyHarbourBridge: "Australian",
    GreatOceanRoad: "Australian",
+   // Canadian — naturalWonders
+   LakeLouise: "Canadian",
    // Russian — uniqueBuildings
    Sputnik1: "Russian",
+   // Brazilian — uniqueBuildings
+   CathedralOfBrasilia: "Brazilian",
 };
 const wonders = wonderEntries.map((w) => ({
    ...w,

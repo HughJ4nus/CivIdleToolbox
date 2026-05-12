@@ -203,6 +203,105 @@ body {
    cursor: pointer;
    margin-right: 22px;
 }
+/* Trade tile rows: a building dropdown + a remove "×" button. */
+.sidebar-trade-tile-row {
+   gap: 6px;
+}
+.sidebar-trade-tile-select {
+   flex: 1 1 auto;
+   min-width: 0;
+   background: var(--bg);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 3px;
+   padding: 3px 6px;
+   font-size: 12px;
+}
+.sidebar-trade-tile-select:focus {
+   outline: none;
+   border-color: var(--accent);
+}
+.sidebar-trade-tile-remove {
+   background: transparent;
+   color: var(--text-dim);
+   border: 1px solid var(--panel-edge);
+   border-radius: 3px;
+   width: 22px;
+   height: 22px;
+   line-height: 1;
+   font-size: 14px;
+   cursor: pointer;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+}
+.sidebar-trade-tile-remove:hover {
+   color: var(--accent);
+   border-color: var(--accent);
+}
+.sidebar-trade-tile-add {
+   margin: 6px 0 4px;
+   padding: 5px 8px;
+   width: 100%;
+   background: transparent;
+   color: var(--accent);
+   border: 1px dashed rgba(56, 196, 219, 0.45);
+   border-radius: 4px;
+   cursor: pointer;
+   font-size: 12px;
+}
+.sidebar-trade-tile-add:hover {
+   background: rgba(56, 196, 219, 0.08);
+}
+/* Cathedral of Brasília — special wonder row with an inline expandable
+   building list. Header puts name+effect on the left and the checkbox
+   on the right; expandable content stacks below. */
+.sidebar-row-cob {
+   align-items: stretch;
+}
+.sidebar-cob-header {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 10px;
+}
+.sidebar-cob-toggle {
+   margin-top: 6px;
+}
+.sidebar-cob-list {
+   margin: 4px 0 4px 12px;
+}
+
+/* Save import: button + status line. Lives just under the sidebar
+   tagline so the user notices it without scrolling. */
+.sidebar-import {
+   margin: 6px 0 12px;
+}
+.sidebar-import-btn {
+   width: 100%;
+   padding: 6px 8px;
+   background: var(--panel-2);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 4px;
+   font-size: 12px;
+   cursor: pointer;
+}
+.sidebar-import-btn:hover {
+   border-color: var(--accent);
+   color: var(--accent);
+}
+.sidebar-import-status {
+   margin-top: 4px;
+   font-size: 11px;
+   line-height: 1.3;
+}
+.sidebar-import-status.ok {
+   color: var(--accent);
+}
+.sidebar-import-status.err {
+   color: #ff8090;
+}
 .sidebar-list {
    list-style: none;
    margin: 4px 0 8px;
@@ -355,6 +454,13 @@ body {
    fill: none;
    stroke: rgba(255, 255, 255, 0.18);
    stroke-width: 1.25;
+   transition: stroke 100ms ease, stroke-width 100ms ease;
+}
+/* Hovered card: thicken + brighten edges flowing into it from lower
+   tiers (the only direction edges run in this graph). */
+.connection-layer path.edge-hover-incoming {
+   stroke: var(--accent);
+   stroke-width: 2.5;
 }
 
 .tier-heading {

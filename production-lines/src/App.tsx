@@ -12,6 +12,7 @@ import { computeChainAmounts, type ChainResult } from "./chain";
 import bonusSourcesData from "./data/bonus-sources.json";
 import buildingsData from "./data/buildings.json";
 import { countAdjacentCrossings, reorderByBarycenter, type Edge } from "./layout";
+import type { ParsedSave } from "./saveImport";
 import { Sidebar } from "./Sidebar";
 import { loadUserState, saveUserState } from "./userState";
 
@@ -284,7 +285,7 @@ const TierWorld = ({
    }, [columns]);
 
    const connections = useMemo(() => {
-      const lines: Array<{ d: string; key: string }> = [];
+      const lines: Array<{ d: string; key: string; consumer: string }> = [];
       for (let i = 0; i < edges.length; i++) {
          const e = edges[i];
          const producer = layout.get(e.producer);
@@ -296,10 +297,15 @@ const TierWorld = ({
          const cy = consumer.y + CARD_H / 2;
          const dx = (cx - px) * 0.5;
          const d = `M ${px},${py} C ${px + dx},${py} ${cx - dx},${cy} ${cx},${cy}`;
-         lines.push({ d, key: `${e.producer}->${e.consumer}-${i}` });
+         lines.push({ d, key: `${e.producer}->${e.consumer}-${i}`, consumer: e.consumer });
       }
       return lines;
    }, [edges, layout]);
+
+   // Track hovered card so we can highlight its incoming edges (edges
+   // strictly cross tiers in this graph, so "incoming" == "from lower
+   // tiers" — exactly what the user asked for).
+   const [hoverKey, setHoverKey] = useState<string | null>(null);
 
    return (
       <div
@@ -314,7 +320,11 @@ const TierWorld = ({
             pointerEvents="none"
          >
             {connections.map((c) => (
-               <path key={c.key} d={c.d} />
+               <path
+                  key={c.key}
+                  d={c.d}
+                  className={hoverKey === c.consumer ? "edge-hover-incoming" : undefined}
+               />
             ))}
          </svg>
 
@@ -352,6 +362,10 @@ const TierWorld = ({
                   className={className}
                   style={{ left: c.x, top: c.y } as CSSProperties}
                   onClick={onCardClick ? () => onCardClick(c.building.key) : undefined}
+                  onMouseEnter={() => setHoverKey(c.building.key)}
+                  onMouseLeave={() =>
+                     setHoverKey((k) => (k === c.building.key ? null : k))
+                  }
                >
                   <div className="card-title">{c.building.name}</div>
                   <div className="card-subtitle">{subtitleFor(c.building)}</div>
@@ -486,6 +500,91 @@ export const App = (): JSX.Element => {
          ageWisdom: { ...prev.ageWisdom, [age]: level },
       }));
    }, []);
+   // Trade tiles — list of { id, building }. Each tile contributes +5
+   // output to the chosen building (and WorldTradeOrganization adds
+   // +wtoLevel per tile on top, handled in the bonus resolver).
+   const onAddTradeTile = useCallback(() => {
+      setUserState((prev) => ({
+         ...prev,
+         tradeTiles: [
+            ...(prev.tradeTiles ?? []),
+            // crypto.randomUUID exists in all evergreen browsers; falls
+            // back to Math.random for the rare case it isn't present.
+            {
+               id:
+                  typeof crypto !== "undefined" && crypto.randomUUID
+                     ? crypto.randomUUID()
+                     : `tt-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+               building: "",
+            },
+         ],
+      }));
+   }, []);
+   const onRemoveTradeTile = useCallback((id: string) => {
+      setUserState((prev) => ({
+         ...prev,
+         tradeTiles: (prev.tradeTiles ?? []).filter((t) => t.id !== id),
+      }));
+   }, []);
+   const onTradeTileBuildingChange = useCallback(
+      (id: string, building: string) => {
+         setUserState((prev) => ({
+            ...prev,
+            tradeTiles: (prev.tradeTiles ?? []).map((t) =>
+               t.id === id ? { ...t, building } : t,
+            ),
+         }));
+      },
+      [],
+   );
+
+   // Cathedral of Brasília — manual building list. The user adds the
+   // buildings they have within 2 tiles of CoB; each gets +N output
+   // multiplier where N = list length (the in-game effect is
+   // adjacency-based and we don't model adjacency).
+   const onCobAddBuilding = useCallback(() => {
+      setUserState((prev) => ({
+         ...prev,
+         cathedralOfBrasiliaBuildings: [
+            ...(prev.cathedralOfBrasiliaBuildings ?? []),
+            "",
+         ],
+      }));
+   }, []);
+   const onCobRemoveBuilding = useCallback((index: number) => {
+      setUserState((prev) => ({
+         ...prev,
+         cathedralOfBrasiliaBuildings: (
+            prev.cathedralOfBrasiliaBuildings ?? []
+         ).filter((_, i) => i !== index),
+      }));
+   }, []);
+   const onCobBuildingChange = useCallback(
+      (index: number, building: string) => {
+         setUserState((prev) => ({
+            ...prev,
+            cathedralOfBrasiliaBuildings: (
+               prev.cathedralOfBrasiliaBuildings ?? []
+            ).map((b, i) => (i === index ? building : b)),
+         }));
+      },
+      [],
+   );
+
+   // Save import: replace GPs / wonders / Age of Wisdom with values from
+   // a parsed save file, but keep trade tiles + CoB list intact (they're
+   // either multiplayer state or a manual user-curated approximation
+   // that isn't reconstructable from the save).
+   const onImportSave = useCallback((parsed: ParsedSave) => {
+      setUserState((prev) => ({
+         greatPeople: parsed.greatPeople,
+         wonders: parsed.wonders,
+         ageWisdom: parsed.ageWisdom,
+         tradeTiles: prev.tradeTiles ?? [],
+         cathedralOfBrasiliaBuildings: prev.cathedralOfBrasiliaBuildings ?? [],
+      }));
+   }, []);
+
    // Testing helper: set every known great-person key to the given level.
    const onSetAllGpLevels = useCallback((level: number) => {
       setUserState((prev) => {
@@ -641,10 +740,20 @@ export const App = (): JSX.Element => {
                gpLevels={userState.greatPeople}
                wonderLevels={userState.wonders}
                ageWisdom={userState.ageWisdom}
+               tradeTiles={userState.tradeTiles ?? []}
+               cobBuildings={userState.cathedralOfBrasiliaBuildings ?? []}
+               allBuildings={allBuildings}
                onGpChange={onGpChange}
                onWonderChange={onWonderChange}
                onAgeWisdomChange={onAgeWisdomChange}
+               onAddTradeTile={onAddTradeTile}
+               onRemoveTradeTile={onRemoveTradeTile}
+               onTradeTileBuildingChange={onTradeTileBuildingChange}
+               onCobAddBuilding={onCobAddBuilding}
+               onCobRemoveBuilding={onCobRemoveBuilding}
+               onCobBuildingChange={onCobBuildingChange}
                onSetAllGpLevels={onSetAllGpLevels}
+               onImportSave={onImportSave}
             />
             <div
                className="viewport"

@@ -1303,13 +1303,6 @@
       "civilization": null
     },
     {
-      "key": "PortOfSingapore",
-      "effect": "Output of Warehouse/Caravansary/Market scales with wonder level",
-      "name": "Port of Singapore",
-      "levelable": true,
-      "civilization": null
-    },
-    {
       "key": "Sputnik1",
       "effect": "+level output/storage to Cosmodrome AND +level effective level to every Cold War Age GP",
       "name": "Sputnik 1",
@@ -1457,13 +1450,6 @@
       "civilization": null
     },
     {
-      "key": "GreatOceanRoad",
-      "effect": "Level-boost equal to wonder level on every placed building (festival adds output too)",
-      "name": "Great Ocean Road",
-      "levelable": true,
-      "civilization": "Australian"
-    },
-    {
       "key": "LargeHadronCollider",
       "effect": "+(level+1) effective level to every Information Age GP this run (excl. level-boost GPs)",
       "name": "Large Hadron Collider",
@@ -1476,6 +1462,34 @@
       "name": "Aphrodite",
       "levelable": false,
       "civilization": "Greek"
+    },
+    {
+      "key": "WorldTradeOrganization",
+      "effect": "+wtoLevel output multiplier to every trade tile bonus's target building (stacks per tile)",
+      "name": "World Trade Organization",
+      "levelable": true,
+      "civilization": null
+    },
+    {
+      "key": "GreatOceanRoad",
+      "effect": "+wonderLevel level boost to every trade tile bonus's target building (Moomba festival adds +wonderLevel output too)",
+      "name": "Great Ocean Road",
+      "levelable": true,
+      "civilization": "Australian"
+    },
+    {
+      "key": "LakeLouise",
+      "effect": "+2 level boost to every ally trade tile's target building (modelled here as +2 per trade tile since we don't track ally state)",
+      "name": "Lake Louise",
+      "levelable": false,
+      "civilization": "Canadian"
+    },
+    {
+      "key": "CathedralOfBrasilia",
+      "effect": "Each listed building gets +N output multiplier where N = list length (manual stand-in for the in-game 2-tile production-chain effect)",
+      "name": "Cathedral of Brasília",
+      "levelable": false,
+      "civilization": "Brazilian"
     },
     {
       "key": "Poseidon",

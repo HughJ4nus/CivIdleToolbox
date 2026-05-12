@@ -136,11 +136,6 @@ const WONDER_EFFECTS: Record<string, WonderEffect> = {
    ],
 
    // ── Per-building-type globals (level-scaled) ────────────────────────
-   PortOfSingapore: (level) => [
-      { building: "Warehouse", kind: "output", value: level },
-      { building: "Caravansary", kind: "output", value: level },
-      { building: "Market", kind: "output", value: level },
-   ],
    Sputnik1: (level) => [
       { building: "Cosmodrome", kind: "output", value: level },
    ],
@@ -252,6 +247,58 @@ const WONDER_GP_LEVEL_BOOSTS: Record<string, WonderGpLevelBoost> = {
    Aphrodite: () => [{ age: "ClassicalAge", value: 1 }],
 };
 
+// ── Trade tile bonuses ────────────────────────────────────────────────
+//
+// Per OnProductionComplete.tsx:159-213 in upstream:
+//   • Each owned trade tile gives +5 output to its building
+//     (`TRADE_TILE_BONUS = 5`)
+//   • WorldTradeOrganization adds +wtoLevel output per tile
+//   • GreatOceanRoad adds +wonderLevel LEVEL boost per tile
+//   • LakeLouise adds +2 LEVEL boost per ALLY tile (we don't track ally
+//     state, so we apply it to every trade tile as an over-approximation)
+//
+// All four are handled here because they share the per-tile loop.
+
+const applyTradeTileBonuses = (
+   out: Map<string, BuildingBonus>,
+   userState: UserState,
+): void => {
+   const tiles = userState.tradeTiles ?? [];
+   if (tiles.length === 0) return;
+   const wtoLevel = userState.wonders.WorldTradeOrganization ?? 0;
+   const gorLevel = userState.wonders.GreatOceanRoad ?? 0;
+   const hasLakeLouise = (userState.wonders.LakeLouise ?? 0) > 0;
+   for (const tile of tiles) {
+      if (!tile.building) continue;
+      apply(out, tile.building, {
+         source: "Trade tile bonus",
+         kind: "output",
+         value: 5,
+      });
+      if (wtoLevel > 0) {
+         apply(out, tile.building, {
+            source: `World Trade Organization (lvl ${wtoLevel})`,
+            kind: "output",
+            value: wtoLevel,
+         });
+      }
+      if (gorLevel > 0) {
+         apply(out, tile.building, {
+            source: `Great Ocean Road (lvl ${gorLevel})`,
+            kind: "level",
+            value: gorLevel,
+         });
+      }
+      if (hasLakeLouise) {
+         apply(out, tile.building, {
+            source: "Lake Louise (assumed ally)",
+            kind: "level",
+            value: 2,
+         });
+      }
+   }
+};
+
 // ── Top-level resolver ──────────────────────────────────────────────────
 
 export const resolveBuildingBonuses = (
@@ -316,6 +363,26 @@ export const resolveBuildingBonuses = (
       const source = `${wonder.name} (lvl ${level})`;
       for (const d of fn(level, ctx)) {
          apply(out, d.building, { source, kind: d.kind, value: d.value });
+      }
+   }
+
+   // Trade tiles + their interaction with WorldTradeOrganization.
+   applyTradeTileBonuses(out, userState);
+
+   // Cathedral of Brasília — manual stand-in for the in-game adjacency
+   // effect. When the wonder is owned and the user has added buildings
+   // to the chain list, each listed building gets +N output multiplier
+   // where N = list length. (In the game, N is the length of the
+   // production chain formed by all buildings within 2 tiles of CoB —
+   // we can't model adjacency here, so we let the user curate the list.)
+   const hasCob = (userState.wonders.CathedralOfBrasilia ?? 0) > 0;
+   const cobList = userState.cathedralOfBrasiliaBuildings ?? [];
+   if (hasCob && cobList.length > 0) {
+      const n = cobList.length;
+      const source = `Cathedral of Brasília (${n} in chain)`;
+      for (const buildingKey of cobList) {
+         if (!buildingKey) continue;
+         apply(out, buildingKey, { source, kind: "output", value: n });
       }
    }
 

@@ -1,5 +1,8 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import type { Building } from "./buildingTypes";
 import bonusData from "./data/bonus-sources.json";
+import { parseSaveFile, type ParsedSave } from "./saveImport";
+import type { TradeTileBonus } from "./userState";
 
 interface GreatPersonEntry {
    key: string;
@@ -97,26 +100,184 @@ const WonderRow = ({
    </li>
 );
 
+// Special-cased wonder row for Cathedral of Brasília. Same checkbox UX
+// as a normal non-levelable wonder, but with an inline expandable list
+// of buildings the user has added to the production chain. Each listed
+// building gets +N output multiplier where N = list length.
+const CathedralOfBrasiliaRow = ({
+   wonder,
+   level,
+   onChange,
+   buildings,
+   buildingOptions,
+   isOpen,
+   onToggleOpen,
+   onAdd,
+   onRemove,
+   onBuildingChange,
+}: {
+   wonder: WonderEntry;
+   level: number;
+   onChange: (key: string, level: number) => void;
+   buildings: string[];
+   buildingOptions: Building[];
+   isOpen: boolean;
+   onToggleOpen: () => void;
+   onAdd: () => void;
+   onRemove: (index: number) => void;
+   onBuildingChange: (index: number, building: string) => void;
+}): JSX.Element => {
+   const owned = level > 0;
+   return (
+      <li className="sidebar-row sidebar-row-cob">
+         <div className="sidebar-row-text" style={{ flex: "1 1 100%" }}>
+            <div className="sidebar-cob-header">
+               <div>
+                  <div className="sidebar-row-name">{wonder.name}</div>
+                  <div className="sidebar-row-effect">{wonder.effect}</div>
+               </div>
+               <input
+                  type="checkbox"
+                  className="sidebar-checkbox"
+                  checked={owned}
+                  onChange={(e) => onChange(wonder.key, e.target.checked ? 1 : 0)}
+                  title="Owned (this wonder isn't upgradeable in-game)"
+               />
+            </div>
+            {owned && (
+               <>
+                  <button
+                     type="button"
+                     className="sidebar-section-toggle sub sidebar-cob-toggle"
+                     onClick={onToggleOpen}
+                     aria-expanded={isOpen}
+                  >
+                     <span className="caret">{isOpen ? "▾" : "▸"}</span>
+                     Buildings in chain
+                     <span className="sidebar-age-count">
+                        {buildings.length > 0
+                           ? `${buildings.length} · +${buildings.length} to each`
+                           : 0}
+                     </span>
+                  </button>
+                  {isOpen && (
+                     <>
+                        <ul className="sidebar-list sidebar-cob-list">
+                           {buildings.map((b, i) => (
+                              <li
+                                 key={i}
+                                 className="sidebar-row sidebar-trade-tile-row"
+                              >
+                                 <select
+                                    className="sidebar-trade-tile-select"
+                                    value={b}
+                                    onChange={(e) =>
+                                       onBuildingChange(i, e.target.value)
+                                    }
+                                 >
+                                    <option value="">— pick a building —</option>
+                                    {buildingOptions.map((opt) => (
+                                       <option key={opt.key} value={opt.key}>
+                                          {opt.name}
+                                       </option>
+                                    ))}
+                                 </select>
+                                 <button
+                                    type="button"
+                                    className="sidebar-trade-tile-remove"
+                                    onClick={() => onRemove(i)}
+                                    title="Remove this building"
+                                    aria-label="Remove building"
+                                 >
+                                    ×
+                                 </button>
+                              </li>
+                           ))}
+                        </ul>
+                        <button
+                           type="button"
+                           className="sidebar-trade-tile-add"
+                           onClick={onAdd}
+                        >
+                           + Add building
+                        </button>
+                     </>
+                  )}
+               </>
+            )}
+         </div>
+      </li>
+   );
+};
+
 interface SidebarProps {
    gpLevels: Record<string, number>;
    wonderLevels: Record<string, number>;
    ageWisdom: Record<string, number>;
+   tradeTiles: TradeTileBonus[];
+   /** Cathedral of Brasília chain buildings — manual list the user
+    *  curates to stand in for the in-game adjacency-based effect. */
+   cobBuildings: string[];
+   /** All non-special production buildings, used to populate the trade
+    *  tile dropdown. */
+   allBuildings: Building[];
    onGpChange: (key: string, level: number) => void;
    onWonderChange: (key: string, level: number) => void;
    onAgeWisdomChange: (age: string, level: number) => void;
+   onAddTradeTile: () => void;
+   onRemoveTradeTile: (id: string) => void;
+   onTradeTileBuildingChange: (id: string, building: string) => void;
+   onCobAddBuilding: () => void;
+   onCobRemoveBuilding: (index: number) => void;
+   onCobBuildingChange: (index: number, building: string) => void;
    /** Bulk-set every GP's level (testing helper). */
    onSetAllGpLevels: (level: number) => void;
+   /** Replace GPs / wonders / Age of Wisdom with values parsed from a
+    *  player's save file. Trade tiles are preserved (they're a
+    *  multiplayer/server feature and aren't in the save). */
+   onImportSave: (parsed: ParsedSave) => void;
 }
 
 export const Sidebar = ({
    gpLevels,
    wonderLevels,
    ageWisdom,
+   tradeTiles,
+   allBuildings,
    onGpChange,
    onWonderChange,
    onAgeWisdomChange,
+   cobBuildings,
+   onAddTradeTile,
+   onRemoveTradeTile,
+   onTradeTileBuildingChange,
+   onCobAddBuilding,
+   onCobRemoveBuilding,
+   onCobBuildingChange,
    onSetAllGpLevels,
+   onImportSave,
 }: SidebarProps): JSX.Element => {
+   const fileInputRef = useRef<HTMLInputElement | null>(null);
+   const [importStatus, setImportStatus] = useState<{
+      kind: "ok" | "err";
+      msg: string;
+   } | null>(null);
+
+   const handleSaveFile = async (file: File): Promise<void> => {
+      try {
+         const parsed = await parseSaveFile(file);
+         onImportSave(parsed);
+         setImportStatus({
+            kind: "ok",
+            msg: `Imported ${parsed.stats.gpCount} GPs · ${parsed.stats.wonderCount} wonders · ${parsed.stats.ageWisdomCount} ages`,
+         });
+      } catch (e) {
+         setImportStatus({
+            kind: "err",
+            msg: `Couldn't read save: ${e instanceof Error ? e.message : "unknown error"}`,
+         });
+      }
+   };
    // Group great people by age, preserving the AGE_ORDER ordering.
    const groupedGPs = useMemo(() => {
       const buckets = new Map<string, GreatPersonEntry[]>();
@@ -132,6 +293,20 @@ export const Sidebar = ({
 
    // Only show Age of Wisdom inputs for ages that actually have GPs.
    const wisdomAges = useMemo(() => groupedGPs.map((g) => g.age), [groupedGPs]);
+
+   // Sorted list of buildings for the trade tile dropdown. The game only
+   // assigns trade tile bonuses to Classical-Age-and-later production
+   // buildings, but we don't have tech-age data per building locally —
+   // showing every non-special production building is a strict superset
+   // and harmless (the user picks what they actually have).
+   const tradeTileOptions = useMemo(
+      () =>
+         allBuildings
+            .filter((b) => !b.special)
+            .slice()
+            .sort((a, b) => a.name.localeCompare(b.name)),
+      [allBuildings],
+   );
 
    // Split wonders into universal vs civ-specific. Civ-specific are
    // grouped by civilization name so each civ gets its own collapsible
@@ -187,6 +362,31 @@ export const Sidebar = ({
             apply to chain math when you open a production line — cards that
             pick up a bonus show a pill with the effective output multiplier.
          </p>
+         <div className="sidebar-import">
+            <button
+               type="button"
+               className="sidebar-import-btn"
+               onClick={() => fileInputRef.current?.click()}
+            >
+               Import save file…
+            </button>
+            <input
+               ref={fileInputRef}
+               type="file"
+               style={{ display: "none" }}
+               onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) void handleSaveFile(f);
+                  // Reset so picking the same file twice still fires onChange.
+                  e.target.value = "";
+               }}
+            />
+            {importStatus && (
+               <div className={`sidebar-import-status ${importStatus.kind}`}>
+                  {importStatus.msg}
+               </div>
+            )}
+         </div>
 
          {/* Wonders — universal at the top, civ-specific in a sub-section
              grouped by civilization. Non-levelable wonders render as
@@ -263,14 +463,36 @@ export const Sidebar = ({
                                     </button>
                                     {open && (
                                        <ul className="sidebar-list">
-                                          {entries.map((w) => (
-                                             <WonderRow
-                                                key={w.key}
-                                                wonder={w}
-                                                level={wonderLevels[w.key] ?? 0}
-                                                onChange={onWonderChange}
-                                             />
-                                          ))}
+                                          {entries.map((w) =>
+                                             w.key === "CathedralOfBrasilia" ? (
+                                                <CathedralOfBrasiliaRow
+                                                   key={w.key}
+                                                   wonder={w}
+                                                   level={wonderLevels[w.key] ?? 0}
+                                                   onChange={onWonderChange}
+                                                   buildings={cobBuildings}
+                                                   buildingOptions={tradeTileOptions}
+                                                   isOpen={
+                                                      openSections.cobChain ?? false
+                                                   }
+                                                   onToggleOpen={() =>
+                                                      toggle("cobChain")
+                                                   }
+                                                   onAdd={onCobAddBuilding}
+                                                   onRemove={onCobRemoveBuilding}
+                                                   onBuildingChange={
+                                                      onCobBuildingChange
+                                                   }
+                                                />
+                                             ) : (
+                                                <WonderRow
+                                                   key={w.key}
+                                                   wonder={w}
+                                                   level={wonderLevels[w.key] ?? 0}
+                                                   onChange={onWonderChange}
+                                                />
+                                             ),
+                                          )}
                                        </ul>
                                     )}
                                  </div>
@@ -278,6 +500,64 @@ export const Sidebar = ({
                            })}
                      </div>
                   )}
+               </>
+            )}
+         </section>
+
+         {/* Trade tiles — each gives +5 output to its target building.
+             World Trade Organization additionally adds +wtoLevel per
+             tile (handled in the bonus resolver). */}
+         <section className="sidebar-section">
+            <button
+               type="button"
+               className="sidebar-section-toggle"
+               onClick={() => toggle("tradeTiles")}
+               aria-expanded={openSections.tradeTiles ?? false}
+            >
+               <span className="caret">
+                  {openSections.tradeTiles ? "▾" : "▸"}
+               </span>
+               Trade tiles
+               <span className="sidebar-age-count">{tradeTiles.length}</span>
+            </button>
+            {openSections.tradeTiles && (
+               <>
+                  <ul className="sidebar-list">
+                     {tradeTiles.map((tile) => (
+                        <li key={tile.id} className="sidebar-row sidebar-trade-tile-row">
+                           <select
+                              className="sidebar-trade-tile-select"
+                              value={tile.building}
+                              onChange={(e) =>
+                                 onTradeTileBuildingChange(tile.id, e.target.value)
+                              }
+                           >
+                              <option value="">— pick a building —</option>
+                              {tradeTileOptions.map((b) => (
+                                 <option key={b.key} value={b.key}>
+                                    {b.name}
+                                 </option>
+                              ))}
+                           </select>
+                           <button
+                              type="button"
+                              className="sidebar-trade-tile-remove"
+                              onClick={() => onRemoveTradeTile(tile.id)}
+                              title="Remove this trade tile"
+                              aria-label="Remove trade tile"
+                           >
+                              ×
+                           </button>
+                        </li>
+                     ))}
+                  </ul>
+                  <button
+                     type="button"
+                     className="sidebar-trade-tile-add"
+                     onClick={onAddTradeTile}
+                  >
+                     + Add trade tile
+                  </button>
                </>
             )}
          </section>
