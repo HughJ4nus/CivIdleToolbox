@@ -669,6 +669,16 @@ export const App = (): JSX.Element => {
       setPerBuildingLevels((prev) => ({ ...prev, [key]: level }));
    }, []);
 
+   // Bulk-set every building's level in the open production line. Pushes
+   // the value to rootLevel AND clears per-card overrides so the chain
+   // math uniformly uses N for every card.
+   const onSetAllChainLevels = useCallback((level: number) => {
+      const clamped = Math.max(1, Math.floor(level || 1));
+      setRootLevel(clamped);
+      setPerBuildingLevels({});
+   }, []);
+   const [bulkChainLevel, setBulkChainLevel] = useState(10);
+
    // The root's amount lives in `rootAmount` so the modal header can edit
    // it; non-root amounts go into `perBuildingAmounts`. Both paths funnel
    // through this one callback so the card UI can stay uniform.
@@ -694,6 +704,44 @@ export const App = (): JSX.Element => {
       () => new Set(Object.keys(perBuildingAmounts)),
       [perBuildingAmounts],
    );
+
+   // Derived data for the modal's right-hand rundown panel.
+   //   • Final output = root building's outputPerTick (already includes
+   //     bonuses + level + amount).
+   //   • Per-building list sorted by tier descending (top of chain at
+   //     the top), then alphabetical for stable order within a tier.
+   //   • Happiness cost = total building count − distinct types
+   //     (each building costs 1 happiness, but ONE per type is free).
+   const rundown = useMemo(() => {
+      if (!subgraph || !chainResults || !selectedKey) return null;
+      const entries = subgraph.buildings
+         .map((b) => {
+            const r = chainResults.get(b.key);
+            return r ? { building: b, result: r } : null;
+         })
+         .filter((e): e is { building: Building; result: ChainResult } => e != null)
+         .filter((e) => e.result.amount > 0);
+      entries.sort((a, b) => {
+         const ta = a.building.tier ?? 0;
+         const tb = b.building.tier ?? 0;
+         if (tb !== ta) return tb - ta;
+         return a.building.name.localeCompare(b.building.name);
+      });
+      const totalBuildings = entries.reduce((s, e) => s + e.result.amount, 0);
+      const distinctTypes = entries.length;
+      const happiness = Math.max(0, totalBuildings - distinctTypes);
+      const rootResult = chainResults.get(selectedKey);
+      const finalOutput = rootResult
+         ? [...rootResult.outputPerTick.entries()].filter(([, n]) => n > 0)
+         : [];
+      return {
+         entries,
+         totalBuildings,
+         distinctTypes,
+         happiness,
+         finalOutput,
+      };
+   }, [subgraph, chainResults, selectedKey]);
 
    // ── Pan + zoom: one independent state for the main view, one for the
    //    modal. The modal viewport is mounted/unmounted with selectedKey,
@@ -788,6 +836,29 @@ export const App = (): JSX.Element => {
                         <span className="modal-count">{subgraph.count} buildings</span>
                      </h3>
                      <div className="modal-header-actions">
+                        <label
+                           className="modal-bulk-level"
+                           title="Apply this level to every building in the chain (clears per-card overrides)"
+                        >
+                           Set all levels
+                           <input
+                              type="number"
+                              min={1}
+                              max={99}
+                              value={bulkChainLevel}
+                              onChange={(e) =>
+                                 setBulkChainLevel(
+                                    Math.max(1, Math.floor(Number(e.target.value) || 1)),
+                                 )
+                              }
+                           />
+                           <button
+                              type="button"
+                              onClick={() => onSetAllChainLevels(bulkChainLevel)}
+                           >
+                              Apply
+                           </button>
+                        </label>
                         <div className="zoom-readout">
                            <span>{Math.round(modal.zoom * 100)}%</span>
                            <button type="button" onClick={modal.reset}>
@@ -804,30 +875,88 @@ export const App = (): JSX.Element => {
                         </button>
                      </div>
                   </header>
-                  <div
-                     className="modal-body modal-viewport"
-                     ref={modal.viewportRef}
-                     onMouseDown={modal.onMouseDown}
-                     style={{ cursor: "grab" }}
-                  >
+                  <div className="modal-main">
                      <div
-                        className="world-transform"
-                        style={{
-                           transform: `translate(${modal.pan.x}px, ${modal.pan.y}px) scale(${modal.zoom})`,
-                           transformOrigin: "0 0",
-                        }}
+                        className="modal-body modal-viewport"
+                        ref={modal.viewportRef}
+                        onMouseDown={modal.onMouseDown}
+                        style={{ cursor: "grab" }}
                      >
-                        <TierWorld
-                           columns={subgraph.columns}
-                           edges={subgraph.edges}
-                           highlightKey={selectedKey ?? undefined}
-                           chainResults={chainResults}
-                           onLevelChange={onLevelChange}
-                           onAmountChange={onAmountChange}
-                           amountOverrideKeys={amountOverrideKeysSet}
-                           bonuses={bonuses}
-                        />
+                        <div
+                           className="world-transform"
+                           style={{
+                              transform: `translate(${modal.pan.x}px, ${modal.pan.y}px) scale(${modal.zoom})`,
+                              transformOrigin: "0 0",
+                           }}
+                        >
+                           <TierWorld
+                              columns={subgraph.columns}
+                              edges={subgraph.edges}
+                              highlightKey={selectedKey ?? undefined}
+                              chainResults={chainResults}
+                              onLevelChange={onLevelChange}
+                              onAmountChange={onAmountChange}
+                              amountOverrideKeys={amountOverrideKeysSet}
+                              bonuses={bonuses}
+                           />
+                        </div>
                      </div>
+                     {rundown && (
+                        <aside className="modal-rundown">
+                           <section className="rundown-section">
+                              <h4>Final output</h4>
+                              {rundown.finalOutput.length === 0 ? (
+                                 <div className="rundown-empty">— set an amount —</div>
+                              ) : (
+                                 <ul className="rundown-output-list">
+                                    {rundown.finalOutput.map(([mat, n]) => (
+                                       <li key={mat}>
+                                          <span className="rundown-num">
+                                             {n.toLocaleString(undefined, {
+                                                maximumFractionDigits: 1,
+                                             })}
+                                          </span>
+                                          <span className="rundown-mat">{mat}</span>
+                                          <span className="rundown-per">/tick</span>
+                                       </li>
+                                    ))}
+                                 </ul>
+                              )}
+                           </section>
+                           <section className="rundown-section">
+                              <h4>Happiness cost</h4>
+                              <div className="rundown-happiness">
+                                 <span className="rundown-happiness-num">
+                                    {rundown.happiness}
+                                 </span>
+                                 <span className="rundown-happiness-detail">
+                                    {rundown.totalBuildings} buildings ·{" "}
+                                    {rundown.distinctTypes} types
+                                    <br />
+                                    <em>(1 of each type is free)</em>
+                                 </span>
+                              </div>
+                           </section>
+                           <section className="rundown-section">
+                              <h4>Buildings ({rundown.totalBuildings})</h4>
+                              <ul className="rundown-buildings">
+                                 {rundown.entries.map(({ building, result }) => (
+                                    <li key={building.key}>
+                                       <span className="rundown-amount">
+                                          ×{result.amount}
+                                       </span>
+                                       <span className="rundown-name">
+                                          {building.name}
+                                       </span>
+                                       <span className="rundown-meta">
+                                          T{building.tier} · lvl {result.level}
+                                       </span>
+                                    </li>
+                                 ))}
+                              </ul>
+                           </section>
+                        </aside>
+                     )}
                   </div>
                </div>
             </div>
