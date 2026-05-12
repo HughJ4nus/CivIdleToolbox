@@ -1,0 +1,171 @@
+:root {
+   color-scheme: dark;
+   --bg: #0c1622;
+   --panel: #14202e;
+   --panel-2: #1c2a3a;
+   --panel-edge: #2a3a4f;
+   --border: #2a3a4f;
+   --text: #e6ecf2;
+   --text-dim: #8aa0b8;
+   --accent: #7dd3fc;
+
+   /* Layout numbers — must match the constants in App.tsx
+      (CARD_W, CARD_H, GAP_X, GAP_Y, HEADING_H). */
+   --card-w: 220px;
+   --card-h: 80px;
+   --gap-x: 110px;
+   --gap-y: 40px;
+   --heading-h: 30px;
+}
+
+* {
+   box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+   margin: 0;
+   padding: 0;
+   height: 100%;
+}
+
+body {
+   background: var(--bg);
+   color: var(--text);
+   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+   font-size: 14px;
+   overflow: hidden;
+}
+
+.app {
+   display: flex;
+   flex-direction: column;
+   height: 100vh;
+}
+
+.topbar {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+   padding: 12px 18px;
+   background: var(--panel);
+   border-bottom: 1px solid var(--border);
+   flex-shrink: 0;
+}
+.topbar h1 {
+   margin: 0;
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 18px;
+   letter-spacing: 0.02em;
+}
+.topbar .tagline {
+   color: var(--text-dim);
+   margin-left: 12px;
+   font-size: 12px;
+}
+.zoom-readout {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   color: var(--text-dim);
+   font-variant-numeric: tabular-nums;
+   font-size: 12px;
+}
+.zoom-readout button {
+   background: var(--panel-2);
+   color: var(--text);
+   border: 1px solid var(--border);
+   border-radius: 4px;
+   padding: 4px 10px;
+   font-size: 12px;
+   cursor: pointer;
+}
+.zoom-readout button:hover {
+   background: #243345;
+}
+
+.viewport {
+   flex: 1 1 auto;
+   position: relative;
+   overflow: hidden;
+   touch-action: none;
+}
+
+/* The world is the transformable surface. Cards and the SVG line layer
+   are positioned absolutely inside it so we can compute connection paths
+   from the same numbers React uses to lay out the cards. */
+.world {
+   position: absolute;
+   top: 0;
+   left: 0;
+   will-change: transform;
+}
+
+/* Connection layer sits at z=0; cards sit on top at z=1. */
+.connection-layer {
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: 0;
+}
+.connection-layer path {
+   fill: none;
+   stroke: rgba(255, 255, 255, 0.18);
+   stroke-width: 1.25;
+}
+
+.tier-heading {
+   position: absolute;
+   top: 0;
+   height: var(--heading-h);
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   font-size: 11px;
+   font-weight: 600;
+   text-transform: uppercase;
+   letter-spacing: 0.08em;
+   color: var(--text-dim);
+   padding: 0 4px;
+   z-index: 1;
+}
+.tier-heading .count {
+   color: var(--text-dim);
+   font-weight: 400;
+   font-size: 11px;
+   background: var(--panel-2);
+   border: 1px solid var(--border);
+   padding: 1px 6px;
+   border-radius: 10px;
+}
+
+.card {
+   position: absolute;
+   width: var(--card-w);
+   height: var(--card-h);
+   background: linear-gradient(180deg, #18253b 0%, #11192b 100%);
+   border: 1px solid var(--panel-edge);
+   border-radius: 6px;
+   padding: 12px 18px;
+   text-align: center;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   gap: 4px;
+   box-shadow: inset 0 0 0 4px transparent, inset 0 0 0 5px rgba(255, 255, 255, 0.05);
+   z-index: 1;
+}
+.card-title {
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 17px;
+   line-height: 1.15;
+   color: var(--text);
+}
+.card-subtitle {
+   font-size: 11.5px;
+   color: var(--text-dim);
+   line-height: 1.3;
+}
