@@ -6,10 +6,14 @@ import {
    useState,
    type CSSProperties,
 } from "react";
+import { resolveBuildingBonuses, type BuildingBonus } from "./bonusResolver";
 import type { Building } from "./buildingTypes";
 import { computeChainAmounts, type ChainResult } from "./chain";
+import bonusSourcesData from "./data/bonus-sources.json";
 import buildingsData from "./data/buildings.json";
 import { countAdjacentCrossings, reorderByBarycenter, type Edge } from "./layout";
+import { Sidebar } from "./Sidebar";
+import { loadUserState, saveUserState } from "./userState";
 
 interface Column {
    tier: number;
@@ -242,6 +246,9 @@ interface TierWorldProps {
    /** Set of building keys that have a user-set amount override (so the
     *  card UI can show the input as "overridden" rather than computed). */
    amountOverrideKeys?: Set<string>;
+   /** Per-building bonus contributions from GPs / wonders / Age of Wisdom.
+    *  Used purely for display — the bonuses are baked into chainResults. */
+   bonuses?: Map<string, BuildingBonus>;
 }
 
 const TierWorld = ({
@@ -253,6 +260,7 @@ const TierWorld = ({
    onLevelChange,
    onAmountChange,
    amountOverrideKeys,
+   bonuses,
 }: TierWorldProps): JSX.Element => {
    const layout = useMemo(() => {
       const map = new Map<string, CardPos>();
@@ -324,7 +332,20 @@ const TierWorld = ({
          {[...layout.values()].map((c) => {
             const isHighlight = highlightKey === c.building.key;
             const result = chainResults?.get(c.building.key);
-            const className = `card${isHighlight ? " card-highlight" : ""}${onCardClick ? " card-clickable" : ""}${result ? " card-with-chain" : ""}`;
+            const bonus = bonuses?.get(c.building.key);
+            const hasBonus =
+               bonus != null &&
+               (bonus.outputMultiplier > 0 || bonus.levelBoost > 0);
+            const className = `card${isHighlight ? " card-highlight" : ""}${onCardClick ? " card-clickable" : ""}${result ? " card-with-chain" : ""}${hasBonus ? " card-bonused" : ""}`;
+            // Build a tooltip that lists every contributor to this building.
+            const bonusTooltip = hasBonus
+               ? bonus!.contributors
+                    .map(
+                       (s) =>
+                          `${s.source} → ${s.kind === "level" ? `+${s.value} level` : `+${s.value} ${s.kind}`}`,
+                    )
+                    .join("\n")
+               : undefined;
             return (
                <div
                   key={c.building.key}
@@ -334,6 +355,20 @@ const TierWorld = ({
                >
                   <div className="card-title">{c.building.name}</div>
                   <div className="card-subtitle">{subtitleFor(c.building)}</div>
+                  {hasBonus && (
+                     <div className="card-bonus-row" title={bonusTooltip}>
+                        {bonus!.outputMultiplier > 0 && (
+                           <span className="card-bonus-pill">
+                              +{Math.round(bonus!.outputMultiplier * 100)}% out
+                           </span>
+                        )}
+                        {bonus!.levelBoost > 0 && (
+                           <span className="card-bonus-pill">
+                              +{bonus!.levelBoost} lvl
+                           </span>
+                        )}
+                     </div>
+                  )}
                   {result && (
                      <div className="card-chain-row">
                         {/* Amount is editable on every card. The root's
@@ -426,6 +461,46 @@ export const App = (): JSX.Element => {
       [columns],
    );
 
+   // ── Sidebar: user-set GP + wonder levels, persisted to localStorage.
+   // Resolves into per-building output / level bonuses below; the chain
+   // math then applies those bonuses to the modal's amount calculations.
+   const [userState, setUserState] = useState(() => loadUserState());
+   useEffect(() => {
+      saveUserState(userState);
+   }, [userState]);
+   const onGpChange = useCallback((key: string, level: number) => {
+      setUserState((prev) => ({
+         ...prev,
+         greatPeople: { ...prev.greatPeople, [key]: level },
+      }));
+   }, []);
+   const onWonderChange = useCallback((key: string, level: number) => {
+      setUserState((prev) => ({
+         ...prev,
+         wonders: { ...prev.wonders, [key]: level },
+      }));
+   }, []);
+   const onAgeWisdomChange = useCallback((age: string, level: number) => {
+      setUserState((prev) => ({
+         ...prev,
+         ageWisdom: { ...prev.ageWisdom, [age]: level },
+      }));
+   }, []);
+   // Testing helper: set every known great-person key to the given level.
+   const onSetAllGpLevels = useCallback((level: number) => {
+      setUserState((prev) => {
+         const greatPeople: Record<string, number> = {};
+         // Pull keys from the bonus-sources data so this covers exactly
+         // the GPs the sidebar lists.
+         for (const gp of (
+            (bonusSourcesData as { greatPeople: { key: string }[] }).greatPeople
+         )) {
+            greatPeople[gp.key] = level;
+         }
+         return { ...prev, greatPeople };
+      });
+   }, []);
+
    // ── Modal: clicking a card opens a filtered view of just that line ──
    const [selectedKey, setSelectedKey] = useState<string | null>(null);
    const [rootAmount, setRootAmount] = useState(1);
@@ -450,6 +525,14 @@ export const App = (): JSX.Element => {
       };
    }, [selectedKey, edges, allBuildings]);
 
+   // Translate sidebar inputs into per-building bonus contributions.
+   // Computed once (not just for the modal) so the main view can also
+   // surface a bonus pill on each card.
+   const bonuses = useMemo(
+      () => resolveBuildingBonuses(userState, allBuildings),
+      [userState, allBuildings],
+   );
+
    // Run the chain math whenever the inputs change. Display only — no
    // mutation of the columns themselves.
    const chainResults = useMemo(() => {
@@ -461,8 +544,9 @@ export const App = (): JSX.Element => {
          levelOverrides: perBuildingLevels,
          amountOverrides: perBuildingAmounts,
          subgraph: subgraph.buildings,
+         bonuses,
       });
-   }, [subgraph, selectedKey, rootAmount, rootLevel, perBuildingLevels, perBuildingAmounts]);
+   }, [subgraph, selectedKey, rootAmount, rootLevel, perBuildingLevels, perBuildingAmounts, bonuses]);
 
    useEffect(() => {
       if (!selectedKey) return;
@@ -552,20 +636,36 @@ export const App = (): JSX.Element => {
                </button>
             </div>
          </header>
-         <div
-            className="viewport"
-            ref={main.viewportRef}
-            onMouseDown={main.onMouseDown}
-            style={{ cursor: "grab" }}
-         >
+         <div className="main">
+            <Sidebar
+               gpLevels={userState.greatPeople}
+               wonderLevels={userState.wonders}
+               ageWisdom={userState.ageWisdom}
+               onGpChange={onGpChange}
+               onWonderChange={onWonderChange}
+               onAgeWisdomChange={onAgeWisdomChange}
+               onSetAllGpLevels={onSetAllGpLevels}
+            />
             <div
-               className="world-transform"
-               style={{
-                  transform: `translate(${main.pan.x}px, ${main.pan.y}px) scale(${main.zoom})`,
-                  transformOrigin: "0 0",
-               }}
+               className="viewport"
+               ref={main.viewportRef}
+               onMouseDown={main.onMouseDown}
+               style={{ cursor: "grab" }}
             >
-               <TierWorld columns={columns} edges={edges} onCardClick={handleCardClick} />
+               <div
+                  className="world-transform"
+                  style={{
+                     transform: `translate(${main.pan.x}px, ${main.pan.y}px) scale(${main.zoom})`,
+                     transformOrigin: "0 0",
+                  }}
+               >
+                  <TierWorld
+                     columns={columns}
+                     edges={edges}
+                     onCardClick={handleCardClick}
+                     bonuses={bonuses}
+                  />
+               </div>
             </div>
          </div>
 
@@ -616,6 +716,7 @@ export const App = (): JSX.Element => {
                            onLevelChange={onLevelChange}
                            onAmountChange={onAmountChange}
                            amountOverrideKeys={amountOverrideKeysSet}
+                           bonuses={bonuses}
                         />
                      </div>
                   </div>

@@ -7,7 +7,8 @@
       "dev": "vite",
       "build": "tsc -b && vite build",
       "preview": "vite preview",
-      "extract": "node scripts/extract-buildings.mjs"
+      "extract": "node scripts/extract-buildings.mjs",
+      "extract:bonus": "node scripts/extract-bonus-sources.mjs"
    },
    "dependencies": {
       "react": "^18.3.1",
