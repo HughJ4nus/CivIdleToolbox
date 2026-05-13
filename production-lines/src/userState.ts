@@ -62,6 +62,26 @@ export interface UserState {
     *  Faraday, …) lets the player pick ONE building to boost. Format
     *  is gp key → building key. Empty / missing entries mean unassigned. */
    adaptiveGreatPeople: Record<string, string>;
+   /** Preferred Faith producer key (Shrine / Church / Mosque / Pagoda).
+    *  Only Shrine is universally available; the others are unlocked by
+    *  Luxor Temple's chosen Religion direction (Christianity / Islam /
+    *  Buddhism respectively). When set, chain math uses only this
+    *  building as a Faith producer instead of splitting demand. */
+   preferredFaithBuilding?: string;
+   /** Per-building electrification level. Adds directly to effective
+    *  level (output scales linearly) at the cost of round(4^level)
+    *  Power per tile. Capped to the building's actual level upstream. */
+   electrificationOverrides?: Record<string, number>;
+   /** Default electrification applied to every electrifiable card in
+    *  the production line unless an override is set. */
+   defaultElectrification?: number;
+   /** When true, the rundown's power-plant count uses FusionPowerPlant
+    *  output as the supply; otherwise NuclearPowerPlant. */
+   useFusionPower?: boolean;
+   /** Material a CloneFactory / CloneLab root is cloning. The chain
+    *  treats the clone building as `input: {[target]: 1}, output:
+    *  {[target]: 2}` (per upstream IntraTickCache.ts:142). */
+   cloneFactoryTarget?: string;
 }
 
 const empty = (): UserState => ({
@@ -146,6 +166,28 @@ export const loadUserState = (): UserState => {
             typeof parsed.adaptiveGreatPeople === "object"
                ? parsed.adaptiveGreatPeople
                : {},
+         preferredFaithBuilding:
+            typeof parsed.preferredFaithBuilding === "string"
+               ? parsed.preferredFaithBuilding
+               : undefined,
+         electrificationOverrides:
+            parsed.electrificationOverrides &&
+            typeof parsed.electrificationOverrides === "object"
+               ? parsed.electrificationOverrides
+               : undefined,
+         defaultElectrification:
+            typeof parsed.defaultElectrification === "number" &&
+            parsed.defaultElectrification >= 0
+               ? parsed.defaultElectrification
+               : undefined,
+         useFusionPower:
+            typeof parsed.useFusionPower === "boolean"
+               ? parsed.useFusionPower
+               : undefined,
+         cloneFactoryTarget:
+            typeof parsed.cloneFactoryTarget === "string"
+               ? parsed.cloneFactoryTarget
+               : undefined,
       };
    } catch {
       return empty();

@@ -46,10 +46,10 @@ const subtitleFor = (b: Building): string => {
 };
 
 // Layout constants — must match the CSS variables.
-const CARD_W = 220;
-const CARD_H = 110;
+const CARD_W = 240;
+const CARD_H = 140;
 const GAP_X = 110;
-const GAP_Y = 55; // half of CARD_H
+const GAP_Y = 70; // half of CARD_H
 const HEADING_H = 30;
 const TOP_PAD = GAP_Y;
 
@@ -341,6 +341,14 @@ interface TierWorldProps {
    /** When provided, each card shows its calculated amount + an editable level. */
    chainResults?: Map<string, ChainResult>;
    onLevelChange?: (key: string, level: number) => void;
+   /** Per-card electrification level. Optional — when undefined the
+    *  Elec input doesn't render. */
+   onElectrificationChange?: (key: string, value: number) => void;
+   /** Clone-factory cloning target + dropdown options. Render a
+    *  dropdown on CloneFactory / CloneLab cards. */
+   cloneFactoryTarget?: string;
+   cloneFactoryOptions?: string[];
+   onCloneFactoryTargetChange?: (material: string) => void;
    /** Pass `null` as amount to clear an override; otherwise an integer. */
    onAmountChange?: (key: string, amount: number | null) => void;
    /** Set of building keys that have a user-set amount override (so the
@@ -349,6 +357,10 @@ interface TierWorldProps {
    /** Per-building bonus contributions from GPs / wonders / Age of Wisdom.
     *  Used purely for display — the bonuses are baked into chainResults. */
    bonuses?: Map<string, BuildingBonus>;
+   /** Per-instance card height override. The dropdown rendered on
+    *  CloneFactory cards needs an extra row of vertical space; the
+    *  modal bumps this so EVERY card in that line stays uniform. */
+   cardHeight?: number;
 }
 
 const TierWorld = ({
@@ -358,30 +370,41 @@ const TierWorld = ({
    highlightKey,
    chainResults,
    onLevelChange,
+   onElectrificationChange,
    onAmountChange,
    amountOverrideKeys,
    bonuses,
+   cloneFactoryTarget,
+   cloneFactoryOptions,
+   onCloneFactoryTargetChange,
+   cardHeight,
 }: TierWorldProps): JSX.Element => {
+   // Local card-height override: cloned-factory mode bumps it so the
+   // extra dropdown row fits without overflowing the card. GAP_Y is
+   // kept proportional (half card height — same invariant the CSS
+   // variables hold).
+   const cardH = cardHeight ?? CARD_H;
+   const gapY = Math.round(cardH / 2);
    const layout = useMemo(() => {
       const map = new Map<string, CardPos>();
       columns.forEach((col, colIdx) => {
          const x = colIdx * (CARD_W + GAP_X);
          col.buildings.forEach((b, rowIdx) => {
-            const y = HEADING_H + TOP_PAD + rowIdx * (CARD_H + GAP_Y);
+            const y = HEADING_H + TOP_PAD + rowIdx * (cardH + gapY);
             map.set(b.key, { x, y, building: b });
          });
       });
       return map;
-   }, [columns]);
+   }, [columns, cardH, gapY]);
 
    const worldDims = useMemo(() => {
       const colCount = columns.length;
       const maxRows = columns.reduce((m, c) => Math.max(m, c.buildings.length), 0);
       return {
          width: Math.max(1, colCount * CARD_W + Math.max(0, colCount - 1) * GAP_X),
-         height: Math.max(1, HEADING_H + TOP_PAD + maxRows * CARD_H + Math.max(0, maxRows - 1) * GAP_Y),
+         height: Math.max(1, HEADING_H + TOP_PAD + maxRows * cardH + Math.max(0, maxRows - 1) * gapY),
       };
-   }, [columns]);
+   }, [columns, cardH, gapY]);
 
    const connections = useMemo(() => {
       const lines: Array<{ d: string; key: string; consumer: string }> = [];
@@ -391,15 +414,15 @@ const TierWorld = ({
          const consumer = layout.get(e.consumer);
          if (!producer || !consumer) continue;
          const px = producer.x + CARD_W;
-         const py = producer.y + CARD_H / 2;
+         const py = producer.y + cardH / 2;
          const cx = consumer.x;
-         const cy = consumer.y + CARD_H / 2;
+         const cy = consumer.y + cardH / 2;
          const dx = (cx - px) * 0.5;
          const d = `M ${px},${py} C ${px + dx},${py} ${cx - dx},${cy} ${cx},${cy}`;
          lines.push({ d, key: `${e.producer}->${e.consumer}-${i}`, consumer: e.consumer });
       }
       return lines;
-   }, [edges, layout]);
+   }, [edges, layout, cardH]);
 
    // Track hovered card so we can highlight its incoming edges (edges
    // strictly cross tiers in this graph, so "incoming" == "from lower
@@ -409,7 +432,11 @@ const TierWorld = ({
    return (
       <div
          className="tier-world"
-         style={{ width: worldDims.width, height: worldDims.height }}
+         style={{
+            width: worldDims.width,
+            height: worldDims.height,
+            ...(cardHeight ? ({ "--card-h": `${cardHeight}px` } as CSSProperties) : {}),
+         }}
       >
          <svg
             className="connection-layer"
@@ -468,6 +495,27 @@ const TierWorld = ({
                >
                   <div className="card-title">{c.building.name}</div>
                   <div className="card-subtitle">{subtitleFor(c.building)}</div>
+                  {(c.building.key === "CloneFactory" ||
+                     c.building.key === "CloneLab") &&
+                     onCloneFactoryTargetChange &&
+                     cloneFactoryOptions && (
+                        <select
+                           className="card-clone-target"
+                           value={cloneFactoryTarget ?? ""}
+                           onClick={(e) => e.stopPropagation()}
+                           onMouseDown={(e) => e.stopPropagation()}
+                           onChange={(e) =>
+                              onCloneFactoryTargetChange(e.target.value)
+                           }
+                        >
+                           <option value="">— clone what? —</option>
+                           {cloneFactoryOptions.map((m) => (
+                              <option key={m} value={m}>
+                                 {m}
+                              </option>
+                           ))}
+                        </select>
+                     )}
                   {hasBonus && (
                      <div className="card-bonus-row" title={bonusTooltip}>
                         {bonus!.outputMultiplier > 0 && (
@@ -537,14 +585,49 @@ const TierWorld = ({
                                  onLevelChange?.(c.building.key, v);
                               }}
                            />
-                           {bonus && bonus.levelBoost > 0 && (
-                              <span
-                                 className="card-level-boost"
-                                 title={`+${bonus.levelBoost} from bonuses (effective ${result.effectiveLevel})`}
-                              >
-                                 +{bonus.levelBoost}
-                              </span>
-                           )}
+                           {(() => {
+                              const boost = bonus?.levelBoost ?? 0;
+                              const elec = result.electrification;
+                              const total = boost + elec;
+                              if (total <= 0) return null;
+                              const parts: string[] = [];
+                              if (boost > 0) parts.push(`+${boost} from bonuses`);
+                              if (elec > 0) parts.push(`+${elec} from electrification`);
+                              return (
+                                 <span
+                                    className="card-level-boost"
+                                    title={`${parts.join(" · ")} (effective ${result.effectiveLevel})`}
+                                 >
+                                    +{total}
+                                 </span>
+                              );
+                           })()}
+                        </label>
+                     </div>
+                  )}
+                  {result && onElectrificationChange && (
+                     <div className="card-elec-row">
+                        <label
+                           className="card-level card-elec"
+                           title={
+                              result.electrification > 0
+                                 ? `+${result.electrification} effective level · ${result.powerDemand.toLocaleString()} Power demand`
+                                 : "Electrification level (each tier-up costs round(4^level) Power per tile)"
+                           }
+                        >
+                           Elec
+                           <input
+                              type="number"
+                              min={0}
+                              max={result.level}
+                              value={result.electrification}
+                              onClick={(e) => e.stopPropagation()}
+                              onMouseDown={(e) => e.stopPropagation()}
+                              onChange={(e) => {
+                                 const v = Math.max(0, Math.floor(Number(e.target.value) || 0));
+                                 onElectrificationChange(c.building.key, v);
+                              }}
+                           />
                         </label>
                      </div>
                   )}
@@ -844,20 +927,115 @@ export const App = (): JSX.Element => {
 
    const subgraph = useMemo(() => {
       if (!selectedKey) return null;
-      const lineKeys = computeProductionLine(selectedKey, edges);
-      const subBuildings = allBuildings.filter((b) => lineKeys.has(b.key));
+      // CloneFactory / CloneLab roots only matter if the user has picked
+      // a material to clone. We inject {[target]:1} / {[target]:2} into
+      // its recipe so the chain math treats it as a real consumer +
+      // producer of that material. Per upstream IntraTickCache.ts:142.
+      const target = userState.cloneFactoryTarget;
+      const isCloneRoot =
+         (selectedKey === "CloneFactory" || selectedKey === "CloneLab") &&
+         !!target;
+      const buildingsForChain = isCloneRoot
+         ? allBuildings.map((b) =>
+              b.key === selectedKey
+                 ? { ...b, input: { [target!]: 1 }, output: { [target!]: 2 } }
+                 : b,
+           )
+         : allBuildings;
+      const edgesForChain = isCloneRoot
+         ? computeEdgesFor(buildingsForChain)
+         : edges;
+      const lineKeys = new Set(
+         computeProductionLine(selectedKey, edgesForChain),
+      );
+      // Pull the powerplant + its fuel chain into the subgraph as soon
+      // as the user has any electrification configured. Sums RAW
+      // electrification across every electrifiable building in the line;
+      // chain math caps at each building's level later.
+      const NON_WALK = new Set([
+         "Worker","Power","Science","Festival","Warp",
+         "Explorer","Teleport","Cycle","TradeValue",
+      ]);
+      const ELEC_EXTRAS = new Set(["SwissBank", "CloneFactory"]);
+      const isElectrifiable = (b: Building): boolean => {
+         if (ELEC_EXTRAS.has(b.key)) return true;
+         if (b.special) return false;
+         const outs = Object.keys(b.output);
+         if (outs.length === 0) return false;
+         return outs.every((o) => !NON_WALK.has(o));
+      };
+      const defaultElec = userState.defaultElectrification ?? 0;
+      const elecOverrides = userState.electrificationOverrides ?? {};
+      let totalElec = 0;
+      for (const k of lineKeys) {
+         const b = buildingsForChain.find((x) => x.key === k);
+         if (!b || !isElectrifiable(b)) continue;
+         const raw = elecOverrides[k] ?? defaultElec;
+         if (raw > 0) totalElec += raw;
+      }
+      const plantKey = userState.useFusionPower
+         ? "FusionPowerPlant"
+         : "NuclearPowerPlant";
+      const includePlant =
+         totalElec > 0 &&
+         buildingsForChain.some((b) => b.key === plantKey);
+      if (includePlant) {
+         const plantLine = computeProductionLine(plantKey, edgesForChain);
+         for (const k of plantLine) lineKeys.add(k);
+      }
+      const subBuildings = buildingsForChain.filter((b) => lineKeys.has(b.key));
+      // Re-tier CloneFactory / CloneLab to max(others) + 1 inside this
+      // subgraph so the layout puts it rightmost regardless of its
+      // canonical tier-8 placement in the main view.
+      if (selectedKey === "CloneFactory" || selectedKey === "CloneLab") {
+         const cloneIdx = subBuildings.findIndex((b) => b.key === selectedKey);
+         if (cloneIdx >= 0) {
+            const others = subBuildings.filter((b) => b.key !== selectedKey);
+            const maxOther = others.reduce(
+               (m, b) => Math.max(m, b.tier ?? 0),
+               0,
+            );
+            subBuildings[cloneIdx] = {
+               ...subBuildings[cloneIdx],
+               tier: maxOther + 1,
+            };
+         }
+      }
+      // Re-tier the powerplant to the root's tier so it stacks "below"
+      // (in the same column as) the final product instead of landing in
+      // its canonical tier-3/4 column far to the left.
+      if (includePlant) {
+         const rootTier =
+            subBuildings.find((b) => b.key === selectedKey)?.tier ?? 0;
+         const plantIdx = subBuildings.findIndex((b) => b.key === plantKey);
+         if (plantIdx >= 0) {
+            subBuildings[plantIdx] = {
+               ...subBuildings[plantIdx],
+               tier: rootTier,
+            };
+         }
+      }
       const subCols = computeColumnsFor(subBuildings);
       const subEdges = computeEdgesFor(subBuildings);
       const ordered = reorderCols(subCols, subEdges);
-      const root = allBuildings.find((b) => b.key === selectedKey);
+      const root = subBuildings.find((b) => b.key === selectedKey);
       return {
          columns: ordered,
          edges: subEdges,
          root,
          count: subBuildings.length,
          buildings: subBuildings,
+         plantKey: includePlant ? plantKey : null,
       };
-   }, [selectedKey, edges, allBuildings]);
+   }, [
+      selectedKey,
+      edges,
+      allBuildings,
+      userState.cloneFactoryTarget,
+      userState.electrificationOverrides,
+      userState.defaultElectrification,
+      userState.useFusionPower,
+   ]);
 
    // Translate sidebar inputs into per-building bonus contributions.
    // Computed once (not just for the modal) so the main view can also
@@ -867,11 +1045,56 @@ export const App = (): JSX.Element => {
       [userState, allBuildings],
    );
 
+   // Faith producer eligibility: Shrine is always available; only one of
+   // Church/Mosque/Pagoda is unlocked per run, gated by Luxor Temple's
+   // Religion direction. User can prefer either via the sidebar; default
+   // is "the unlocked one if Luxor is built, otherwise Shrine".
+   const RELIGION_TO_FAITH_BUILDING: Record<string, string> = {
+      Christianity: "Church",
+      Islam: "Mosque",
+      Buddhism: "Pagoda",
+   };
+   const luxorBuilt = (userState.wonders.LuxorTemple ?? 0) > 0;
+   const luxorReligion = userState.wonderDirections?.LuxorTemple;
+   const unlockedFaithBuilding =
+      luxorBuilt && luxorReligion
+         ? RELIGION_TO_FAITH_BUILDING[luxorReligion]
+         : undefined;
+   const eligibleFaithBuildings = useMemo(() => {
+      const set = new Set<string>(["Shrine"]);
+      if (unlockedFaithBuilding) set.add(unlockedFaithBuilding);
+      return set;
+   }, [unlockedFaithBuilding]);
+   const chosenFaithBuilding =
+      userState.preferredFaithBuilding &&
+      eligibleFaithBuildings.has(userState.preferredFaithBuilding)
+         ? userState.preferredFaithBuilding
+         : unlockedFaithBuilding ?? "Shrine";
+   const onFaithBuildingChange = useCallback((building: string) => {
+      setUserState((prev) => ({
+         ...prev,
+         preferredFaithBuilding: building || undefined,
+      }));
+   }, []);
+   const allowedProducers = useCallback(
+      (material: string): Set<string> | undefined => {
+         if (material === "Faith") return new Set([chosenFaithBuilding]);
+         return undefined;
+      },
+      [chosenFaithBuilding],
+   );
+
    // Run the chain math whenever the inputs change. Display only — no
    // mutation of the columns themselves.
+   //
+   // Two-pass when the powerplant is in the subgraph: pass 1 computes
+   // every other building's amount (and their power demand); pass 2
+   // pins the plant's amount to ⌈total Power demand / per-plant supply⌉
+   // and re-runs so the fuel chain (NuclearFuelRod / FusionFuel + their
+   // upstream) sizes correctly.
    const chainResults = useMemo(() => {
       if (!subgraph || !selectedKey) return undefined;
-      return computeChainAmounts({
+      const baseOpts = {
          rootKey: selectedKey,
          rootAmount,
          rootLevel,
@@ -879,8 +1102,49 @@ export const App = (): JSX.Element => {
          amountOverrides: perBuildingAmounts,
          subgraph: subgraph.buildings,
          bonuses,
-      });
-   }, [subgraph, selectedKey, rootAmount, rootLevel, perBuildingLevels, perBuildingAmounts, bonuses]);
+         allowedProducers,
+         electrificationOverrides: userState.electrificationOverrides,
+         defaultElectrification: userState.defaultElectrification,
+      };
+      let results = computeChainAmounts(baseOpts);
+      const plantKey = subgraph.plantKey;
+      if (!plantKey) return results;
+      const plantDef = subgraph.buildings.find((b) => b.key === plantKey);
+      const plantBaseOutput = plantDef?.output.Power ?? 0;
+      const plantBonus = bonuses.get(plantKey);
+      const plantLevelBase = perBuildingLevels[plantKey] ?? rootLevel;
+      const plantEffectiveLevel =
+         plantLevelBase + (plantBonus?.levelBoost ?? 0);
+      const plantSupply =
+         plantBaseOutput *
+         plantEffectiveLevel *
+         (1 + (plantBonus?.outputMultiplier ?? 0));
+      if (plantSupply <= 0) return results;
+      // Loop until plants-needed stabilises: the fuel chain itself may
+      // be electrified, in which case the first pass under-counts power
+      // demand. Capped at 4 iterations — converges in 1-2 in practice
+      // since each pass adds at most a thin slice of fuel-chain demand.
+      let prevPlants = -1;
+      for (let pass = 0; pass < 4; pass++) {
+         let powerDemand = 0;
+         for (const [k, r] of results) {
+            if (k === plantKey) continue;
+            powerDemand += r.powerDemand;
+         }
+         if (powerDemand <= 0) break;
+         const plantsNeeded = Math.ceil(powerDemand / plantSupply);
+         if (plantsNeeded === prevPlants) break;
+         prevPlants = plantsNeeded;
+         results = computeChainAmounts({
+            ...baseOpts,
+            amountOverrides: {
+               ...perBuildingAmounts,
+               [plantKey]: plantsNeeded,
+            },
+         });
+      }
+      return results;
+   }, [subgraph, selectedKey, rootAmount, rootLevel, perBuildingLevels, perBuildingAmounts, bonuses, allowedProducers, userState.electrificationOverrides, userState.defaultElectrification]);
 
    // Hide upstream buildings the chain math doesn't actually need
    // (amount = 0). Examples: when the root has multiple producers and
@@ -937,6 +1201,59 @@ export const App = (): JSX.Element => {
    }, []);
    const [bulkChainLevel, setBulkChainLevel] = useState(10);
 
+   // Per-card electrification override. Writing 0 = "leave at default";
+   // the chain math falls back to userState.defaultElectrification.
+   const onElectrificationChange = useCallback(
+      (key: string, value: number) => {
+         const clamped = Math.max(0, Math.floor(value));
+         setUserState((prev) => {
+            const next = { ...(prev.electrificationOverrides ?? {}) };
+            if (clamped === 0) delete next[key];
+            else next[key] = clamped;
+            return { ...prev, electrificationOverrides: next };
+         });
+      },
+      [],
+   );
+   // Bulk-set default electrification + clear per-card overrides so every
+   // electrifiable card uniformly uses N. Mirrors onSetAllChainLevels.
+   const onSetAllElectrification = useCallback((value: number) => {
+      const clamped = Math.max(0, Math.floor(value));
+      setUserState((prev) => ({
+         ...prev,
+         defaultElectrification: clamped,
+         electrificationOverrides: {},
+      }));
+   }, []);
+   const [bulkElectrification, setBulkElectrification] = useState(0);
+   const onFusionPowerToggle = useCallback((checked: boolean) => {
+      setUserState((prev) => ({ ...prev, useFusionPower: checked }));
+   }, []);
+   const onCloneFactoryTargetChange = useCallback((material: string) => {
+      setUserState((prev) => ({
+         ...prev,
+         cloneFactoryTarget: material || undefined,
+      }));
+   }, []);
+   // Every material some production building actually produces — used
+   // as the dropdown options on CloneFactory / CloneLab cards. Sorted
+   // alphabetically for stable order. Filters out non-storable materials
+   // since CloneFactory can't produce things like Worker / Power /
+   // Science (NoStorage in upstream).
+   const cloneFactoryOptions = useMemo(() => {
+      const NON_STORABLE = new Set([
+         "Worker","Power","Science","Festival","Warp",
+         "Explorer","Teleport","Cycle","TradeValue",
+      ]);
+      const materials = new Set<string>();
+      for (const b of allBuildings) {
+         for (const m of Object.keys(b.output)) {
+            if (!NON_STORABLE.has(m)) materials.add(m);
+         }
+      }
+      return [...materials].sort((a, b) => a.localeCompare(b));
+   }, [allBuildings]);
+
    // The root's amount lives in `rootAmount` so the modal header can edit
    // it; non-root amounts go into `perBuildingAmounts`. Both paths funnel
    // through this one callback so the card UI can stay uniform.
@@ -992,14 +1309,40 @@ export const App = (): JSX.Element => {
       const finalOutput = rootResult
          ? [...rootResult.outputPerTick.entries()].filter(([, n]) => n > 0)
          : [];
+      // Total Power demand from all electrified buildings, plus how many
+      // selected-type power plants we'd need to supply it. Same effective-
+      // level + bonus math as any other producer.
+      const powerDemand = entries.reduce(
+         (s, e) => s + e.result.powerDemand,
+         0,
+      );
+      const plantKey = userState.useFusionPower
+         ? "FusionPowerPlant"
+         : "NuclearPowerPlant";
+      const plantDef = allBuildings.find((b) => b.key === plantKey);
+      const plantBaseOutput = plantDef?.output.Power ?? 0;
+      const plantBonus = bonuses.get(plantKey);
+      const plantLevel = rootLevel + (plantBonus?.levelBoost ?? 0);
+      const plantSupply =
+         plantBaseOutput *
+         plantLevel *
+         (1 + (plantBonus?.outputMultiplier ?? 0));
+      const powerPlantsNeeded =
+         powerDemand > 0 && plantSupply > 0
+            ? Math.ceil(powerDemand / plantSupply)
+            : 0;
       return {
          entries,
          totalBuildings,
          distinctTypes,
          happiness,
          finalOutput,
+         powerDemand,
+         powerPlantsNeeded,
+         plantKey,
+         plantSupply,
       };
-   }, [subgraph, chainResults, selectedKey]);
+   }, [subgraph, chainResults, selectedKey, allBuildings, bonuses, rootLevel, userState.useFusionPower]);
 
    // ── Pan + zoom: one independent state for the main view, one for the
    //    modal. The modal viewport is mounted/unmounted with selectedKey,
@@ -1054,6 +1397,7 @@ export const App = (): JSX.Element => {
          <div className="main">
             <Sidebar
                gpLevels={userState.greatPeople}
+               thisRunGreatPeople={userState.thisRunGreatPeople ?? {}}
                wonderLevels={userState.wonders}
                ageWisdom={userState.ageWisdom}
                tradeTiles={userState.tradeTiles ?? []}
@@ -1078,6 +1422,9 @@ export const App = (): JSX.Element => {
                onUnBuildingChange={onUnBuildingChange}
                wonderDirections={userState.wonderDirections ?? {}}
                onWonderDirectionChange={onWonderDirectionChange}
+               faithBuilding={chosenFaithBuilding}
+               eligibleFaithBuildings={eligibleFaithBuildings}
+               onFaithBuildingChange={onFaithBuildingChange}
                unlockedTechs={userState.unlockedTechs ?? {}}
                onTechChange={onTechChange}
                adaptiveGreatPeople={userState.adaptiveGreatPeople ?? {}}
@@ -1162,6 +1509,42 @@ export const App = (): JSX.Element => {
                               Apply
                            </button>
                         </label>
+                        <label
+                           className="modal-bulk-level"
+                           title="Apply this electrification level to every electrifiable building (clears per-card overrides)"
+                        >
+                           Set all elec
+                           <input
+                              type="number"
+                              min={0}
+                              max={99}
+                              value={bulkElectrification}
+                              onChange={(e) =>
+                                 setBulkElectrification(
+                                    Math.max(0, Math.floor(Number(e.target.value) || 0)),
+                                 )
+                              }
+                           />
+                           <button
+                              type="button"
+                              onClick={() => onSetAllElectrification(bulkElectrification)}
+                           >
+                              Apply
+                           </button>
+                        </label>
+                        <label
+                           className="modal-fusion-toggle"
+                           title="Use Fusion Power Plants instead of Nuclear in the Power rundown"
+                        >
+                           <input
+                              type="checkbox"
+                              checked={!!userState.useFusionPower}
+                              onChange={(e) =>
+                                 onFusionPowerToggle(e.target.checked)
+                              }
+                           />
+                           Fusion Power
+                        </label>
                         <div className="zoom-readout">
                            <span>{Math.round(modal.zoom * 100)}%</span>
                            <button type="button" onClick={modal.reset}>
@@ -1198,9 +1581,19 @@ export const App = (): JSX.Element => {
                               highlightKey={selectedKey ?? undefined}
                               chainResults={chainResults}
                               onLevelChange={onLevelChange}
+                              onElectrificationChange={onElectrificationChange}
                               onAmountChange={onAmountChange}
                               amountOverrideKeys={amountOverrideKeysSet}
                               bonuses={bonuses}
+                              cloneFactoryTarget={userState.cloneFactoryTarget}
+                              cloneFactoryOptions={cloneFactoryOptions}
+                              onCloneFactoryTargetChange={onCloneFactoryTargetChange}
+                              cardHeight={
+                                 selectedKey === "CloneFactory" ||
+                                 selectedKey === "CloneLab"
+                                    ? 175
+                                    : undefined
+                              }
                            />
                         </div>
                      </div>
@@ -1239,6 +1632,26 @@ export const App = (): JSX.Element => {
                                     <em>(1 of each type is free)</em>
                                  </span>
                               </div>
+                           </section>
+                           <section className="rundown-section">
+                              <h4>Power</h4>
+                              {rundown.powerDemand > 0 ? (
+                                 <div className="rundown-happiness">
+                                    <span className="rundown-happiness-num">
+                                       ×{rundown.powerPlantsNeeded}
+                                    </span>
+                                    <span className="rundown-happiness-detail">
+                                       {rundown.plantKey === "FusionPowerPlant"
+                                          ? "Fusion Power Plants"
+                                          : "Nuclear Power Plants"}
+                                       <br />
+                                       {rundown.powerDemand.toLocaleString()} Power
+                                       demand · {Math.round(rundown.plantSupply).toLocaleString()}/plant
+                                    </span>
+                                 </div>
+                              ) : (
+                                 <div className="rundown-empty">— no electrification —</div>
+                              )}
                            </section>
                            <section className="rundown-section">
                               <h4>Buildings ({rundown.totalBuildings})</h4>
@@ -1292,9 +1705,6 @@ export const App = (): JSX.Element => {
                         UN General Assemblies and trade tile bonusses must be
                         added manually, as these values do not live in your save
                         file.
-                     </p>
-                     <p className="welcome-caveat">
-                        Electrification not yet supported.
                      </p>
                      <button
                         type="button"

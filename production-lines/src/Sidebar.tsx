@@ -75,6 +75,34 @@ const TECHS_WITH_BONUS = (
    bonusData as unknown as { techs?: TechEntry[] }
 ).techs ?? [];
 
+// Wonders that have a dedicated LevelBoost-type great-person whose
+// total level (perm + harmonic this-run) is added to the wonder's
+// effective level in the resolver. Mirrors WonderToGreatPerson in
+// upstream's BuildingLogic.ts:1387 and the same map in bonusResolver.
+// Used here only to surface a "+N" badge next to the wonder's input
+// in the sidebar so the user can see why their wonder hits harder.
+const WONDER_TO_GP_KEY: Record<string, string> = {
+   InternationalSpaceStation: "WilliamShepherd",
+   MarinaBaySands: "LeeKuanYew",
+   PalmJumeirah: "EmmanuelleCharpentier",
+   AldersonDisk: "DanAlderson",
+   DysonSphere: "FreemanDyson",
+   MatrioshkaBrain: "VeraRubin",
+   RedFort: "AkbarTheGreat",
+   Petra: "Zenobia",
+   ItaipuDam: "Pele",
+   CologneCathedral: "Beethoven",
+   SydneyHarbourBridge: "JohnBradfield",
+   Hermitage: "Tchaikovsky",
+   Habitat67: "GeoffreyHinton",
+};
+const harmonic = (n: number): number => {
+   if (!Number.isFinite(n) || n <= 0) return 0;
+   let s = 0;
+   for (let i = 1; i <= n; i++) s += 1 / i;
+   return s;
+};
+
 const AGE_ORDER = [
    "StoneAge",
    "BronzeAge",
@@ -107,10 +135,14 @@ const ageLabel: Record<string, string> = {
 const WonderRow = ({
    wonder,
    level,
+   extraLevel,
    onChange,
 }: {
    wonder: WonderEntry;
    level: number;
+   /** Extra effective level from the wonder's LevelBoost GP (Freeman
+    *  Dyson → DysonSphere etc). 0 means no boost. */
+   extraLevel: number;
    onChange: (key: string, level: number) => void;
 }): JSX.Element => (
    <li className="sidebar-row">
@@ -140,6 +172,16 @@ const WonderRow = ({
             title="Owned (this wonder isn't upgradeable in-game)"
          />
       )}
+      <span
+         className={`sidebar-wisdom-add${extraLevel > 0 && level > 0 ? "" : " empty"}`}
+         title={
+            extraLevel > 0 && level > 0
+               ? `+${extraLevel} effective level from ${WONDER_TO_GP_KEY[wonder.key]} (effective ${level + extraLevel})`
+               : ""
+         }
+      >
+         {extraLevel > 0 && level > 0 ? `+${extraLevel}` : ""}
+      </span>
    </li>
 );
 
@@ -337,6 +379,9 @@ const WonderWithDirectionRow = ({
 
 interface SidebarProps {
    gpLevels: Record<string, number>;
+   /** This-run pick counts per GP. Used to compute the harmonic-series
+    *  level boost the wonder rows surface as a "+N" badge. */
+   thisRunGreatPeople: Record<string, number>;
    wonderLevels: Record<string, number>;
    ageWisdom: Record<string, number>;
    tradeTiles: TradeTileBonus[];
@@ -370,6 +415,12 @@ interface SidebarProps {
    /** Picked path per directional wonder (ChoghaZanbil/LuxorTemple/BigBen). */
    wonderDirections: Record<string, string>;
    onWonderDirectionChange: (key: string, direction: string) => void;
+   /** Preferred Faith producer + the set of eligible Faith buildings
+    *  (derived from Luxor Temple direction). Chain math uses only this
+    *  building as a Faith producer. */
+   faithBuilding: string;
+   eligibleFaithBuildings: Set<string>;
+   onFaithBuildingChange: (building: string) => void;
    /** Researched techs (only those with a buildingMultiplier). Map of
     *  tech key → checked. Save importer fills this from gs.unlockedTech. */
    unlockedTechs: Record<string, boolean>;
@@ -388,6 +439,7 @@ interface SidebarProps {
 
 export const Sidebar = ({
    gpLevels,
+   thisRunGreatPeople,
    wonderLevels,
    ageWisdom,
    tradeTiles,
@@ -412,6 +464,9 @@ export const Sidebar = ({
    onUnBuildingChange,
    wonderDirections,
    onWonderDirectionChange,
+   faithBuilding,
+   eligibleFaithBuildings,
+   onFaithBuildingChange,
    unlockedTechs,
    onTechChange,
    adaptiveGreatPeople,
@@ -475,6 +530,20 @@ export const Sidebar = ({
       }));
    }, []);
    const techCount = TECHS_WITH_BONUS.length;
+
+   // Extra effective level per wonder from its dedicated LevelBoost GP
+   // (perm + harmonic this-run, no wisdom). Used to surface a "+N"
+   // badge next to wonder rows in the sidebar.
+   const wonderExtraLevels = useMemo(() => {
+      const out: Record<string, number> = {};
+      for (const [wonderKey, gpKey] of Object.entries(WONDER_TO_GP_KEY)) {
+         const perm = gpLevels[gpKey] ?? 0;
+         const tr = harmonic(thisRunGreatPeople[gpKey] ?? 0);
+         const total = Math.floor(perm + tr);
+         if (total > 0) out[wonderKey] = total;
+      }
+      return out;
+   }, [gpLevels, thisRunGreatPeople]);
    const techCheckedCount = useMemo(
       () => TECHS_WITH_BONUS.filter((t) => unlockedTechs[t.key]).length,
       [unlockedTechs],
@@ -641,6 +710,7 @@ export const Sidebar = ({
                               key={w.key}
                               wonder={w}
                               level={wonderLevels[w.key] ?? 0}
+                              extraLevel={wonderExtraLevels[w.key] ?? 0}
                               onChange={onWonderChange}
                            />
                         );
@@ -751,6 +821,7 @@ export const Sidebar = ({
                                                    key={w.key}
                                                    wonder={w}
                                                    level={wonderLevels[w.key] ?? 0}
+                                                   extraLevel={wonderExtraLevels[w.key] ?? 0}
                                                    onChange={onWonderChange}
                                                 />
                                              );
@@ -848,6 +919,34 @@ export const Sidebar = ({
                   );
                })}
          </section>
+
+         {/* Faith producer preference. Shrine is always available; one
+             of Church/Mosque/Pagoda is unlocked per run via Luxor
+             Temple's Religion direction. Production chain that needs
+             Faith uses ONLY the chosen building. */}
+         {eligibleFaithBuildings.size > 1 && (
+            <section className="sidebar-section">
+               <div className="sidebar-row">
+                  <div className="sidebar-row-text">
+                     <div className="sidebar-row-name">Faith producer</div>
+                     <div className="sidebar-row-effect">
+                        Building used to supply Faith in production chains.
+                     </div>
+                  </div>
+                  <select
+                     className="sidebar-trade-tile-select sidebar-faith-select"
+                     value={faithBuilding}
+                     onChange={(e) => onFaithBuildingChange(e.target.value)}
+                  >
+                     {[...eligibleFaithBuildings].map((k) => (
+                        <option key={k} value={k}>
+                           {k}
+                        </option>
+                     ))}
+                  </select>
+               </div>
+            </section>
+         )}
 
          {/* Trade tiles — each gives +5 output to its target building.
              World Trade Organization additionally adds +wtoLevel per

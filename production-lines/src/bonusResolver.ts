@@ -101,6 +101,26 @@ const isElectrifiable = (b: Building): boolean => {
    return outs.every((o) => !NON_STORABLE.has(o));
 };
 
+// Wonders that have a dedicated LevelBoost-type great-person which
+// raises the wonder's effective level by getGreatPersonTotalLevel
+// (permanent + harmonic-of-this-run, no wisdom). Mirrors upstream's
+// WonderToGreatPerson map in BuildingLogic.ts:1387.
+const WONDER_TO_GP: Record<string, string> = {
+   InternationalSpaceStation: "WilliamShepherd",
+   MarinaBaySands: "LeeKuanYew",
+   PalmJumeirah: "EmmanuelleCharpentier",
+   AldersonDisk: "DanAlderson",
+   DysonSphere: "FreemanDyson",
+   MatrioshkaBrain: "VeraRubin",
+   RedFort: "AkbarTheGreat",
+   Petra: "Zenobia",
+   ItaipuDam: "Pele",
+   CologneCathedral: "Beethoven",
+   SydneyHarbourBridge: "JohnBradfield",
+   Hermitage: "Tchaikovsky",
+   Habitat67: "GeoffreyHinton",
+};
+
 const ensure = (
    map: Map<string, BuildingBonus>,
    key: string,
@@ -421,12 +441,34 @@ export const resolveBuildingBonuses = (
    const out = new Map<string, BuildingBonus>();
    const prod = allBuildings.filter((b) => !b.special);
 
+   // Harmonic series for this-run GP picks: amount → 1 + 1/2 + … + 1/amount.
+   // Mirrors RebirthLogic.getGreatPersonThisRunLevel in upstream.
+   const harmonic = (n: number): number => {
+      if (!Number.isFinite(n) || n <= 0) return 0;
+      let s = 0;
+      for (let i = 1; i <= n; i++) s += 1 / i;
+      return s;
+   };
+
+   // Effective wonder level = base build level + getWonderExtraLevel
+   // (the LevelBoost-type GP for that wonder, total = perm + harmonic
+   // this-run, NO wisdom). Mirrors BuildingLogic.getWonderExtraLevel.
+   const wonderExtraLevel = (wonderKey: string): number => {
+      const gp = WONDER_TO_GP[wonderKey];
+      if (!gp) return 0;
+      const perm = userState.greatPeople[gp] ?? 0;
+      const tr = harmonic(userState.thisRunGreatPeople?.[gp] ?? 0);
+      return Math.floor(perm + tr);
+   };
+   const effectiveWonderLevel = (wonderKey: string): number =>
+      (userState.wonders[wonderKey] ?? 0) + wonderExtraLevel(wonderKey);
+
    // Pre-pass: per-age extra GP effective levels from wonders the user has
    // (LHC, Sputnik 1, Aphrodite). Each entry tracks both the value and
    // the source wonder so the GP source string can show the breakdown.
    const wonderGpBoosts: Record<string, Array<{ name: string; value: number }>> = {};
    for (const wonder of DATA.wonders) {
-      const lvl = userState.wonders[wonder.key] ?? 0;
+      const lvl = effectiveWonderLevel(wonder.key);
       if (lvl <= 0) continue;
       const fn = WONDER_GP_LEVEL_BOOSTS[wonder.key];
       if (!fn) continue;
@@ -436,15 +478,6 @@ export const resolveBuildingBonuses = (
          wonderGpBoosts[age].push({ name: wonder.name, value });
       }
    }
-
-   // Harmonic series for this-run GP picks: amount → 1 + 1/2 + … + 1/amount.
-   // Mirrors RebirthLogic.getGreatPersonThisRunLevel in upstream.
-   const harmonic = (n: number): number => {
-      if (!Number.isFinite(n) || n <= 0) return 0;
-      let s = 0;
-      for (let i = 1; i <= n; i++) s += 1 / i;
-      return s;
-   };
 
    // Great People — boost-style only. Effective level = permanent base
    // + harmonic(thisRunPicks) + Age of Wisdom for that age + Σ wonder
@@ -535,11 +568,18 @@ export const resolveBuildingBonuses = (
    // Wonders — only those with effect entries above.
    const ctx: EffectCtx = { prod };
    for (const wonder of DATA.wonders) {
-      const level = userState.wonders[wonder.key] ?? 0;
-      if (level <= 0) continue;
+      const base = userState.wonders[wonder.key] ?? 0;
+      // The wonder must actually be built — getWonderExtraLevel boost
+      // only applies to a built wonder (its case-statement runs only
+      // for placed buildings).
+      if (base <= 0) continue;
       const fn = WONDER_EFFECTS[wonder.key];
       if (!fn) continue;
-      const source = `${wonder.name} (lvl ${level})`;
+      const level = effectiveWonderLevel(wonder.key);
+      const extra = level - base;
+      const source = extra > 0
+         ? `${wonder.name} (lvl ${level} = ${base} + ${extra} ${WONDER_TO_GP[wonder.key]})`
+         : `${wonder.name} (lvl ${level})`;
       for (const d of fn(level, ctx)) {
          apply(out, d.building, { source, kind: d.kind, value: d.value });
       }
@@ -677,9 +717,10 @@ export const resolveBuildingBonuses = (
    // value adds another +wisdom output/storage on top; and a non-zero
    // happiness reading gives an additional +floor(happiness/5) level
    // boost (per OnProductionComplete.tsx:2204).
-   const habitatLevel = userState.wonders.Habitat67 ?? 0;
+   const habitatBase = userState.wonders.Habitat67 ?? 0;
+   const habitatLevel = effectiveWonderLevel("Habitat67");
    const happiness = Math.max(0, Math.floor(userState.finalHappiness ?? 0));
-   if (habitatLevel > 0) {
+   if (habitatBase > 0) {
       const baseSrc = `Habitat 67 (lvl ${habitatLevel})`;
       apply(out, "AILab", { source: baseSrc, kind: "output", value: habitatLevel });
       apply(out, "AILab", { source: baseSrc, kind: "worker", value: habitatLevel });
