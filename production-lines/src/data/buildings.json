@@ -20,7 +20,8 @@
     "output": {
       "Opera": 2
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "AILab",
@@ -49,7 +50,8 @@
     "output": {
       "AircraftCarrier": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "AirplaneFactory",
@@ -62,7 +64,8 @@
     "output": {
       "Airplane": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "AkademikLomonosov",
@@ -80,7 +83,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "Alps",
@@ -100,7 +104,8 @@
     "output": {
       "Aluminum": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "AngkorWat",
@@ -109,7 +114,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
   },
   {
     "key": "Apartment",
@@ -124,7 +130,8 @@
     "output": {
       "Worker": 84
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "Aphrodite",
@@ -142,7 +149,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "Aqueduct",
@@ -153,7 +161,8 @@
     "output": {
       "Water": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
   },
   {
     "key": "ArcDeTriomphe",
@@ -175,7 +184,8 @@
     "output": {
       "Armor": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "ArtilleryFactory",
@@ -190,7 +200,8 @@
     "output": {
       "Artillery": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "AtlasMountains",
@@ -213,7 +224,8 @@
     "output": {
       "AtomicBomb": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "Atomium",
@@ -222,7 +234,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "AuroraBorealis",
@@ -245,7 +258,8 @@
     "output": {
       "Bread": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "Bank",
@@ -258,7 +272,8 @@
     "output": {
       "Banknote": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "BattleshipBuilder",
@@ -275,7 +290,8 @@
     "output": {
       "Battleship": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "BigBen",
@@ -284,7 +300,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "BiplaneFactory",
@@ -300,7 +317,8 @@
     "output": {
       "Biplane": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "BitcoinMiner",
@@ -314,7 +332,8 @@
     "output": {
       "Bitcoin": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "BlackForest",
@@ -337,7 +356,8 @@
     "output": {
       "Tool": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "BlueMosque",
@@ -359,7 +379,8 @@
     "output": {
       "Bond": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "BranCastle",
@@ -377,7 +398,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "Brewery",
@@ -391,7 +413,8 @@
     "output": {
       "Alcohol": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "Brickworks",
@@ -404,7 +427,8 @@
     "output": {
       "Brick": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
   },
   {
     "key": "BritishMuseum",
@@ -435,7 +459,8 @@
     "output": {
       "Cable": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "CambridgeUniversity",
@@ -459,7 +484,8 @@
     "output": {
       "Cannon": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "Cappadocia",
@@ -495,7 +521,8 @@
     "output": {
       "Car": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "Caravansary",
@@ -504,7 +531,8 @@
     "tier": null,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "CaravelBuilder",
@@ -519,7 +547,8 @@
     "output": {
       "Caravel": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
   },
   {
     "key": "CathedralOfBrasilia",
@@ -561,7 +590,8 @@
     "output": {
       "Chariot": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "ChateauFrontenac",
@@ -583,7 +613,8 @@
     "output": {
       "Cheese": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "ChichenItza",
@@ -592,7 +623,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "ChoghaZanbil",
@@ -601,7 +633,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "Church",
@@ -639,7 +672,8 @@
     "output": {
       "CivGPT": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "CivOasis",
@@ -654,7 +688,8 @@
     "output": {
       "CivOasis": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "CivTok",
@@ -668,7 +703,8 @@
     "output": {
       "CivTok": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "CloneFactory",
@@ -677,7 +713,8 @@
     "tier": 8,
     "input": {},
     "output": {},
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "CloneLab",
@@ -686,7 +723,8 @@
     "tier": 8,
     "input": {},
     "output": {},
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "CNTower",
@@ -695,7 +733,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "CoalMine",
@@ -706,7 +745,8 @@
     "output": {
       "Coal": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "CoalPowerPlant",
@@ -719,7 +759,8 @@
     "output": {
       "Power": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "CoinMint",
@@ -732,7 +773,8 @@
     "output": {
       "Coin": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "CologneCathedral",
@@ -761,7 +803,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "ComputerFactory",
@@ -776,7 +819,8 @@
     "output": {
       "Computer": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "ComputerLab",
@@ -789,7 +833,8 @@
     "output": {
       "Science": 80625
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "ConcretePlant",
@@ -804,7 +849,8 @@
     "output": {
       "Concrete": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "Condo",
@@ -817,7 +863,8 @@
     "output": {
       "Worker": 510
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "CopperMiningCamp",
@@ -828,7 +875,8 @@
     "output": {
       "Copper": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "Cosmodrome",
@@ -865,7 +913,8 @@
     "output": {
       "Cloth": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "CottonPlantation",
@@ -876,7 +925,8 @@
     "output": {
       "Cotton": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "Courthouse",
@@ -891,7 +941,8 @@
     "output": {
       "Law": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "CristoRedentor",
@@ -900,7 +951,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "DairyFarm",
@@ -913,7 +965,8 @@
     "output": {
       "Milk": 2
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "DinosaurProvincialPark",
@@ -946,7 +999,8 @@
     "output": {
       "Dynamite": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "DysonSphere",
@@ -955,7 +1009,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "EastIndiaCompany",
@@ -982,7 +1037,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "Elbphilharmonie",
@@ -1006,7 +1062,8 @@
     "output": {
       "Diplomacy": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "EuphratesRiver",
@@ -1029,7 +1086,8 @@
     "output": {
       "FighterJet": 2
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "FlourMill",
@@ -1042,7 +1100,8 @@
     "output": {
       "Flour": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "ForbiddenCity",
@@ -1051,7 +1110,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "ForexMarket",
@@ -1065,7 +1125,8 @@
     "output": {
       "Forex": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "FrigateBuilder",
@@ -1081,7 +1142,8 @@
     "output": {
       "Frigate": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "FurnitureWorkshop",
@@ -1095,7 +1157,8 @@
     "output": {
       "Furniture": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "FusionFuelPlant",
@@ -1137,7 +1200,8 @@
     "output": {
       "Galleon": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
   },
   {
     "key": "GangesRiver",
@@ -1159,7 +1223,8 @@
     "output": {
       "Garment": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
   },
   {
     "key": "GasPlasticsPlant",
@@ -1172,7 +1237,8 @@
     "output": {
       "Plastics": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "GasPowerPlant",
@@ -1185,7 +1251,8 @@
     "output": {
       "Power": 3
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "GatlingGunFactory",
@@ -1199,7 +1266,8 @@
     "output": {
       "GatlingGun": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "GiantOtter",
@@ -1230,7 +1298,8 @@
     "output": {
       "Glass": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "GoldMiningCamp",
@@ -1241,7 +1310,8 @@
     "output": {
       "Gold": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "GoldenGateBridge",
@@ -1250,7 +1320,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "GoldenPavilion",
@@ -1268,7 +1339,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
   },
   {
     "key": "Shenandoah",
@@ -1304,7 +1376,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "GreatOceanRoad",
@@ -1354,7 +1427,8 @@
     "output": {
       "Gunpowder": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "Habitat67",
@@ -1372,7 +1446,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
   },
   {
     "key": "HangingGarden",
@@ -1381,7 +1456,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "HatshepsutTemple",
@@ -1390,7 +1466,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "Headquarter",
@@ -1414,7 +1491,8 @@
     "output": {
       "HedgeFund": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "Hermitage",
@@ -1432,7 +1510,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "Hoatzin",
@@ -1450,7 +1529,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "House",
@@ -1464,7 +1544,8 @@
     "output": {
       "Worker": 6
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "Hut",
@@ -1475,7 +1556,8 @@
     "output": {
       "Worker": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
   },
   {
     "key": "HydroDam",
@@ -1487,7 +1569,8 @@
       "Water": 1,
       "Power": 2
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "InternationalSpaceStation",
@@ -1496,7 +1579,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "InternetServiceProvider",
@@ -1510,7 +1594,8 @@
     "output": {
       "Internet": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "IronForge",
@@ -1523,7 +1608,8 @@
     "output": {
       "Tool": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "IronMiningCamp",
@@ -1534,7 +1620,8 @@
     "output": {
       "Iron": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "IroncladBuilder",
@@ -1549,7 +1636,8 @@
     "output": {
       "Ironclad": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "ItaipuDam",
@@ -1600,7 +1688,8 @@
     "output": {
       "Knight": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
   },
   {
     "key": "LakeBaikal",
@@ -1636,7 +1725,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "LensWorkshop",
@@ -1649,7 +1739,8 @@
     "output": {
       "Lens": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "Library",
@@ -1662,7 +1753,8 @@
     "output": {
       "Science": 140
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "LighthouseOfAlexandria",
@@ -1671,7 +1763,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "LocomotiveFactory",
@@ -1685,7 +1778,8 @@
     "output": {
       "Train": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "LoggingCamp",
@@ -1696,7 +1790,8 @@
     "output": {
       "Wood": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
   },
   {
     "key": "Louvre",
@@ -1718,7 +1813,8 @@
     "output": {
       "Lumber": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
   },
   {
     "key": "YearOfTheSnake",
@@ -1736,7 +1832,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "MagazinePublisher",
@@ -1751,7 +1848,8 @@
       "Magazine": 1,
       "Science": 1000
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "MaglevFactory",
@@ -1766,7 +1864,8 @@
     "output": {
       "Maglev": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "ManhattanProject",
@@ -1775,7 +1874,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "Marbleworks",
@@ -1789,7 +1889,8 @@
     "output": {
       "Marble": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "MarinaBaySands",
@@ -1798,7 +1899,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "Market",
@@ -1807,7 +1909,8 @@
     "tier": null,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "MatrioshkaBrain",
@@ -1816,7 +1919,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "MausoleumAtHalicarnassus",
@@ -1825,7 +1929,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "MogaoCaves",
@@ -1834,7 +1939,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
   },
   {
     "key": "MontSaintMichel",
@@ -1908,7 +2014,8 @@
     "output": {
       "Movie": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "Museum",
@@ -1922,7 +2029,8 @@
     "output": {
       "Culture": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "MusiciansGuild",
@@ -1935,7 +2043,8 @@
     "output": {
       "Music": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "MutualFund",
@@ -1949,7 +2058,8 @@
     "output": {
       "MutualFund": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "NaturalGasWell",
@@ -1960,7 +2070,8 @@
     "output": {
       "NaturalGas": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "Neuschwanstein",
@@ -1969,7 +2080,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "NiagaraFalls",
@@ -2001,7 +2113,8 @@
     "output": {
       "NuclearMissile": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "NuclearPowerPlant",
@@ -2014,7 +2127,8 @@
     "output": {
       "Power": 65
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "NuclearSubmarineYard",
@@ -2028,7 +2142,8 @@
     "output": {
       "NuclearSubmarine": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "OilRefinery",
@@ -2041,7 +2156,8 @@
     "output": {
       "Petrol": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "OilWell",
@@ -2052,7 +2168,8 @@
     "output": {
       "Oil": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "OpticalFiberPlant",
@@ -2067,7 +2184,8 @@
     "output": {
       "OpticalFiber": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "OsakaCastle",
@@ -2085,7 +2203,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "Pagoda",
@@ -2112,7 +2231,8 @@
     "output": {
       "Painting": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "PalmJumeirah",
@@ -2121,7 +2241,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "Pamukkale",
@@ -2153,7 +2274,8 @@
     "output": {
       "Paper": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "Parliament",
@@ -2168,7 +2290,8 @@
     "output": {
       "Politics": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "Parthenon",
@@ -2192,7 +2315,8 @@
     "output": {
       "Peace": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "Penthouse",
@@ -2214,7 +2338,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "Petra",
@@ -2223,7 +2348,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "Pizzeria",
@@ -2239,7 +2365,8 @@
     "output": {
       "Pizza": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "PlasticsFactory",
@@ -2252,7 +2379,8 @@
     "output": {
       "Plastics": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "PoetrySchool",
@@ -2266,7 +2394,8 @@
     "output": {
       "Poem": 2
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "PorcelainTower",
@@ -2284,7 +2413,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "Poseidon",
@@ -2306,7 +2436,8 @@
     "output": {
       "Meat": 2
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "PrintingHouse",
@@ -2320,7 +2451,8 @@
     "output": {
       "Book": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "ProphetsMosque",
@@ -2344,7 +2476,8 @@
       "Newspaper": 1,
       "Science": 1000
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "PygmyMarmoset",
@@ -2362,7 +2495,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
   },
   {
     "key": "QutbMinar",
@@ -2386,7 +2520,8 @@
     "output": {
       "Radio": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "RebarPlant",
@@ -2399,7 +2534,8 @@
     "output": {
       "Rebar": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "RedFort",
@@ -2422,7 +2558,8 @@
     "output": {
       "ReinforcedConcrete": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "ResearchFund",
@@ -2450,7 +2587,8 @@
     "output": {
       "Science": 7500
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "RhineGorge",
@@ -2473,7 +2611,8 @@
     "output": {
       "Rifle": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "Rijksmuseum",
@@ -2482,7 +2621,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "RobocarFactory",
@@ -2497,7 +2637,8 @@
     "output": {
       "Robocar": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "RockefellerCenterChristmasTree",
@@ -2523,7 +2664,8 @@
     "output": {
       "Rocket": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "RoyalFlycatcher",
@@ -2541,7 +2683,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "SaintBasilsCathedral",
@@ -2550,7 +2693,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "SanchiStupa",
@@ -2570,7 +2714,8 @@
     "output": {
       "Sand": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "SantaClausVillage",
@@ -2592,7 +2737,8 @@
     "output": {
       "Satellite": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "School",
@@ -2606,7 +2752,8 @@
     "output": {
       "Science": 800
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
   },
   {
     "key": "SemiconductorFab",
@@ -2620,7 +2767,8 @@
     "output": {
       "Semiconductor": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "Shrine",
@@ -2634,7 +2782,8 @@
     "output": {
       "Faith": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "SiegeWorkshop",
@@ -2649,7 +2798,8 @@
     "output": {
       "SiegeRam": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "SiliconSmelter",
@@ -2662,7 +2812,8 @@
     "output": {
       "Silicon": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "SoftwareCompany",
@@ -2676,7 +2827,8 @@
     "output": {
       "Software": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "SpaceCenter",
@@ -2691,7 +2843,8 @@
     "output": {
       "PlanetaryRover": 2
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "SpaceNeedle",
@@ -2700,7 +2853,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "SpacecraftFactory",
@@ -2715,7 +2869,8 @@
     "output": {
       "Spacecraft": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "Sputnik1",
@@ -2746,7 +2901,8 @@
     "output": {
       "Horse": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
   },
   {
     "key": "Stadium",
@@ -2761,7 +2917,8 @@
     "output": {
       "Sports": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "Statistics",
@@ -2770,7 +2927,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
   },
   {
     "key": "StatueOfLiberty",
@@ -2779,7 +2937,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "StatueOfZeus",
@@ -2803,7 +2962,8 @@
     "output": {
       "Engine": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "SteelMill",
@@ -2817,7 +2977,8 @@
     "output": {
       "Steel": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "StockExchange",
@@ -2830,7 +2991,8 @@
     "output": {
       "Stock": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "StoneQuarry",
@@ -2841,7 +3003,8 @@
     "output": {
       "Stone": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
   },
   {
     "key": "Stonehenge",
@@ -2850,7 +3013,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "SubmarineYard",
@@ -2863,7 +3027,8 @@
     "output": {
       "Submarine": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "SummerPalace",
@@ -2872,7 +3037,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "Sundarbans",
@@ -2895,7 +3061,8 @@
     "output": {
       "Supercomputer": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "SwissBank",
@@ -2904,7 +3071,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "SwordForge",
@@ -2917,7 +3085,8 @@
     "output": {
       "Sword": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "SydneyHarbourBridge",
@@ -2944,7 +3113,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "TankFactory",
@@ -2960,7 +3130,8 @@
     "output": {
       "Tank": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
   },
   {
     "key": "TempleOfArtemis",
@@ -2969,7 +3140,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
   },
   {
     "key": "TempleOfHeaven",
@@ -2978,7 +3150,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "TerracottaArmy",
@@ -2987,7 +3160,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "TheMet",
@@ -3037,7 +3211,8 @@
     "output": {
       "TV": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
   },
   {
     "key": "Uluru",
@@ -3055,7 +3230,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "University",
@@ -3070,7 +3246,8 @@
       "Philosophy": 1,
       "Science": 250
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
   },
   {
     "key": "UraniumEnrichmentPlant",
@@ -3083,7 +3260,8 @@
     "output": {
       "NuclearFuelRod": 1
     },
-    "requiresPower": true
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "UraniumMine",
@@ -3094,7 +3272,8 @@
     "output": {
       "Uranium": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
   },
   {
     "key": "WallOfBabylon",
@@ -3121,7 +3300,8 @@
     "tier": null,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "IronAge"
   },
   {
     "key": "WheatFarm",
@@ -3132,7 +3312,8 @@
     "output": {
       "Wheat": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
   },
   {
     "key": "WorldTradeOrganization",
@@ -3141,7 +3322,8 @@
     "tier": 0,
     "input": {},
     "output": {},
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
   },
   {
     "key": "WritersGuild",
@@ -3154,7 +3336,8 @@
     "output": {
       "Poem": 1
     },
-    "requiresPower": false
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
   },
   {
     "key": "YangtzeRiver",

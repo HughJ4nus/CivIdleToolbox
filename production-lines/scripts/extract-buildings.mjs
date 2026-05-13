@@ -122,9 +122,56 @@ for (const b of out) {
    if (b.key === "CloneFactory" || b.key === "CloneLab") b.tier = 8;
 }
 
+// ── Unlock-age per building ─────────────────────────────────────────────
+// Walk TechDefinitions.ts: each tech has a `column` (0..27) and an
+// `unlockBuilding` array. Map column → age via TechAgeDefinitions
+// from/to ranges. CN Tower's bonus and a few others key off this.
+const techSrc = readFileSync(
+   resolve(CIVIDLE, "shared/definitions/TechDefinitions.ts"),
+   "utf8",
+);
+const ageRanges = []; // { key, idx, from, to }
+{
+   const re = /^\s+([A-Za-z]+):\s+ITechAgeDefinition\s*=\s*\{([^}]*)\}/gm;
+   let m;
+   while ((m = re.exec(techSrc)) !== null) {
+      const body = m[2];
+      const idx = Number(body.match(/idx:\s*(\d+)/)?.[1] ?? -1);
+      const from = Number(body.match(/from:\s*(\d+)/)?.[1] ?? -1);
+      const to = Number(body.match(/to:\s*(\d+)/)?.[1] ?? -1);
+      if (idx >= 0) ageRanges.push({ key: m[1], idx, from, to });
+   }
+}
+const ageOfColumn = (col) =>
+   ageRanges.find((a) => col >= a.from && col <= a.to)?.key ?? null;
+
+const unlockAgeOf = new Map(); // building key → age key
+{
+   const re = /^\s+([A-Za-z]+):\s+ITechDefinition\s*=/gm;
+   let m;
+   while ((m = re.exec(techSrc)) !== null) {
+      const open = techSrc.indexOf("{", m.index);
+      const close = matchBraces(techSrc, open);
+      const body = techSrc.slice(open, close);
+      const col = Number(body.match(/column:\s*(\d+)/)?.[1] ?? -1);
+      const age = col >= 0 ? ageOfColumn(col) : null;
+      if (!age) continue;
+      const ub = body.match(/unlockBuilding:\s*\[([^\]]*)\]/);
+      if (!ub) continue;
+      for (const buildingKey of [...ub[1].matchAll(/"([^"]+)"/g)].map((x) => x[1])) {
+         // First tech wins — buildings unlocked by earlier ages stay there.
+         if (!unlockAgeOf.has(buildingKey)) unlockAgeOf.set(buildingKey, age);
+      }
+   }
+}
+for (const b of out) {
+   const age = unlockAgeOf.get(b.key) ?? null;
+   if (age) b.unlockAge = age;
+}
+
 // Keep input + output so the UI can render a subtitle (what the building
 // produces / consumes).
-const slim = out.map(({ key, name, special, tier, input, output, requiresPower }) => ({
+const slim = out.map(({ key, name, special, tier, input, output, requiresPower, unlockAge }) => ({
    key,
    name,
    special,
@@ -132,6 +179,7 @@ const slim = out.map(({ key, name, special, tier, input, output, requiresPower }
    input,
    output,
    requiresPower,
+   unlockAge,
 }));
 slim.sort((a, b) => a.name.localeCompare(b.name));
 

@@ -273,6 +273,24 @@ const WONDER_EFFECTS: Record<string, WonderEffect> = {
       ctx.prod
          .filter((b) => (b.output.Science ?? 0) > 0)
          .map((b) => ({ building: b.key, kind: "output", value: 1 })),
+   // CN Tower: every WorldWar/Cold-War age building with tier > 0 gets
+   // +m output/worker/storage where m = |ageIdx + 1 − tier|. Per
+   // OnProductionComplete.tsx:1012. WorldWarAge.idx = 7, ColdWarAge.idx = 8.
+   CNTower: (_, ctx) => {
+      const ageIdx: Record<string, number> = { WorldWarAge: 7, ColdWarAge: 8 };
+      const out: Array<{ building: string; kind: Contributor["kind"]; value: number }> = [];
+      for (const b of ctx.prod) {
+         const idx = b.unlockAge ? ageIdx[b.unlockAge] : undefined;
+         if (idx === undefined) continue;
+         if ((b.tier ?? 0) <= 0) continue;
+         const m = Math.abs(idx + 1 - (b.tier ?? 0));
+         if (m === 0) continue;
+         out.push({ building: b.key, kind: "output", value: m });
+         out.push({ building: b.key, kind: "worker", value: m });
+         out.push({ building: b.key, kind: "storage", value: m });
+      }
+      return out;
+   },
    // Yangtze River: every Water-CONSUMING building gets +1 output and
    // +1 worker. Storage piece adds +(1 + WuZetian permanent) per
    // building — Wu-Zetian-level dependency handled inline below.

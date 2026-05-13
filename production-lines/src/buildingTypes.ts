@@ -12,4 +12,7 @@ export interface Building {
     *  Earns a +5 "PoweredBuilding" levelBoost from Update.ts:702 once
     *  the Electricity feature is unlocked. */
    requiresPower?: boolean;
+   /** Tech age the building was first unlocked in. Used by CN Tower
+    *  (boosts every WW/Cold-War-Age building) and similar wonders. */
+   unlockAge?: string | null;
 }
