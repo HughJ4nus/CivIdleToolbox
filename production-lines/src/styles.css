@@ -1,0 +1,1085 @@
+:root {
+   color-scheme: dark;
+   --bg: #0c1622;
+   --panel: #14202e;
+   --panel-2: #1c2a3a;
+   --panel-edge: #2a3a4f;
+   --border: #2a3a4f;
+   --text: #e6ecf2;
+   --text-dim: #8aa0b8;
+   --accent: #7dd3fc;
+
+   /* Layout numbers — must match the constants in App.tsx
+      (CARD_W, CARD_H, GAP_X, GAP_Y, HEADING_H). */
+   --card-w: 220px;
+   --card-h: 110px;
+   --gap-x: 110px;
+   --gap-y: 55px; /* half of --card-h */
+   --heading-h: 30px;
+}
+
+* {
+   box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+   margin: 0;
+   padding: 0;
+   height: 100%;
+}
+
+body {
+   background: var(--bg);
+   color: var(--text);
+   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+   font-size: 14px;
+   overflow: hidden;
+}
+
+.app {
+   display: flex;
+   flex-direction: column;
+   height: 100vh;
+}
+
+.topbar {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+   padding: 12px 18px;
+   background: var(--panel);
+   border-bottom: 1px solid var(--border);
+   flex-shrink: 0;
+}
+.topbar h1 {
+   margin: 0;
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 18px;
+   letter-spacing: 0.02em;
+}
+/* Search bar in the middle of the topbar — substring-matches building
+   names; picking a result pans the main viewport to that card. */
+.search-bar {
+   position: relative;
+   flex: 0 1 320px;
+}
+.search-bar input {
+   width: 100%;
+   background: var(--panel-2);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 4px;
+   padding: 6px 10px;
+   font-size: 13px;
+   font-family: inherit;
+}
+.search-bar input::placeholder {
+   color: var(--text-dim);
+}
+.search-bar input:focus {
+   outline: none;
+   border-color: var(--accent);
+}
+.search-results {
+   position: absolute;
+   top: calc(100% + 4px);
+   left: 0;
+   right: 0;
+   margin: 0;
+   padding: 4px 0;
+   list-style: none;
+   background: var(--panel);
+   border: 1px solid var(--panel-edge);
+   border-radius: 4px;
+   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+   max-height: 320px;
+   overflow-y: auto;
+   z-index: 5;
+}
+.search-results li button {
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   align-items: baseline;
+   gap: 10px;
+   background: transparent;
+   border: 0;
+   color: var(--text);
+   text-align: left;
+   padding: 5px 10px;
+   font-size: 13px;
+   cursor: pointer;
+   font-family: inherit;
+}
+.search-results li button:hover {
+   background: var(--panel-2);
+   color: var(--accent);
+}
+.search-name {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+.search-tier {
+   color: var(--text-dim);
+   font-size: 11px;
+   font-variant-numeric: tabular-nums;
+}
+.topbar .tagline {
+   color: var(--text-dim);
+   margin-left: 12px;
+   font-size: 12px;
+}
+.zoom-readout {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   color: var(--text-dim);
+   font-variant-numeric: tabular-nums;
+   font-size: 12px;
+}
+.zoom-readout button {
+   background: var(--panel-2);
+   color: var(--text);
+   border: 1px solid var(--border);
+   border-radius: 4px;
+   padding: 4px 10px;
+   font-size: 12px;
+   cursor: pointer;
+}
+.zoom-readout button:hover {
+   background: #243345;
+}
+
+/* Sidebar (left) + viewport (right) split below the topbar. */
+.main {
+   flex: 1 1 auto;
+   display: flex;
+   min-height: 0;
+   overflow: hidden;
+}
+
+.viewport {
+   flex: 1 1 auto;
+   position: relative;
+   overflow: hidden;
+   touch-action: none;
+}
+
+/* ── Sidebar ────────────────────────────────────────────────────────── */
+.sidebar {
+   flex: 0 0 320px;
+   width: 320px;
+   background: var(--panel);
+   border-right: 1px solid var(--border);
+   overflow-y: auto;
+   padding: 16px 14px 32px;
+}
+.sidebar-header {
+   display: flex;
+   align-items: baseline;
+   justify-content: space-between;
+   margin-bottom: 4px;
+}
+.sidebar-header h2 {
+   margin: 0;
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 16px;
+   color: var(--text);
+}
+.sidebar-header .set-count {
+   color: var(--text-dim);
+   font-size: 11px;
+   background: var(--panel-2);
+   border: 1px solid var(--border);
+   padding: 1px 8px;
+   border-radius: 10px;
+}
+.sidebar-tagline {
+   color: var(--text-dim);
+   font-size: 11.5px;
+   line-height: 1.4;
+   margin: 0 0 16px;
+}
+.sidebar-section {
+   margin-bottom: 14px;
+}
+.sidebar-section-heading {
+   margin: 4px 0 8px;
+   font-size: 11px;
+   font-weight: 600;
+   text-transform: uppercase;
+   letter-spacing: 0.06em;
+   color: var(--text-dim);
+}
+.sidebar-section-toggle {
+   width: 100%;
+   text-align: left;
+   background: transparent;
+   color: var(--text);
+   border: 1px solid transparent;
+   border-radius: 4px;
+   padding: 6px 8px;
+   font-size: 12px;
+   font-weight: 600;
+   text-transform: uppercase;
+   letter-spacing: 0.06em;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   gap: 6px;
+}
+.sidebar-section-toggle.sub {
+   font-weight: 500;
+   text-transform: none;
+   letter-spacing: 0;
+   font-size: 13px;
+   color: var(--text-dim);
+}
+.sidebar-section-toggle:hover {
+   background: var(--panel-2);
+}
+.sidebar-section-toggle .caret {
+   color: var(--text-dim);
+   font-size: 10px;
+   width: 10px;
+   display: inline-block;
+}
+.sidebar-age-count {
+   margin-left: auto;
+   color: var(--text-dim);
+   font-size: 11px;
+   font-variant-numeric: tabular-nums;
+}
+.sidebar-subsection {
+   margin-bottom: 4px;
+}
+/* Nested subsection (e.g. each civilization under "Civilization-specific")
+   gets a small left indent so the hierarchy is visually obvious. */
+.sidebar-subsection-nested {
+   margin-left: 12px;
+}
+/* Checkbox used for non-levelable wonders. Sized to roughly match the
+   width of the number input it replaces so rows line up cleanly. */
+.sidebar-checkbox {
+   width: 18px;
+   height: 18px;
+   accent-color: var(--accent);
+   cursor: pointer;
+   margin-right: 22px;
+}
+/* Trade tile rows: a building dropdown + a remove "×" button. */
+.sidebar-trade-tile-row {
+   gap: 6px;
+}
+.sidebar-trade-tile-select {
+   flex: 1 1 auto;
+   min-width: 0;
+   background: var(--bg);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 3px;
+   padding: 3px 6px;
+   font-size: 12px;
+}
+.sidebar-trade-tile-select:focus {
+   outline: none;
+   border-color: var(--accent);
+}
+.sidebar-trade-tile-remove {
+   background: transparent;
+   color: var(--text-dim);
+   border: 1px solid var(--panel-edge);
+   border-radius: 3px;
+   width: 22px;
+   height: 22px;
+   line-height: 1;
+   font-size: 14px;
+   cursor: pointer;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+}
+.sidebar-trade-tile-remove:hover {
+   color: var(--accent);
+   border-color: var(--accent);
+}
+.sidebar-trade-tile-add {
+   margin: 6px 0 4px;
+   padding: 5px 8px;
+   width: 100%;
+   background: transparent;
+   color: var(--accent);
+   border: 1px dashed rgba(56, 196, 219, 0.45);
+   border-radius: 4px;
+   cursor: pointer;
+   font-size: 12px;
+}
+.sidebar-trade-tile-add:hover {
+   background: rgba(56, 196, 219, 0.08);
+}
+/* Cathedral of Brasília — special wonder row with an inline expandable
+   building list. Header puts name+effect on the left and the checkbox
+   on the right; expandable content stacks below. */
+.sidebar-row-cob {
+   align-items: stretch;
+}
+.sidebar-cob-header {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 10px;
+}
+.sidebar-cob-toggle {
+   margin-top: 6px;
+}
+.sidebar-cob-list {
+   margin: 4px 0 4px 12px;
+}
+/* Building picker shown under an Adaptive GP row when the user has
+   the GP — lets them pick which building it boosts. */
+.sidebar-adaptive-select {
+   width: 100%;
+   margin-top: 4px;
+}
+
+/* Direction picker row used by ChoghaZanbil/LuxorTemple/BigBen. Sits
+   directly under the wonder header when level > 0. */
+.sidebar-direction-row {
+   margin-top: 6px;
+   display: flex;
+   align-items: center;
+   gap: 6px;
+}
+.sidebar-direction-label {
+   font-size: 10.5px;
+   color: var(--text-dim);
+   text-transform: uppercase;
+   letter-spacing: 0.05em;
+   white-space: nowrap;
+}
+
+/* Save import: button + status line. Lives just under the sidebar
+   tagline so the user notices it without scrolling. */
+.sidebar-import {
+   margin: 6px 0 12px;
+}
+.sidebar-import-btn {
+   width: 100%;
+   padding: 6px 8px;
+   background: var(--panel-2);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 4px;
+   font-size: 12px;
+   cursor: pointer;
+}
+.sidebar-import-btn:hover {
+   border-color: var(--accent);
+   color: var(--accent);
+}
+.sidebar-import-status {
+   margin-top: 4px;
+   font-size: 11px;
+   line-height: 1.3;
+}
+.sidebar-import-status.ok {
+   color: var(--accent);
+}
+.sidebar-import-status.err {
+   color: #ff8090;
+}
+/* Path hint shown under the import button. Browsers don't let websites
+   pre-open a folder, so the user has to navigate there manually — this
+   gives them the path to copy into their file picker's location bar. */
+.sidebar-import-hint {
+   margin-top: 6px;
+   font-size: 10.5px;
+   color: var(--text-dim);
+   line-height: 1.4;
+}
+.sidebar-import-hint-label {
+   display: block;
+   text-transform: uppercase;
+   letter-spacing: 0.05em;
+   font-size: 9.5px;
+   margin-bottom: 2px;
+}
+.sidebar-import-hint code {
+   display: block;
+   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+   font-size: 10.5px;
+   color: var(--text);
+   word-break: break-all;
+   background: var(--bg);
+   border: 1px solid var(--panel-edge);
+   border-radius: 3px;
+   padding: 3px 5px;
+   user-select: all;
+   cursor: text;
+}
+.sidebar-list {
+   list-style: none;
+   margin: 4px 0 8px;
+   padding: 0;
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+}
+.sidebar-row {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   padding: 4px 8px;
+   border-radius: 4px;
+}
+.sidebar-row:hover {
+   background: var(--panel-2);
+}
+.sidebar-row-text {
+   flex: 1 1 auto;
+   min-width: 0;
+}
+.sidebar-row-name {
+   font-size: 13px;
+   color: var(--text);
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+.sidebar-row-effect {
+   font-size: 10.5px;
+   color: var(--text-dim);
+   line-height: 1.3;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+.sidebar-row input[type="number"] {
+   width: 56px;
+   background: var(--bg);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 4px;
+   padding: 3px 6px;
+   font-size: 12px;
+   font-family: inherit;
+   text-align: right;
+   font-variant-numeric: tabular-nums;
+}
+.sidebar-row input[type="number"]:focus {
+   outline: none;
+   border-color: var(--accent);
+}
+
+/* "+X from Age of Wisdom" indicator next to each GP row. */
+.sidebar-wisdom-add {
+   width: 32px;
+   text-align: right;
+   font-variant-numeric: tabular-nums;
+   font-size: 11px;
+   color: var(--accent);
+   font-weight: 600;
+}
+.sidebar-wisdom-add.empty {
+   color: transparent;
+}
+
+/* Small badge after the age heading showing the age's AoW level. */
+.sidebar-wisdom-badge {
+   margin-left: 8px;
+   padding: 1px 6px;
+   border-radius: 10px;
+   background: rgba(125, 211, 252, 0.12);
+   border: 1px solid rgba(125, 211, 252, 0.35);
+   color: var(--accent);
+   font-size: 10px;
+   font-weight: 600;
+   font-variant-numeric: tabular-nums;
+   letter-spacing: 0;
+   text-transform: none;
+}
+
+/* Testing-helper row: "Set all to [N] [Apply]". */
+.sidebar-bulk-row {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   padding: 6px 8px;
+   margin-bottom: 8px;
+   background: var(--panel-2);
+   border: 1px solid var(--border);
+   border-radius: 4px;
+}
+.sidebar-bulk-label {
+   flex: 1 1 auto;
+   color: var(--text-dim);
+   font-size: 11.5px;
+}
+.sidebar-bulk-row input[type="number"] {
+   width: 56px;
+   background: var(--bg);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 4px;
+   padding: 3px 6px;
+   font-size: 12px;
+   text-align: right;
+   font-variant-numeric: tabular-nums;
+}
+.sidebar-bulk-row input[type="number"]:focus {
+   outline: none;
+   border-color: var(--accent);
+}
+.sidebar-bulk-row button {
+   background: var(--panel-2);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 4px;
+   padding: 3px 10px;
+   font-size: 12px;
+   cursor: pointer;
+}
+.sidebar-bulk-row button:hover {
+   background: #243345;
+   border-color: var(--accent);
+}
+
+/* The transform wrapper — pan/zoom is applied to this element so the
+   inner TierWorld stays at its natural pixel coordinates. */
+.world-transform {
+   position: absolute;
+   top: 0;
+   left: 0;
+   will-change: transform;
+}
+
+/* TierWorld is the inner content: cards + svg lines. Used both inside
+   .world-transform (main view) and inside .modal-body (filtered view). */
+.tier-world {
+   position: relative;
+}
+
+.connection-layer {
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: 0;
+}
+.connection-layer path {
+   fill: none;
+   stroke: rgba(255, 255, 255, 0.18);
+   stroke-width: 1.25;
+   transition: stroke 100ms ease, stroke-width 100ms ease;
+}
+/* Hovered card: thicken + brighten edges flowing into it from lower
+   tiers (the only direction edges run in this graph). */
+.connection-layer path.edge-hover-incoming {
+   stroke: var(--accent);
+   stroke-width: 2.5;
+}
+
+.tier-heading {
+   position: absolute;
+   top: 0;
+   height: var(--heading-h);
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   font-size: 11px;
+   font-weight: 600;
+   text-transform: uppercase;
+   letter-spacing: 0.08em;
+   color: var(--text-dim);
+   padding: 0 4px;
+   z-index: 1;
+}
+.tier-heading .count {
+   color: var(--text-dim);
+   font-weight: 400;
+   font-size: 11px;
+   background: var(--panel-2);
+   border: 1px solid var(--border);
+   padding: 1px 6px;
+   border-radius: 10px;
+}
+
+.card {
+   position: absolute;
+   width: var(--card-w);
+   height: var(--card-h);
+   background: linear-gradient(180deg, #18253b 0%, #11192b 100%);
+   border: 1px solid var(--panel-edge);
+   border-radius: 6px;
+   padding: 12px 18px;
+   text-align: center;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   gap: 4px;
+   box-shadow: inset 0 0 0 4px transparent, inset 0 0 0 5px rgba(255, 255, 255, 0.05);
+   z-index: 1;
+   transition: border-color 80ms ease, box-shadow 80ms ease;
+}
+.card-clickable {
+   cursor: pointer;
+}
+.card-clickable:hover {
+   border-color: var(--accent);
+   box-shadow:
+      inset 0 0 0 4px transparent,
+      inset 0 0 0 5px rgba(125, 211, 252, 0.18);
+}
+.card-highlight {
+   border-color: var(--accent);
+   box-shadow:
+      inset 0 0 0 4px transparent,
+      inset 0 0 0 5px rgba(125, 211, 252, 0.32);
+}
+.card-title {
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 17px;
+   line-height: 1.15;
+   color: var(--text);
+}
+.card-subtitle {
+   font-size: 11.5px;
+   color: var(--text-dim);
+   line-height: 1.3;
+}
+
+/* Bonus pill row — shown on any card that picks up a GP/wonder bonus.
+   Visible on both the main view and the modal so the user can spot
+   which buildings are actually being boosted by their sidebar inputs. */
+.card-bonus-row {
+   margin-top: 4px;
+   display: flex;
+   gap: 4px;
+   flex-wrap: wrap;
+}
+.card-bonus-pill {
+   font-size: 10.5px;
+   line-height: 1;
+   padding: 2px 5px;
+   border-radius: 3px;
+   background: rgba(56, 196, 219, 0.12);
+   color: var(--accent);
+   border: 1px solid rgba(56, 196, 219, 0.35);
+   font-variant-numeric: tabular-nums;
+   white-space: nowrap;
+}
+.card-bonused {
+   border-color: rgba(56, 196, 219, 0.45);
+}
+
+/* Modal-only chain row: shows the calculated amount + an editable level. */
+.card-chain-row {
+   margin-top: 6px;
+   padding-top: 6px;
+   border-top: 1px solid rgba(255, 255, 255, 0.06);
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   width: 100%;
+   gap: 10px;
+}
+.card-amount {
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 18px;
+   color: var(--accent);
+   line-height: 1;
+   font-variant-numeric: tabular-nums;
+}
+
+/* Editable amount on non-root cards. The "×" sits next to the input
+   to make the syntax obvious. */
+.card-amount-edit {
+   display: inline-flex;
+   align-items: center;
+   gap: 4px;
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 16px;
+   color: var(--text-dim);
+   line-height: 1;
+}
+.card-amount-edit input {
+   width: 64px;
+   background: var(--bg);
+   color: var(--text-dim);
+   border: 1px solid var(--panel-edge);
+   border-radius: 3px;
+   padding: 2px 4px;
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 16px;
+   text-align: right;
+   font-variant-numeric: tabular-nums;
+}
+.card-amount-edit input:focus {
+   outline: none;
+   border-color: var(--accent);
+}
+/* When the user has supplied a manual amount, the input pops in cyan
+   so it's obvious it's not the auto-computed number. */
+.card-amount-edit.overridden,
+.card-amount-edit.overridden input {
+   color: var(--accent);
+}
+.card-amount-edit.overridden input {
+   border-color: var(--accent);
+}
+.card-level {
+   display: inline-flex;
+   align-items: center;
+   gap: 4px;
+   font-size: 11px;
+   color: var(--text-dim);
+   text-transform: uppercase;
+   letter-spacing: 0.05em;
+}
+.card-level input {
+   width: 50px;
+   background: var(--bg);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 3px;
+   padding: 2px 4px;
+   font-size: 12px;
+   font-family: inherit;
+   text-align: right;
+}
+.card-level input:focus {
+   outline: none;
+   border-color: var(--accent);
+}
+/* Inline "+X" badge next to a card's level input — same role as the
+   sidebar's per-GP wisdom badge: shows how much the building's effective
+   level is being boosted by Habitat 67 / Château Frontenac / Great Ocean
+   Road / Lake Louise. */
+.card-level-boost {
+   color: var(--accent);
+   font-size: 11px;
+   font-variant-numeric: tabular-nums;
+   font-weight: 600;
+   text-transform: none;
+   letter-spacing: 0;
+}
+
+/* ── Modal ──────────────────────────────────────────────────────────── */
+.modal-backdrop {
+   position: fixed;
+   inset: 0;
+   background: rgba(5, 10, 16, 0.72);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   z-index: 200;
+   padding: 32px;
+}
+.modal-content {
+   background: var(--bg);
+   border: 1px solid var(--border);
+   border-radius: 8px;
+   width: min(96vw, 1700px);
+   height: min(92vh, 1200px);
+   display: flex;
+   flex-direction: column;
+   overflow: hidden;
+   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+}
+.modal-header {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 14px 20px;
+   border-bottom: 1px solid var(--border);
+   background: var(--panel);
+   flex-shrink: 0;
+}
+.modal-header h3 {
+   margin: 0;
+   font-size: 14px;
+   font-weight: 500;
+   color: var(--text-dim);
+   display: flex;
+   align-items: baseline;
+   gap: 12px;
+}
+.modal-root-name {
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 18px;
+   color: var(--text);
+}
+.modal-count {
+   font-size: 11px;
+   color: var(--text-dim);
+   background: var(--panel-2);
+   border: 1px solid var(--border);
+   padding: 2px 8px;
+   border-radius: 10px;
+}
+.modal-close {
+   background: transparent;
+   color: var(--text-dim);
+   border: 1px solid transparent;
+   border-radius: 4px;
+   width: 32px;
+   height: 32px;
+   font-size: 22px;
+   line-height: 1;
+   cursor: pointer;
+   padding: 0;
+}
+.modal-close:hover {
+   color: var(--text);
+   border-color: var(--border);
+   background: var(--panel-2);
+}
+.modal-body {
+   flex: 1 1 auto;
+   background: var(--bg);
+}
+/* When the body acts as a pan/zoom viewport, lock overflow and disable
+   text-selection on drags. The transformed world inside is positioned
+   absolutely the same way as the main view's. */
+.modal-viewport {
+   position: relative;
+   overflow: hidden;
+   touch-action: none;
+}
+.modal-header-actions {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+}
+
+/* First-visit welcome modal — much smaller than the production-line
+   modal; centred, fixed width, plain text body. */
+.welcome-modal {
+   width: min(95vw, 460px);
+   height: auto;
+   max-height: 90vh;
+}
+.welcome-body {
+   padding: 18px 22px 22px;
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+   color: var(--text);
+   font-size: 14px;
+   line-height: 1.5;
+   background: var(--panel);
+}
+.welcome-body p {
+   margin: 0;
+}
+.welcome-caveat {
+   color: var(--text-dim);
+   font-style: italic;
+   font-size: 13px;
+}
+.welcome-dismiss {
+   align-self: flex-end;
+   margin-top: 4px;
+   padding: 6px 14px;
+   background: var(--accent);
+   color: var(--bg);
+   border: 0;
+   border-radius: 4px;
+   font-size: 13px;
+   font-weight: 600;
+   cursor: pointer;
+   font-family: inherit;
+}
+.welcome-dismiss:hover {
+   filter: brightness(1.1);
+}
+
+/* Bulk-set-level input in the modal header. Mirrors the GP "Set all to N"
+   helper in the sidebar — pushes one value to every card's level. */
+.modal-bulk-level {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   font-size: 11px;
+   color: var(--text-dim);
+   text-transform: uppercase;
+   letter-spacing: 0.05em;
+}
+.modal-bulk-level input {
+   width: 56px;
+   background: var(--panel-2);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 4px;
+   padding: 4px 6px;
+   font-size: 13px;
+   text-align: right;
+   font-variant-numeric: tabular-nums;
+}
+.modal-bulk-level input:focus {
+   outline: none;
+   border-color: var(--accent);
+}
+.modal-bulk-level button {
+   background: var(--panel-2);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 4px;
+   padding: 4px 10px;
+   font-size: 11px;
+   text-transform: uppercase;
+   letter-spacing: 0.05em;
+   cursor: pointer;
+}
+.modal-bulk-level button:hover {
+   border-color: var(--accent);
+   color: var(--accent);
+}
+
+/* Side-by-side viewport + rundown panel inside the modal body. */
+.modal-main {
+   flex: 1 1 auto;
+   display: flex;
+   min-height: 0;
+}
+.modal-main .modal-body {
+   flex: 1 1 auto;
+   min-width: 0;
+}
+.modal-rundown {
+   flex: 0 0 280px;
+   border-left: 1px solid var(--panel-edge);
+   background: var(--panel);
+   overflow-y: auto;
+   padding: 14px 14px 18px;
+   display: flex;
+   flex-direction: column;
+   gap: 16px;
+}
+.rundown-section h4 {
+   margin: 0 0 6px;
+   font-size: 11px;
+   color: var(--text-dim);
+   text-transform: uppercase;
+   letter-spacing: 0.05em;
+   font-weight: 600;
+}
+.rundown-empty {
+   font-size: 12px;
+   color: var(--text-dim);
+   font-style: italic;
+}
+.rundown-output-list {
+   list-style: none;
+   margin: 0;
+   padding: 0;
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+}
+.rundown-output-list li {
+   display: flex;
+   align-items: baseline;
+   gap: 6px;
+   font-size: 13px;
+}
+.rundown-num {
+   color: var(--accent);
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 18px;
+   font-variant-numeric: tabular-nums;
+}
+.rundown-mat {
+   color: var(--text);
+}
+.rundown-per {
+   color: var(--text-dim);
+   font-size: 11px;
+}
+.rundown-happiness {
+   display: flex;
+   align-items: baseline;
+   gap: 10px;
+}
+.rundown-happiness-num {
+   color: var(--accent);
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 24px;
+   font-variant-numeric: tabular-nums;
+   line-height: 1;
+}
+.rundown-happiness-detail {
+   color: var(--text-dim);
+   font-size: 11px;
+   line-height: 1.4;
+}
+.rundown-happiness-detail em {
+   font-style: italic;
+   opacity: 0.8;
+}
+.rundown-buildings {
+   list-style: none;
+   margin: 0;
+   padding: 0;
+   display: flex;
+   flex-direction: column;
+   gap: 3px;
+}
+.rundown-buildings li {
+   display: grid;
+   grid-template-columns: 38px 1fr auto;
+   gap: 8px;
+   font-size: 12px;
+   align-items: baseline;
+   padding: 2px 0;
+}
+.rundown-amount {
+   color: var(--accent);
+   font-family: "Marcellus", Georgia, serif;
+   font-size: 14px;
+   text-align: right;
+   font-variant-numeric: tabular-nums;
+}
+.rundown-name {
+   color: var(--text);
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+.rundown-meta {
+   color: var(--text-dim);
+   font-size: 10.5px;
+   font-variant-numeric: tabular-nums;
+   white-space: nowrap;
+}
+
+/* Labeled number input in the modal header (Amount, Level). */
+.modal-input {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   font-size: 11px;
+   color: var(--text-dim);
+   text-transform: uppercase;
+   letter-spacing: 0.05em;
+}
+.modal-input input {
+   width: 70px;
+   background: var(--panel-2);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 4px;
+   padding: 4px 8px;
+   font-size: 13px;
+   font-family: inherit;
+   text-align: right;
+}
+.modal-input input:focus {
+   outline: none;
+   border-color: var(--accent);
+}

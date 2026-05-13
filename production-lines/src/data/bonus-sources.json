@@ -1,0 +1,2523 @@
+{
+  "greatPeople": [
+    {
+      "key": "Hammurabi",
+      "name": "Hammurabi",
+      "age": "BronzeAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "House",
+        "Hut"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Hatshepsut",
+      "name": "Hatshepsut",
+      "age": "BronzeAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Aqueduct",
+        "Brickworks"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Narmer",
+      "name": "Narmer",
+      "age": "BronzeAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "SargonOfAkkad",
+      "name": "Sargon of Akkad",
+      "age": "BronzeAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "LoggingCamp",
+        "LumberMill"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Agamemnon",
+      "name": "Agamemnon",
+      "age": "IronAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "StoneQuarry",
+        "Marbleworks"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Dido",
+      "name": "Dido",
+      "age": "IronAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "DairyFarm",
+        "PoultryFarm"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "DukeOfZhou",
+      "name": "Duke of Zhou",
+      "age": "IronAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "CopperMiningCamp",
+        "Blacksmith"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "KingDavid",
+      "name": "King David",
+      "age": "IronAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Samsuiluna",
+      "name": "Samsu-iluna",
+      "age": "IronAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Marbleworks"
+      ],
+      "valueMultiplier": 2,
+      "city": "Babylon"
+    },
+    {
+      "key": "Zoroaster",
+      "name": "Zoroaster",
+      "age": "IronAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "CottonPlantation",
+        "CottonMill"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Aeschylus",
+      "name": "Aeschylus",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "FlourMill",
+        "Bakery"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Archimedes",
+      "name": "Archimedes",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Caravansary",
+        "Warehouse"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Aristotle",
+      "name": "Aristotle",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Library"
+      ],
+      "valueMultiplier": 2,
+      "city": "Athens"
+    },
+    {
+      "key": "Ashurbanipal",
+      "name": "Ashurbanipal",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Sandpit",
+        "Glassworks"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Cleopatra",
+      "name": "Cleopatra",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Shrine"
+      ],
+      "valueMultiplier": 2,
+      "city": "Memphis"
+    },
+    {
+      "key": "CyrusII",
+      "name": "Cyrus II",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "IronMiningCamp",
+        "IronForge"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "EmperorWuOfHan",
+      "name": "Emperor Wu of Han",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Caravansary"
+      ],
+      "valueMultiplier": 2,
+      "city": "Beijing"
+    },
+    {
+      "key": "Hannibal",
+      "name": "Hannibal",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "SiegeWorkshop",
+        "SwordForge"
+      ],
+      "valueMultiplier": 1,
+      "city": "Carthaginian"
+    },
+    {
+      "key": "Herodotus",
+      "name": "Herodotus",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "PaperMaker",
+        "MusiciansGuild"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Homer",
+      "name": "Homer",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Stable",
+        "PoetrySchool"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "JuliusCaesar",
+      "name": "Julius Caesar",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "GoldMiningCamp"
+      ],
+      "valueMultiplier": 2,
+      "city": "Rome"
+    },
+    {
+      "key": "Laozi",
+      "name": "Laozi",
+      "age": "ClassicalAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "NebuchadnezzarII",
+      "name": "Nebuchadnezzar II",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "WheatFarm",
+        "Brewery"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "QinShiHuang",
+      "name": "Qin Shi Huang",
+      "age": "ClassicalAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "ChariotWorkshop",
+        "Armory"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Zenobia",
+      "name": "Zenobia",
+      "age": "ClassicalAge",
+      "kind": "levelBoost"
+    },
+    {
+      "key": "Charlemagne",
+      "name": "Charlemagne",
+      "age": "MiddleAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "SwordForge",
+        "KnightCamp"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "GenghisKhan",
+      "name": "Genghis Khan",
+      "age": "MiddleAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "HarunAlRashid",
+      "name": "Harun al-Rashid",
+      "age": "MiddleAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "CheeseMaker",
+        "Mosque"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Justinian",
+      "name": "Justinian",
+      "age": "MiddleAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "FurnitureWorkshop",
+        "GarmentWorkshop"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Xuanzang",
+      "name": "Xuanzang",
+      "age": "MiddleAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Library",
+        "Pagoda"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "ChristopherColumbus",
+      "name": "Christopher Columbus",
+      "age": "RenaissanceAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "CosimoDeMedici",
+      "name": "Cosimo de' Medici",
+      "age": "RenaissanceAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "GoldMiningCamp",
+        "CoinMint"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "GeorgiusAgricola",
+      "name": "Georgius Agricola",
+      "age": "RenaissanceAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "SiegeWorkshop",
+        "CoalMine"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "JohannesKepler",
+      "name": "Johannes Kepler",
+      "age": "RenaissanceAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Shrine",
+        "LensWorkshop"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "LeonardoDaVinci",
+      "name": "Leonardo da Vinci",
+      "age": "RenaissanceAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "PaintersGuild",
+        "University"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "MartinLuther",
+      "name": "Martin Luther",
+      "age": "RenaissanceAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Church",
+        "School"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "OdaNobunaga",
+      "name": "Oda Nobunaga",
+      "age": "RenaissanceAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "FrigateBuilder"
+      ],
+      "valueMultiplier": 2,
+      "city": "Kyoto"
+    },
+    {
+      "key": "ReneDescartes",
+      "name": "René Descartes",
+      "age": "RenaissanceAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "School"
+      ],
+      "valueMultiplier": 2,
+      "city": null
+    },
+    {
+      "key": "SuleimanI",
+      "name": "Suleiman I",
+      "age": "RenaissanceAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Bank"
+      ],
+      "valueMultiplier": 2,
+      "city": "Ottoman"
+    },
+    {
+      "key": "ThomasGresham",
+      "name": "Thomas Gresham",
+      "age": "RenaissanceAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "BondMarket"
+      ],
+      "valueMultiplier": 2,
+      "city": "English"
+    },
+    {
+      "key": "Voltaire",
+      "name": "Voltaire",
+      "age": "RenaissanceAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Museum"
+      ],
+      "valueMultiplier": 2,
+      "city": "French"
+    },
+    {
+      "key": "WilliamShakespeare",
+      "name": "William Shakespeare",
+      "age": "RenaissanceAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "WritersGuild",
+        "ActorsGuild"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "ZhengHe",
+      "name": "Zheng He",
+      "age": "RenaissanceAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "CaravelBuilder",
+        "GalleonBuilder"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "AdaLovelace",
+      "name": "Ada Lovelace",
+      "age": "IndustrialAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "PrintingHouse",
+        "Museum"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "AkbarTheGreat",
+      "name": "Akbar The Great",
+      "age": "IndustrialAge",
+      "kind": "levelBoost"
+    },
+    {
+      "key": "AndrewCarnegie",
+      "name": "Andrew Carnegie",
+      "age": "IndustrialAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Bank",
+        "SteelMill"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "GeorgeWashington",
+      "name": "George Washington",
+      "age": "IndustrialAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Parliament"
+      ],
+      "valueMultiplier": 2,
+      "city": "NewYork"
+    },
+    {
+      "key": "IsambardKingdomBrunel",
+      "name": "Isambard Kingdom Brunel",
+      "age": "IndustrialAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "FrigateBuilder",
+        "ConcretePlant"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "JPMorgan",
+      "name": "J.P. Morgan",
+      "age": "IndustrialAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "BondMarket",
+        "RifleFactory"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "JamesWatt",
+      "name": "James Watt",
+      "age": "IndustrialAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Steamworks",
+        "DynamiteWorkshop"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "KarlMarx",
+      "name": "Karl Marx",
+      "age": "IndustrialAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Courthouse",
+        "Parliament"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Beethoven",
+      "name": "Ludwig van Beethoven",
+      "age": "IndustrialAge",
+      "kind": "levelBoost"
+    },
+    {
+      "key": "MichaelFaraday",
+      "name": "Michael Faraday",
+      "age": "IndustrialAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "NapoleonBonaparte",
+      "name": "Napoleon Bonaparte",
+      "age": "IndustrialAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "CannonWorkshop",
+        "GunpowderMill"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Tchaikovsky",
+      "name": "Tchaikovsky",
+      "age": "IndustrialAge",
+      "kind": "levelBoost"
+    },
+    {
+      "key": "AlbertEinstein",
+      "name": "Albert Einstein",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "ResearchLab"
+      ],
+      "valueMultiplier": 2,
+      "city": null
+    },
+    {
+      "key": "AmeliaEarhart",
+      "name": "Amelia Earhart",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "BiplaneFactory",
+        "GasPowerPlant"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "CharlesMartinHall",
+      "name": "Charles Martin Hall",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "NaturalGasWell",
+        "AluminumSmelter"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "CharlesParsons",
+      "name": "Charles Parsons",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "CoalPowerPlant",
+        "IroncladBuilder"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "HeitorVillaLobos",
+      "name": "Heitor Villa-Lobos",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "RadioStation"
+      ],
+      "valueMultiplier": 2,
+      "city": "Brazilian"
+    },
+    {
+      "key": "HenryFord",
+      "name": "Henry Ford",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "CarFactory",
+        "PlasticsFactory",
+        "GasPlasticsPlant"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "JohnBradfield",
+      "name": "John Bradfield",
+      "age": "WorldWarAge",
+      "kind": "levelBoost"
+    },
+    {
+      "key": "JohnDRockefeller",
+      "name": "John D. Rockefeller",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "OilWell",
+        "StockExchange"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "JosephMonier",
+      "name": "Joseph Monier",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "RebarPlant",
+        "ReinforcedConcretePlant"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "JosephPulitzer",
+      "name": "Joseph Pulitzer",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "MagazinePublisher",
+        "Pizzeria"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "MarieCurie",
+      "name": "Marie Curie",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "CableFactory",
+        "UraniumMine"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "OskarSchindler",
+      "name": "Oskar Schindler",
+      "age": "WorldWarAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "OttoVonBismarck",
+      "name": "Otto von Bismarck",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "BattleshipBuilder"
+      ],
+      "valueMultiplier": 2,
+      "city": "German"
+    },
+    {
+      "key": "PierreDeCoubertin",
+      "name": "Pierre de Coubertin",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "PublishingHouse",
+        "Stadium"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "RabindranathTagore",
+      "name": "Rabindranath Tagore",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Embassy"
+      ],
+      "valueMultiplier": 2,
+      "city": "Indian"
+    },
+    {
+      "key": "RichardJordanGatling",
+      "name": "Richard Jordan Gatling",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "GatlingGunFactory",
+        "TankFactory"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "RudolfDiesel",
+      "name": "Rudolf Diesel",
+      "age": "WorldWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "OilRefinery",
+        "LocomotiveFactory"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "AndreyKolmogorov",
+      "name": "Andrey Kolmogorov",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "SatelliteFactory",
+        "Cosmodrome"
+      ],
+      "valueMultiplier": 1,
+      "city": "Russian"
+    },
+    {
+      "key": "ChesterWNimitz",
+      "name": "Chester W. Nimitz",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "BattleshipBuilder",
+        "HydroDam"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "EnricoFermi",
+      "name": "Enrico Fermi",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "NuclearPowerPlant",
+        "SubmarineYard"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "FrankWhittle",
+      "name": "Frank Whittle",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "AirplaneFactory",
+        "FighterJetPlant"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "FriedrichHayek",
+      "name": "Friedrich Hayek",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output"
+      ],
+      "buildings": [
+        "SwissBank"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "GeorgeCMarshall",
+      "name": "George C. Marshall",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "Embassy",
+        "ForexMarket"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "JRobertOppenheimer",
+      "name": "J. Robert Oppenheimer",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "UraniumEnrichmentPlant",
+        "AtomicFacility"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "NeilArmstrong",
+      "name": "Neil Armstrong",
+      "age": "ColdWarAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "Pele",
+      "name": "Pelé",
+      "age": "ColdWarAge",
+      "kind": "levelBoost"
+    },
+    {
+      "key": "PhiloFarnsworth",
+      "name": "Philo Farnsworth",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "TVStation",
+        "NuclearMissileSilo"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "RobertNoyce",
+      "name": "Robert Noyce",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "SemiconductorFab",
+        "SiliconSmelter"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "SergeiKorolev",
+      "name": "Sergei Korolev",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "SatelliteFactory",
+        "SpacecraftFactory"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "TerryFox",
+      "name": "Terry Fox",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "TVStation"
+      ],
+      "valueMultiplier": 2,
+      "city": "Canadian"
+    },
+    {
+      "key": "WaltDisney",
+      "name": "Walt Disney",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "MovieStudio",
+        "RadioStation"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "WernherVonBraun",
+      "name": "Wernher von Braun",
+      "age": "ColdWarAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "RocketFactory",
+        "ArtilleryFactory"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "BrianSchmidt",
+      "name": "Brian Schmidt",
+      "age": "InformationAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "FusionFuelPlant",
+        "FusionPowerPlant"
+      ],
+      "valueMultiplier": 1,
+      "city": "Australian"
+    },
+    {
+      "key": "CarlSagan",
+      "name": "Carl Sagan",
+      "age": "InformationAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "SpaceCenter",
+        "Peacekeeper"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "DanAlderson",
+      "name": "Dan Alderson",
+      "age": "InformationAge",
+      "kind": "levelBoost"
+    },
+    {
+      "key": "DennisRitchie",
+      "name": "Dennis Ritchie",
+      "age": "InformationAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "SoftwareCompany",
+        "MaglevFactory"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "EmmanuelleCharpentier",
+      "name": "Emmanuelle Charpentier",
+      "age": "InformationAge",
+      "kind": "levelBoost"
+    },
+    {
+      "key": "FreemanDyson",
+      "name": "Freeman Dyson",
+      "age": "InformationAge",
+      "kind": "levelBoost"
+    },
+    {
+      "key": "GeoffreyHinton",
+      "name": "Geoffrey Hinton",
+      "age": "InformationAge",
+      "kind": "levelBoost"
+    },
+    {
+      "key": "GordonMoore",
+      "name": "Gordon Moore",
+      "age": "InformationAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "ComputerFactory",
+        "SupercomputerLab"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "HarryMarkowitz",
+      "name": "Harry Markowitz",
+      "age": "InformationAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "MutualFund",
+        "HedgeFund"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "HymanGRickover",
+      "name": "Hyman G. Rickover",
+      "age": "InformationAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "AircraftCarrierYard",
+        "NuclearSubmarineYard"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "JohnCarmack",
+      "name": "John Carmack",
+      "age": "InformationAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "ComputerLab",
+        "CivOasis"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "JohnMcCarthy",
+      "name": "John McCarthy",
+      "age": "InformationAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "CivGPT",
+        "RobocarFactory"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "LeeKuanYew",
+      "name": "Lee Kuan Yew",
+      "age": "InformationAge",
+      "kind": "levelBoost"
+    },
+    {
+      "key": "SatoshiNakamoto",
+      "name": "Satoshi Nakamoto",
+      "age": "InformationAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "CivTok",
+        "BitcoinMiner"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "SidMeier",
+      "name": "Sid Meier",
+      "age": "InformationAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "TimBernersLee",
+      "name": "Tim Berners-Lee",
+      "age": "InformationAge",
+      "kind": "boost",
+      "multipliers": [
+        "output",
+        "storage"
+      ],
+      "buildings": [
+        "InternetServiceProvider",
+        "OpticalFiberPlant"
+      ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "VeraRubin",
+      "name": "Vera Rubin",
+      "age": "InformationAge",
+      "kind": "levelBoost"
+    },
+    {
+      "key": "WilliamShepherd",
+      "name": "William Shepherd",
+      "age": "InformationAge",
+      "kind": "levelBoost"
+    }
+  ],
+  "wonders": [
+    {
+      "key": "DysonSphere",
+      "effect": "Global +5 output, +1 per wonder level",
+      "name": "Dyson Sphere",
+      "levelable": true,
+      "civilization": null
+    },
+    {
+      "key": "CentrePompidou",
+      "effect": "Global +level output and +2×level storage to every building. Level = unlocked cities + 1 (the save importer reads this from the wonder's cities field).",
+      "name": "Centre Pompidou",
+      "levelable": true,
+      "civilization": null
+    },
+    {
+      "key": "CircusMaximus",
+      "effect": "+1 output to Musicians/Painters/Writers Guild",
+      "name": "Circus Maximus",
+      "levelable": false,
+      "civilization": "Roman"
+    },
+    {
+      "key": "Parthenon",
+      "effect": "+1 output to Musicians & Painters Guild",
+      "name": "Parthenon",
+      "levelable": false,
+      "civilization": "Greek"
+    },
+    {
+      "key": "Persepolis",
+      "effect": "+1 output to Stone Quarry, Logging Camp, Copper Mining Camp",
+      "name": "Persepolis",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "ForbiddenCity",
+      "effect": "+1 output to Paper Maker, Writers Guild, Printing House",
+      "name": "Forbidden City",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "HimejiCastle",
+      "effect": "+1 output to Caravel/Galleon/Frigate Builder",
+      "name": "Himeji Castle",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "BrandenburgGate",
+      "effect": "+1 output to Oil Well & Coal Mine",
+      "name": "Brandenburg Gate",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "NileRiver",
+      "effect": "+1 output to Wheat Farm",
+      "name": "Nile River",
+      "levelable": false,
+      "civilization": "Egyptian"
+    },
+    {
+      "key": "ManhattanProject",
+      "effect": "+2 output to Uranium Mine",
+      "name": "Manhattan Project",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "ApolloProgram",
+      "effect": "+2 output to Rocket Factory",
+      "name": "Apollo Program",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "Sputnik1",
+      "effect": "+level output/storage to Cosmodrome AND +level effective level to every Cold War Age GP",
+      "name": "Sputnik 1",
+      "levelable": true,
+      "civilization": "Russian"
+    },
+    {
+      "key": "TempleOfArtemis",
+      "effect": "+1 output/worker/storage to Sword Forge & Armory",
+      "name": "Temple Of Artemis",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "TerracottaArmy",
+      "effect": "+1 output/worker/storage to Iron Mining Camp",
+      "name": "Terracotta Army",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "GrottaAzzurra",
+      "effect": "+1 output/worker/storage to all tier-1 buildings",
+      "name": "Grotta Azzurra",
+      "levelable": false,
+      "civilization": "Roman"
+    },
+    {
+      "key": "PyramidOfGiza",
+      "effect": "+1 output to every building producing Worker",
+      "name": "Pyramid of Giza",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "Stonehenge",
+      "effect": "+1 output to every building touching Stone",
+      "name": "Stonehenge",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "Rijksmuseum",
+      "effect": "+1 output/worker/storage to every building touching Culture",
+      "name": "Rijksmuseum",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "SummerPalace",
+      "effect": "+1 output/worker/storage to every building touching Gunpowder",
+      "name": "Summer Palace",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "GoldenGateBridge",
+      "effect": "+1 output to every building producing Power",
+      "name": "Golden Gate Bridge",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "UnitedNations",
+      "effect": "+1 output/worker/storage to every tier-4..6 building. Each General Assembly voted-boost target additionally gets +(UN level + 4) output.",
+      "name": "United Nations",
+      "levelable": true,
+      "civilization": null
+    },
+    {
+      "key": "MountTai",
+      "effect": "+1 output to every Science-producing building",
+      "name": "Mount Tai",
+      "levelable": false,
+      "civilization": "Chinese"
+    },
+    {
+      "key": "YangtzeRiver",
+      "effect": "+1 output/worker to every building consuming Water",
+      "name": "Yangtze River",
+      "levelable": false,
+      "civilization": "Chinese"
+    },
+    {
+      "key": "Shenandoah",
+      "effect": "+2 output (unstable) to every building unlocked in current age",
+      "name": "Grand Canyon",
+      "levelable": false,
+      "civilization": "American"
+    },
+    {
+      "key": "CNTower",
+      "effect": "Output bonus to WW/Cold-War-age buildings, scales with tier distance",
+      "name": "CN Tower",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "ZigguratOfUr",
+      "effect": "Happiness-dependent output to non-Worker buildings of older ages (unstable)",
+      "name": "Ziggurat of Ur",
+      "levelable": false,
+      "civilization": "Babylonian"
+    },
+    {
+      "key": "EuphratesRiver",
+      "effect": "Worker-utilisation-dependent output to non-Worker buildings of older ages (unstable)",
+      "name": "Euphrates River",
+      "levelable": false,
+      "civilization": "Babylonian"
+    },
+    {
+      "key": "CologneCathedral",
+      "effect": "Output to every Science-producing building, scales with wonder level",
+      "name": "Cologne Cathedral",
+      "levelable": true,
+      "civilization": "German"
+    },
+    {
+      "key": "BlackForest",
+      "effect": "+5 output to every building consuming Wood or Lumber",
+      "name": "Black Forest",
+      "levelable": false,
+      "civilization": "German"
+    },
+    {
+      "key": "MatrioshkaBrain",
+      "effect": "Output to every Science-producing building, scales with wonder level",
+      "name": "Matrioshka Brain",
+      "levelable": true,
+      "civilization": null
+    },
+    {
+      "key": "SydneyHarbourBridge",
+      "effect": "Output to every Power-producing building, scales with wonder level",
+      "name": "Sydney Harbour Bridge",
+      "levelable": true,
+      "civilization": "Australian"
+    },
+    {
+      "key": "TempleOfHeaven",
+      "effect": "+1 worker to every placed building with level ≥ 10",
+      "name": "Temple of Heaven",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "TajMahal",
+      "effect": "+5 worker to every under-construction building with level ≥ 20",
+      "name": "Taj Mahal",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "Neuschwanstein",
+      "effect": "+10 worker to every incomplete world wonder",
+      "name": "Neuschwanstein",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "LargeHadronCollider",
+      "effect": "+(level+1) effective level to every Information Age GP this run (excl. level-boost GPs)",
+      "name": "Large Hadron Collider",
+      "levelable": true,
+      "civilization": null
+    },
+    {
+      "key": "Aphrodite",
+      "effect": "+1 effective level to every Classical Age GP this run (also has under-construction worker bonus we don't model)",
+      "name": "Aphrodite",
+      "levelable": false,
+      "civilization": "Greek"
+    },
+    {
+      "key": "WorldTradeOrganization",
+      "effect": "+wtoLevel output multiplier to every trade tile bonus's target building (stacks per tile)",
+      "name": "World Trade Organization",
+      "levelable": true,
+      "civilization": null
+    },
+    {
+      "key": "GreatOceanRoad",
+      "effect": "+wonderLevel level boost to every trade tile bonus's target building (Moomba festival adds +wonderLevel output too)",
+      "name": "Great Ocean Road",
+      "levelable": true,
+      "civilization": "Australian"
+    },
+    {
+      "key": "LakeLouise",
+      "effect": "+2 level boost to every ally trade tile's target building (modelled here as +2 per trade tile since we don't track ally state)",
+      "name": "Lake Louise",
+      "levelable": false,
+      "civilization": "Canadian"
+    },
+    {
+      "key": "CathedralOfBrasilia",
+      "effect": "Each listed building gets +N output multiplier where N = list length (manual stand-in for the in-game 2-tile production-chain effect)",
+      "name": "Cathedral of Brasília",
+      "levelable": false,
+      "civilization": "Brazilian"
+    },
+    {
+      "key": "ChateauFrontenac",
+      "effect": "Each user-selected building gets +1 level boost (×2 during Winter Carnival festival, which we don't model)",
+      "name": "Chateau Frontenac",
+      "levelable": true,
+      "civilization": "Canadian"
+    },
+    {
+      "key": "ChoghaZanbil",
+      "effect": "Pick a Tradition (Cultivation / Commerce / Expansion / Honor). Each level unlocks one upgrade in that path; multipliers stack.",
+      "name": "Chogha Zanbil",
+      "levelable": true,
+      "civilization": null
+    },
+    {
+      "key": "LuxorTemple",
+      "effect": "Pick a Religion (Christianity / Islam / Buddhism / Polytheism). Each level unlocks one upgrade in that path. Also adds +1 sciencePerBusyWorker globally (not modelled — affects science income, not building output).",
+      "name": "Luxor Temple",
+      "levelable": true,
+      "civilization": null
+    },
+    {
+      "key": "BigBen",
+      "effect": "Pick an Ideology (Liberalism / Conservatism / Socialism / Communism). Each level unlocks one upgrade in that path. Also adds +2 sciencePerBusyWorker globally (not modelled).",
+      "name": "Big Ben",
+      "levelable": true,
+      "civilization": null
+    },
+    {
+      "key": "Habitat67",
+      "effect": "+wonderLevel output/worker/storage to AI Lab; +InformationAge Wisdom adds +wisdom output/storage on top (happiness-based level boost not modelled)",
+      "name": "Habitat 67",
+      "levelable": true,
+      "civilization": "Canadian"
+    },
+    {
+      "key": "Poseidon",
+      "effect": "Global +1 output during festival",
+      "name": "Poseidon",
+      "levelable": false,
+      "civilization": "Greek"
+    },
+    {
+      "key": "WallStreet",
+      "effect": "+5 output to ResearchFund during festival",
+      "name": "Wall Street",
+      "levelable": false,
+      "civilization": "American"
+    }
+  ],
+  "directionalWonders": {
+    "ChoghaZanbil": {
+      "kindLabel": "Tradition",
+      "paths": {
+        "Cultivation": [
+          "Cultivation1",
+          "Cultivation2",
+          "Cultivation3",
+          "Cultivation4"
+        ],
+        "Commerce": [
+          "Commerce1",
+          "Commerce2",
+          "Commerce3",
+          "Commerce4"
+        ],
+        "Expansion": [
+          "Expansion1",
+          "Expansion2",
+          "Expansion3",
+          "Expansion4"
+        ],
+        "Honor": [
+          "Honor1",
+          "Honor2",
+          "Honor3",
+          "Honor4"
+        ]
+      }
+    },
+    "LuxorTemple": {
+      "kindLabel": "Religion",
+      "paths": {
+        "Christianity": [
+          "Christianity1",
+          "Christianity2",
+          "Christianity3",
+          "Christianity4",
+          "Christianity5"
+        ],
+        "Islam": [
+          "Islam1",
+          "Islam2",
+          "Islam3",
+          "Islam4",
+          "Islam5"
+        ],
+        "Buddhism": [
+          "Buddhism1",
+          "Buddhism2",
+          "Buddhism3",
+          "Buddhism4",
+          "Buddhism5"
+        ],
+        "Polytheism": [
+          "Polytheism1",
+          "Polytheism2",
+          "Polytheism3",
+          "Polytheism4",
+          "Polytheism5"
+        ]
+      }
+    },
+    "BigBen": {
+      "kindLabel": "Ideology",
+      "paths": {
+        "Liberalism": [
+          "Liberalism1",
+          "Liberalism2",
+          "Liberalism3",
+          "Liberalism4",
+          "Liberalism5"
+        ],
+        "Conservatism": [
+          "Conservatism1",
+          "Conservatism2",
+          "Conservatism3",
+          "Conservatism4",
+          "Conservatism5"
+        ],
+        "Socialism": [
+          "Socialism1",
+          "Socialism2",
+          "Socialism3",
+          "Socialism4",
+          "Socialism5"
+        ],
+        "Communism": [
+          "Communism1",
+          "Communism2",
+          "Communism3",
+          "Communism4",
+          "Communism5"
+        ]
+      }
+    }
+  },
+  "upgrades": {
+    "Cultivation1": {
+      "Aqueduct": {
+        "output": 1
+      }
+    },
+    "Cultivation2": {
+      "Aqueduct": {
+        "output": 1
+      },
+      "PaperMaker": {
+        "output": 1
+      }
+    },
+    "Cultivation3": {
+      "Aqueduct": {
+        "output": 1
+      },
+      "PaperMaker": {
+        "output": 1
+      },
+      "Library": {
+        "output": 1
+      }
+    },
+    "Cultivation4": {
+      "Aqueduct": {
+        "output": 1
+      },
+      "PaperMaker": {
+        "output": 1
+      },
+      "Library": {
+        "output": 1
+      },
+      "School": {
+        "output": 1
+      }
+    },
+    "Commerce1": {
+      "StoneQuarry": {
+        "output": 1
+      }
+    },
+    "Commerce2": {
+      "StoneQuarry": {
+        "output": 1
+      },
+      "Brickworks": {
+        "output": 1
+      }
+    },
+    "Commerce3": {
+      "StoneQuarry": {
+        "output": 1
+      },
+      "Brickworks": {
+        "output": 1
+      },
+      "GoldMiningCamp": {
+        "output": 1
+      }
+    },
+    "Commerce4": {
+      "StoneQuarry": {
+        "output": 1
+      },
+      "Brickworks": {
+        "output": 1
+      },
+      "GoldMiningCamp": {
+        "output": 1
+      },
+      "CoinMint": {
+        "output": 1
+      }
+    },
+    "Honor1": {
+      "LoggingCamp": {
+        "output": 1
+      }
+    },
+    "Honor2": {
+      "LoggingCamp": {
+        "output": 1
+      },
+      "LumberMill": {
+        "output": 1
+      }
+    },
+    "Honor3": {
+      "LoggingCamp": {
+        "output": 1
+      },
+      "LumberMill": {
+        "output": 1
+      },
+      "SiegeWorkshop": {
+        "output": 1
+      }
+    },
+    "Honor4": {
+      "LoggingCamp": {
+        "output": 1
+      },
+      "LumberMill": {
+        "output": 1
+      },
+      "SiegeWorkshop": {
+        "output": 1
+      },
+      "KnightCamp": {
+        "output": 1
+      }
+    },
+    "Expansion1": {
+      "WheatFarm": {
+        "output": 1
+      }
+    },
+    "Expansion2": {
+      "WheatFarm": {
+        "output": 1
+      },
+      "FlourMill": {
+        "output": 1
+      }
+    },
+    "Expansion3": {
+      "WheatFarm": {
+        "output": 1
+      },
+      "FlourMill": {
+        "output": 1
+      },
+      "Bakery": {
+        "output": 1
+      }
+    },
+    "Expansion4": {
+      "WheatFarm": {
+        "output": 1
+      },
+      "FlourMill": {
+        "output": 1
+      },
+      "Bakery": {
+        "output": 1
+      },
+      "Apartment": {
+        "output": 1
+      }
+    },
+    "Christianity2": {
+      "Church": {
+        "output": 1
+      }
+    },
+    "Christianity3": {
+      "Church": {
+        "output": 1
+      },
+      "KnightCamp": {
+        "output": 1
+      }
+    },
+    "Christianity4": {
+      "Church": {
+        "output": 1
+      },
+      "KnightCamp": {
+        "output": 1
+      },
+      "Bank": {
+        "output": 1
+      }
+    },
+    "Christianity5": {
+      "Church": {
+        "output": 1
+      },
+      "KnightCamp": {
+        "output": 1
+      },
+      "Bank": {
+        "output": 1
+      }
+    },
+    "Islam2": {
+      "Mosque": {
+        "output": 1
+      }
+    },
+    "Islam3": {
+      "Mosque": {
+        "output": 1
+      },
+      "CaravelBuilder": {
+        "output": 1
+      }
+    },
+    "Islam4": {
+      "Mosque": {
+        "output": 1
+      },
+      "CaravelBuilder": {
+        "output": 1
+      },
+      "Museum": {
+        "output": 1
+      }
+    },
+    "Islam5": {
+      "Mosque": {
+        "output": 1
+      },
+      "CaravelBuilder": {
+        "output": 1
+      },
+      "Museum": {
+        "output": 1
+      }
+    },
+    "Buddhism2": {
+      "Pagoda": {
+        "output": 1
+      }
+    },
+    "Buddhism3": {
+      "Pagoda": {
+        "output": 1
+      },
+      "CoinMint": {
+        "output": 1
+      }
+    },
+    "Buddhism4": {
+      "Pagoda": {
+        "output": 1
+      },
+      "CoinMint": {
+        "output": 1
+      },
+      "GunpowderMill": {
+        "output": 1
+      }
+    },
+    "Buddhism5": {
+      "Pagoda": {
+        "output": 1
+      },
+      "CoinMint": {
+        "output": 1
+      },
+      "GunpowderMill": {
+        "output": 1
+      }
+    },
+    "Polytheism1": {
+      "Shrine": {
+        "output": 1
+      }
+    },
+    "Polytheism2": {
+      "Shrine": {
+        "output": 1
+      }
+    },
+    "Polytheism3": {
+      "Shrine": {
+        "output": 1
+      },
+      "School": {
+        "output": 1
+      }
+    },
+    "Polytheism4": {
+      "Shrine": {
+        "output": 1
+      },
+      "School": {
+        "output": 1
+      },
+      "PrintingHouse": {
+        "output": 1
+      }
+    },
+    "Polytheism5": {
+      "Shrine": {
+        "output": 1
+      },
+      "School": {
+        "output": 1
+      },
+      "PrintingHouse": {
+        "output": 1
+      }
+    },
+    "Liberalism1": {
+      "BondMarket": {
+        "output": 1
+      }
+    },
+    "Liberalism2": {
+      "BondMarket": {
+        "output": 1
+      },
+      "Warehouse": {
+        "storage": 1
+      },
+      "Caravansary": {
+        "storage": 1
+      }
+    },
+    "Liberalism3": {
+      "BondMarket": {
+        "output": 1
+      },
+      "Warehouse": {
+        "storage": 1
+      },
+      "Caravansary": {
+        "storage": 1
+      }
+    },
+    "Liberalism4": {
+      "BondMarket": {
+        "output": 1
+      },
+      "Warehouse": {
+        "storage": 1
+      },
+      "Caravansary": {
+        "storage": 1
+      }
+    },
+    "Liberalism5": {
+      "BondMarket": {
+        "output": 1
+      },
+      "StockExchange": {
+        "output": 1
+      },
+      "Warehouse": {
+        "storage": 1
+      },
+      "Caravansary": {
+        "storage": 1
+      }
+    },
+    "Conservatism1": {
+      "LocomotiveFactory": {
+        "output": 1
+      }
+    },
+    "Conservatism2": {
+      "LocomotiveFactory": {
+        "output": 1
+      }
+    },
+    "Conservatism3": {
+      "LocomotiveFactory": {
+        "output": 1
+      },
+      "Stadium": {
+        "output": 1
+      }
+    },
+    "Conservatism4": {
+      "LocomotiveFactory": {
+        "output": 1
+      },
+      "Stadium": {
+        "output": 1
+      },
+      "MovieStudio": {
+        "output": 1
+      }
+    },
+    "Conservatism5": {
+      "LocomotiveFactory": {
+        "output": 1
+      },
+      "Stadium": {
+        "output": 1
+      },
+      "MovieStudio": {
+        "output": 1
+      },
+      "RadioStation": {
+        "output": 1
+      }
+    },
+    "Socialism1": {
+      "PublishingHouse": {
+        "output": 1
+      }
+    },
+    "Socialism2": {
+      "PublishingHouse": {
+        "output": 1
+      },
+      "MagazinePublisher": {
+        "output": 1
+      }
+    },
+    "Socialism3": {
+      "PublishingHouse": {
+        "output": 1
+      },
+      "MagazinePublisher": {
+        "output": 1
+      },
+      "ResearchLab": {
+        "output": 1
+      }
+    },
+    "Socialism4": {
+      "PublishingHouse": {
+        "output": 1
+      },
+      "MagazinePublisher": {
+        "output": 1
+      },
+      "ResearchLab": {
+        "output": 1
+      }
+    },
+    "Socialism5": {
+      "PublishingHouse": {
+        "output": 1
+      },
+      "MagazinePublisher": {
+        "output": 1
+      },
+      "ResearchLab": {
+        "output": 1
+      }
+    },
+    "Communism1": {
+      "GatlingGunFactory": {
+        "output": 1
+      }
+    },
+    "Communism2": {
+      "GatlingGunFactory": {
+        "output": 1
+      }
+    },
+    "Communism3": {
+      "GatlingGunFactory": {
+        "output": 1
+      },
+      "IroncladBuilder": {
+        "output": 1
+      }
+    },
+    "Communism4": {
+      "GatlingGunFactory": {
+        "output": 1
+      },
+      "IroncladBuilder": {
+        "output": 1
+      },
+      "BiplaneFactory": {
+        "output": 1
+      }
+    },
+    "Communism5": {
+      "GatlingGunFactory": {
+        "output": 1
+      },
+      "IroncladBuilder": {
+        "output": 1
+      },
+      "BiplaneFactory": {
+        "output": 1
+      }
+    },
+    "SpaceshipIdle": {
+      "SpaceCenter": {
+        "output": 1,
+        "storage": 1
+      },
+      "SpacecraftFactory": {
+        "output": 1,
+        "storage": 1
+      }
+    }
+  },
+  "techs": [
+    {
+      "key": "Housing",
+      "name": "Housing",
+      "age": "BronzeAge",
+      "column": 2,
+      "buildingMultiplier": {
+        "Hut": {
+          "output": 1
+        }
+      }
+    },
+    {
+      "key": "RoadAndWheel",
+      "name": "Road & Wheel",
+      "age": "IronAge",
+      "column": 4,
+      "buildingMultiplier": {
+        "House": {
+          "worker": 1
+        }
+      }
+    },
+    {
+      "key": "Geography",
+      "name": "Geography",
+      "age": "MiddleAge",
+      "column": 9,
+      "buildingMultiplier": {
+        "Library": {
+          "output": 1
+        }
+      }
+    },
+    {
+      "key": "Optics",
+      "name": "Optics",
+      "age": "RenaissanceAge",
+      "column": 11,
+      "buildingMultiplier": {
+        "Library": {
+          "output": 1
+        },
+        "School": {
+          "output": 1
+        }
+      }
+    },
+    {
+      "key": "Chemistry",
+      "name": "Chemistry",
+      "age": "RenaissanceAge",
+      "column": 11,
+      "buildingMultiplier": {
+        "StoneQuarry": {
+          "storage": 1,
+          "output": 1
+        },
+        "LoggingCamp": {
+          "storage": 1,
+          "output": 1
+        },
+        "IronMiningCamp": {
+          "storage": 1,
+          "output": 1
+        },
+        "CopperMiningCamp": {
+          "storage": 1,
+          "output": 1
+        },
+        "Sandpit": {
+          "storage": 1,
+          "output": 1
+        }
+      }
+    },
+    {
+      "key": "Capitalism",
+      "name": "Capitalism",
+      "age": "IndustrialAge",
+      "column": 14,
+      "buildingMultiplier": {
+        "Library": {
+          "output": 1
+        },
+        "School": {
+          "output": 1
+        },
+        "University": {
+          "output": 1
+        }
+      }
+    },
+    {
+      "key": "AtomicTheory",
+      "name": "Atomic Theory",
+      "age": "WorldWarAge",
+      "column": 18,
+      "buildingMultiplier": {
+        "Library": {
+          "output": 1
+        },
+        "School": {
+          "output": 1
+        },
+        "University": {
+          "output": 1
+        },
+        "PublishingHouse": {
+          "output": 1
+        },
+        "ResearchLab": {
+          "output": 1
+        }
+      }
+    },
+    {
+      "key": "Skyscraper",
+      "name": "Skyscraper",
+      "age": "ColdWarAge",
+      "column": 21,
+      "buildingMultiplier": {
+        "Library": {
+          "output": 1
+        },
+        "School": {
+          "output": 1
+        },
+        "University": {
+          "output": 1
+        },
+        "PublishingHouse": {
+          "output": 1
+        },
+        "ResearchLab": {
+          "output": 1
+        }
+      }
+    }
+  ]
+}
