@@ -11,10 +11,10 @@
 
    /* Layout numbers — must match the constants in App.tsx
       (CARD_W, CARD_H, GAP_X, GAP_Y, HEADING_H). */
-   --card-w: 220px;
-   --card-h: 110px;
+   --card-w: 240px;
+   --card-h: 140px;
    --gap-x: 110px;
-   --gap-y: 55px; /* half of --card-h */
+   --gap-y: 70px; /* half of --card-h */
    --heading-h: 30px;
 }
 
@@ -642,9 +642,11 @@ body {
 }
 .card-title {
    font-family: "Marcellus", Georgia, serif;
-   font-size: 17px;
+   font-size: 16px;
    line-height: 1.15;
    color: var(--text);
+   word-break: break-word;
+   hyphens: auto;
 }
 .card-subtitle {
    font-size: 11.5px;
@@ -760,6 +762,15 @@ body {
 .card-elec input {
    width: 36px;
 }
+/* Electrification sits on its own row directly under the chain row so
+   the amount + level fields don't get squeezed on narrow cards. */
+.card-elec-row {
+   margin-top: 4px;
+   display: flex;
+   align-items: center;
+   justify-content: flex-start;
+   width: 100%;
+}
 
 /* CloneFactory / CloneLab "what to clone" dropdown — only rendered on
    modal cards when the clone building is the chain root. */
@@ -777,23 +788,6 @@ body {
 .card-clone-target:focus {
    outline: none;
    border-color: var(--accent);
-}
-
-/* Fusion-vs-Nuclear toggle inside the rundown's Power section. */
-.rundown-toggle {
-   margin-top: 8px;
-   display: flex;
-   align-items: center;
-   gap: 6px;
-   font-size: 11.5px;
-   color: var(--text-dim);
-   cursor: pointer;
-}
-.rundown-toggle input {
-   width: 14px;
-   height: 14px;
-   accent-color: var(--accent);
-   cursor: pointer;
 }
 
 /* Inline "+X" badge next to a card's level input — same role as the
@@ -980,6 +974,25 @@ body {
 .modal-bulk-level button:hover {
    border-color: var(--accent);
    color: var(--accent);
+}
+
+/* Fusion Power toggle in the modal header — sits next to the bulk
+   electrification controls so the whole power workflow lives together. */
+.modal-fusion-toggle {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   font-size: 11px;
+   color: var(--text-dim);
+   text-transform: uppercase;
+   letter-spacing: 0.05em;
+   cursor: pointer;
+}
+.modal-fusion-toggle input {
+   width: 14px;
+   height: 14px;
+   accent-color: var(--accent);
+   cursor: pointer;
 }
 
 /* Side-by-side viewport + rundown panel inside the modal body. */
