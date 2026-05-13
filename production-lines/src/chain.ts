@@ -59,6 +59,11 @@ export interface ChainOptions {
     *  Empty Map disables bonuses entirely (the math then matches the
     *  un-modified per-tick formula). */
    bonuses: Map<string, BuildingBonus>;
+   /** Optional per-material producer filter. If supplied, only producer
+    *  keys returned by `allowedProducers(material)` are considered for
+    *  that material's demand. Used to constrain Faith to a single
+    *  building (Shrine vs the Luxor-unlocked one). */
+   allowedProducers?: (material: string) => Set<string> | null | undefined;
 }
 
 export const computeChainAmounts = ({
@@ -69,6 +74,7 @@ export const computeChainAmounts = ({
    amountOverrides,
    subgraph,
    bonuses,
+   allowedProducers,
 }: ChainOptions): Map<string, ChainResult> => {
    const levels = new Map<string, number>();
    for (const b of subgraph) {
@@ -136,7 +142,12 @@ export const computeChainAmounts = ({
             const totalDemand = baseIn * cEff * cAmount;
             if (totalDemand <= 0) continue;
             const allProducers = producersOf.get(mat) ?? [];
-            const producers = allProducers.filter((p) => p.key !== consumer.key);
+            const allowed = allowedProducers?.(mat);
+            const producers = allProducers.filter(
+               (p) =>
+                  p.key !== consumer.key &&
+                  (!allowed || allowed.has(p.key)),
+            );
             if (producers.length === 0) continue;
             const perProducerDemand = totalDemand / producers.length;
             for (const p of producers) {

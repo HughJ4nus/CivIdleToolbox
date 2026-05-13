@@ -867,6 +867,45 @@ export const App = (): JSX.Element => {
       [userState, allBuildings],
    );
 
+   // Faith producer eligibility: Shrine is always available; only one of
+   // Church/Mosque/Pagoda is unlocked per run, gated by Luxor Temple's
+   // Religion direction. User can prefer either via the sidebar; default
+   // is "the unlocked one if Luxor is built, otherwise Shrine".
+   const RELIGION_TO_FAITH_BUILDING: Record<string, string> = {
+      Christianity: "Church",
+      Islam: "Mosque",
+      Buddhism: "Pagoda",
+   };
+   const luxorBuilt = (userState.wonders.LuxorTemple ?? 0) > 0;
+   const luxorReligion = userState.wonderDirections?.LuxorTemple;
+   const unlockedFaithBuilding =
+      luxorBuilt && luxorReligion
+         ? RELIGION_TO_FAITH_BUILDING[luxorReligion]
+         : undefined;
+   const eligibleFaithBuildings = useMemo(() => {
+      const set = new Set<string>(["Shrine"]);
+      if (unlockedFaithBuilding) set.add(unlockedFaithBuilding);
+      return set;
+   }, [unlockedFaithBuilding]);
+   const chosenFaithBuilding =
+      userState.preferredFaithBuilding &&
+      eligibleFaithBuildings.has(userState.preferredFaithBuilding)
+         ? userState.preferredFaithBuilding
+         : unlockedFaithBuilding ?? "Shrine";
+   const onFaithBuildingChange = useCallback((building: string) => {
+      setUserState((prev) => ({
+         ...prev,
+         preferredFaithBuilding: building || undefined,
+      }));
+   }, []);
+   const allowedProducers = useCallback(
+      (material: string): Set<string> | undefined => {
+         if (material === "Faith") return new Set([chosenFaithBuilding]);
+         return undefined;
+      },
+      [chosenFaithBuilding],
+   );
+
    // Run the chain math whenever the inputs change. Display only — no
    // mutation of the columns themselves.
    const chainResults = useMemo(() => {
@@ -879,8 +918,9 @@ export const App = (): JSX.Element => {
          amountOverrides: perBuildingAmounts,
          subgraph: subgraph.buildings,
          bonuses,
+         allowedProducers,
       });
-   }, [subgraph, selectedKey, rootAmount, rootLevel, perBuildingLevels, perBuildingAmounts, bonuses]);
+   }, [subgraph, selectedKey, rootAmount, rootLevel, perBuildingLevels, perBuildingAmounts, bonuses, allowedProducers]);
 
    // Hide upstream buildings the chain math doesn't actually need
    // (amount = 0). Examples: when the root has multiple producers and
@@ -1079,6 +1119,9 @@ export const App = (): JSX.Element => {
                onUnBuildingChange={onUnBuildingChange}
                wonderDirections={userState.wonderDirections ?? {}}
                onWonderDirectionChange={onWonderDirectionChange}
+               faithBuilding={chosenFaithBuilding}
+               eligibleFaithBuildings={eligibleFaithBuildings}
+               onFaithBuildingChange={onFaithBuildingChange}
                unlockedTechs={userState.unlockedTechs ?? {}}
                onTechChange={onTechChange}
                adaptiveGreatPeople={userState.adaptiveGreatPeople ?? {}}

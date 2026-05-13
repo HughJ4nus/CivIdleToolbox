@@ -62,6 +62,12 @@ export interface UserState {
     *  Faraday, …) lets the player pick ONE building to boost. Format
     *  is gp key → building key. Empty / missing entries mean unassigned. */
    adaptiveGreatPeople: Record<string, string>;
+   /** Preferred Faith producer key (Shrine / Church / Mosque / Pagoda).
+    *  Only Shrine is universally available; the others are unlocked by
+    *  Luxor Temple's chosen Religion direction (Christianity / Islam /
+    *  Buddhism respectively). When set, chain math uses only this
+    *  building as a Faith producer instead of splitting demand. */
+   preferredFaithBuilding?: string;
 }
 
 const empty = (): UserState => ({
@@ -146,6 +152,10 @@ export const loadUserState = (): UserState => {
             typeof parsed.adaptiveGreatPeople === "object"
                ? parsed.adaptiveGreatPeople
                : {},
+         preferredFaithBuilding:
+            typeof parsed.preferredFaithBuilding === "string"
+               ? parsed.preferredFaithBuilding
+               : undefined,
       };
    } catch {
       return empty();

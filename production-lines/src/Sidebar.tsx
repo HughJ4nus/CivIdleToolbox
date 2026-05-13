@@ -415,6 +415,12 @@ interface SidebarProps {
    /** Picked path per directional wonder (ChoghaZanbil/LuxorTemple/BigBen). */
    wonderDirections: Record<string, string>;
    onWonderDirectionChange: (key: string, direction: string) => void;
+   /** Preferred Faith producer + the set of eligible Faith buildings
+    *  (derived from Luxor Temple direction). Chain math uses only this
+    *  building as a Faith producer. */
+   faithBuilding: string;
+   eligibleFaithBuildings: Set<string>;
+   onFaithBuildingChange: (building: string) => void;
    /** Researched techs (only those with a buildingMultiplier). Map of
     *  tech key → checked. Save importer fills this from gs.unlockedTech. */
    unlockedTechs: Record<string, boolean>;
@@ -458,6 +464,9 @@ export const Sidebar = ({
    onUnBuildingChange,
    wonderDirections,
    onWonderDirectionChange,
+   faithBuilding,
+   eligibleFaithBuildings,
+   onFaithBuildingChange,
    unlockedTechs,
    onTechChange,
    adaptiveGreatPeople,
@@ -910,6 +919,34 @@ export const Sidebar = ({
                   );
                })}
          </section>
+
+         {/* Faith producer preference. Shrine is always available; one
+             of Church/Mosque/Pagoda is unlocked per run via Luxor
+             Temple's Religion direction. Production chain that needs
+             Faith uses ONLY the chosen building. */}
+         {eligibleFaithBuildings.size > 1 && (
+            <section className="sidebar-section">
+               <div className="sidebar-row">
+                  <div className="sidebar-row-text">
+                     <div className="sidebar-row-name">Faith producer</div>
+                     <div className="sidebar-row-effect">
+                        Building used to supply Faith in production chains.
+                     </div>
+                  </div>
+                  <select
+                     className="sidebar-trade-tile-select sidebar-faith-select"
+                     value={faithBuilding}
+                     onChange={(e) => onFaithBuildingChange(e.target.value)}
+                  >
+                     {[...eligibleFaithBuildings].map((k) => (
+                        <option key={k} value={k}>
+                           {k}
+                        </option>
+                     ))}
+                  </select>
+               </div>
+            </section>
+         )}
 
          {/* Trade tiles — each gives +5 output to its target building.
              World Trade Organization additionally adds +wtoLevel per
