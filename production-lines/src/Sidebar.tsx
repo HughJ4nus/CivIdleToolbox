@@ -24,7 +24,7 @@ interface GreatPersonEntry {
    key: string;
    name: string;
    age: string;
-   kind: "boost" | "levelBoost";
+   kind: "boost" | "levelBoost" | "adaptive";
    multipliers?: string[];
    buildings?: string[];
 }
@@ -374,6 +374,10 @@ interface SidebarProps {
     *  tech key → checked. Save importer fills this from gs.unlockedTech. */
    unlockedTechs: Record<string, boolean>;
    onTechChange: (key: string, checked: boolean) => void;
+   /** Adaptive GP → chosen target building. Save importer fills this
+    *  from gs.adaptiveGreatPeople. Sidebar UI lets the user pick. */
+   adaptiveGreatPeople: Record<string, string>;
+   onAdaptiveGpChange: (gpKey: string, buildingKey: string) => void;
    /** Bulk-set every GP's level (testing helper). */
    onSetAllGpLevels: (level: number) => void;
    /** Replace GPs / wonders / Age of Wisdom with values parsed from a
@@ -410,6 +414,8 @@ export const Sidebar = ({
    onWonderDirectionChange,
    unlockedTechs,
    onTechChange,
+   adaptiveGreatPeople,
+   onAdaptiveGpChange,
    onSetAllGpLevels,
    onImportSave,
 }: SidebarProps): JSX.Element => {
@@ -953,15 +959,36 @@ export const Sidebar = ({
                         <ul className="sidebar-list">
                            {entries.map((gp) => {
                               const baseLevel = gpLevels[gp.key] ?? 0;
+                              const isAdaptive = gp.kind === "adaptive";
+                              const effectText =
+                                 gp.kind === "levelBoost"
+                                    ? "Level boost (raises a building's effective level)"
+                                    : isAdaptive
+                                      ? "Adaptive · output / storage to chosen building"
+                                      : `${(gp.multipliers ?? []).join(" / ")} → ${(gp.buildings ?? []).join(", ")}`;
                               return (
                                  <li key={gp.key} className="sidebar-row">
                                     <div className="sidebar-row-text">
                                        <div className="sidebar-row-name">{gp.name}</div>
                                        <div className="sidebar-row-effect">
-                                          {gp.kind === "levelBoost"
-                                             ? "Level boost (raises a building's effective level)"
-                                             : `${(gp.multipliers ?? []).join(" / ")} → ${(gp.buildings ?? []).join(", ")}`}
+                                          {effectText}
                                        </div>
+                                       {isAdaptive && baseLevel > 0 && (
+                                          <select
+                                             className="sidebar-trade-tile-select sidebar-adaptive-select"
+                                             value={adaptiveGreatPeople[gp.key] ?? ""}
+                                             onChange={(e) =>
+                                                onAdaptiveGpChange(gp.key, e.target.value)
+                                             }
+                                          >
+                                             <option value="">— pick a building —</option>
+                                             {tradeTileOptions.map((b) => (
+                                                <option key={b.key} value={b.key}>
+                                                   {b.name}
+                                                </option>
+                                             ))}
+                                          </select>
+                                       )}
                                     </div>
                                     <input
                                        type="number"
@@ -978,21 +1005,26 @@ export const Sidebar = ({
                                           )
                                        }
                                     />
-                                    {/* +X badge — show only when AoW > 0 AND
-                                        the user has a base level (so the
-                                        bonus is actually doing something). */}
-                                    <span
-                                       className={`sidebar-wisdom-add${
-                                          wisdomBonus > 0 && baseLevel > 0 ? "" : " empty"
-                                       }`}
-                                       title={
-                                          wisdomBonus > 0
-                                             ? `+${wisdomBonus} from Age of Wisdom (effective ${baseLevel + wisdomBonus})`
-                                             : "No Age of Wisdom for this age"
-                                       }
-                                    >
-                                       {wisdomBonus > 0 ? `+${wisdomBonus}` : ""}
-                                    </span>
+                                    {/* +X wisdom badge — only meaningful for
+                                        boost-style GPs (Adaptive + LevelBoost
+                                        aren't wisdom-eligible per upstream's
+                                        isEligibleForWisdom). */}
+                                    {!isAdaptive && gp.kind !== "levelBoost" ? (
+                                       <span
+                                          className={`sidebar-wisdom-add${
+                                             wisdomBonus > 0 && baseLevel > 0 ? "" : " empty"
+                                          }`}
+                                          title={
+                                             wisdomBonus > 0
+                                                ? `+${wisdomBonus} from Age of Wisdom (effective ${baseLevel + wisdomBonus})`
+                                                : "No Age of Wisdom for this age"
+                                          }
+                                       >
+                                          {wisdomBonus > 0 ? `+${wisdomBonus}` : ""}
+                                       </span>
+                                    ) : (
+                                       <span className="sidebar-wisdom-add empty" />
+                                    )}
                                  </li>
                               );
                            })}

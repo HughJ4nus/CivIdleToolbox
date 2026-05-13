@@ -777,6 +777,19 @@ export const App = (): JSX.Element => {
       });
    }, []);
 
+   // Adaptive GP target assignment. Empty string clears the assignment.
+   const onAdaptiveGpChange = useCallback(
+      (gpKey: string, buildingKey: string) => {
+         setUserState((prev) => {
+            const next = { ...(prev.adaptiveGreatPeople ?? {}) };
+            if (buildingKey) next[gpKey] = buildingKey;
+            else delete next[gpKey];
+            return { ...prev, adaptiveGreatPeople: next };
+         });
+      },
+      [],
+   );
+
    // Save import: replace GPs / wonders / Age of Wisdom with values from
    // a parsed save file, but keep trade tiles + CoB list intact (they're
    // either multiplayer state or a manual user-curated approximation
@@ -1047,6 +1060,8 @@ export const App = (): JSX.Element => {
                onWonderDirectionChange={onWonderDirectionChange}
                unlockedTechs={userState.unlockedTechs ?? {}}
                onTechChange={onTechChange}
+               adaptiveGreatPeople={userState.adaptiveGreatPeople ?? {}}
+               onAdaptiveGpChange={onAdaptiveGpChange}
                onSetAllGpLevels={onSetAllGpLevels}
                onImportSave={onImportSave}
             />

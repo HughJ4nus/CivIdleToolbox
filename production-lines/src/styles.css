@@ -339,6 +339,13 @@ body {
 .sidebar-cob-list {
    margin: 4px 0 4px 12px;
 }
+/* Building picker shown under an Adaptive GP row when the user has
+   the GP — lets them pick which building it boosts. */
+.sidebar-adaptive-select {
+   width: 100%;
+   margin-top: 4px;
+}
+
 /* Direction picker row used by ChoghaZanbil/LuxorTemple/BigBen. Sits
    directly under the wonder header when level > 0. */
 .sidebar-direction-row {
