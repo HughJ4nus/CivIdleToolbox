@@ -11,7 +11,7 @@ import type { Building } from "./buildingTypes";
 import { computeChainAmounts, type ChainResult } from "./chain";
 import bonusSourcesData from "./data/bonus-sources.json";
 import buildingsData from "./data/buildings.json";
-import { countAdjacentCrossings, reorderByBarycenter, type Edge } from "./layout";
+import { reorderByBarycenter, type Edge } from "./layout";
 import type { ParsedSave } from "./saveImport";
 import { Sidebar } from "./Sidebar";
 import { loadUserState, saveUserState } from "./userState";
@@ -568,20 +568,6 @@ export const App = (): JSX.Element => {
    const edges = useMemo(() => computeEdgesFor(allBuildings), [allBuildings]);
    const columns = useMemo(() => reorderCols(initialColumns, edges), [initialColumns, edges]);
 
-   const crossingsBefore = useMemo(
-      () => countAdjacentCrossings(initialColumns.map((c) => c.buildings), edges, (b) => b.key),
-      [initialColumns, edges],
-   );
-   const crossingsAfter = useMemo(
-      () => countAdjacentCrossings(columns.map((c) => c.buildings), edges, (b) => b.key),
-      [columns, edges],
-   );
-
-   const totalCount = useMemo(
-      () => columns.reduce((acc, c) => acc + c.buildings.length, 0),
-      [columns],
-   );
-
    // Mirror of the layout calculation TierWorld does internally, kept up
    // here so the topbar search can pan/zoom directly to a specific card.
    // Must stay in lockstep with TierWorld's layout — same constants, same
@@ -1032,12 +1018,7 @@ export const App = (): JSX.Element => {
       <div className="app">
          <header className="topbar">
             <div className="brand">
-               <h1>CivIdle production buildings</h1>
-               <span className="tagline">
-                  {totalCount} buildings · {edges.length} input lines · {crossingsAfter}{" "}
-                  crossings ({crossingsBefore} before reorder) · click a card · scroll to
-                  zoom · drag to pan
-               </span>
+               <h1>CivIdle production line calculator</h1>
             </div>
             <SearchBar buildings={allBuildings} onPick={handleSearchPick} />
             <div className="zoom-readout">
@@ -1283,6 +1264,11 @@ export const App = (): JSX.Element => {
                         Load your save file, or manually input your values. Click
                         the end product you want to produce, and input your
                         desired levels and amounts.
+                     </p>
+                     <p>
+                        UN General Assemblies and trade tile bonusses must be
+                        added manually, as these values do not live in your save
+                        file.
                      </p>
                      <p className="welcome-caveat">
                         Electrification not yet supported.
