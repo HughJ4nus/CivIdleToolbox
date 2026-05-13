@@ -121,6 +121,12 @@ export const computeChainAmounts = ({
             next.set(key, Math.floor(override));
          }
       }
+      // Per-producer fractional machine demand — accumulated across ALL
+      // consumers in this pass and ceil'd ONCE per producer at write time.
+      // Eager per-consumer ceil over-counted shared producers: P @ 10/tick
+      // serving A (3) + B (4) wanted ceil(3/10)+ceil(4/10)=2 machines
+      // instead of the correct ceil((3+4)/10)=1.
+      const fractional = new Map<string, number>();
       for (const consumer of sorted) {
          const cAmount = next.get(consumer.key) ?? prevAmounts.get(consumer.key) ?? 0;
          if (cAmount === 0) continue;
@@ -146,8 +152,13 @@ export const computeChainAmounts = ({
                ) {
                   continue;
                }
-               const required = Math.ceil(perProducerDemand / perUnitSupply);
-               next.set(p.key, (next.get(p.key) ?? 0) + required);
+               const added = perProducerDemand / perUnitSupply;
+               const total = (fractional.get(p.key) ?? 0) + added;
+               fractional.set(p.key, total);
+               // Update the running ceil so a same-pass consumer downstream
+               // (e.g. P → X) sees P's already-accumulated machine count
+               // instead of re-discovering it next pass. Speeds convergence.
+               next.set(p.key, Math.ceil(total));
             }
          }
       }
