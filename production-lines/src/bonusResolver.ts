@@ -384,13 +384,13 @@ const WONDER_GP_LEVEL_BOOSTS: Record<string, WonderGpLevelBoost> = {
 //
 // Per OnProductionComplete.tsx:159-213 in upstream:
 //   • Each owned trade tile gives +5 output to its building
-//     (`TRADE_TILE_BONUS = 5`)
-//   • WorldTradeOrganization adds +wtoLevel output per tile
-//   • GreatOceanRoad adds +wonderLevel LEVEL boost per tile
+//     (`TRADE_TILE_BONUS = 5`) — PER TILE
+//   • WorldTradeOrganization adds +wtoLevel output PER TILE
+//   • GreatOceanRoad adds +wonderLevel LEVEL boost ONCE per distinct
+//     building type across all owned tiles (deduplicated via Set in
+//     OnProductionComplete.tsx's `case "GreatOceanRoad"`)
 //   • LakeLouise adds +2 LEVEL boost per ALLY tile (we don't track ally
 //     state, so we apply it to every trade tile as an over-approximation)
-//
-// All four are handled here because they share the per-tile loop.
 
 const applyTradeTileBonuses = (
    out: Map<string, BuildingBonus>,
@@ -415,18 +415,27 @@ const applyTradeTileBonuses = (
             value: wtoLevel,
          });
       }
-      if (gorLevel > 0) {
-         apply(out, tile.building, {
-            source: `Great Ocean Road (lvl ${gorLevel})`,
-            kind: "level",
-            value: gorLevel,
-         });
-      }
       if (hasLakeLouise) {
          apply(out, tile.building, {
             source: "Lake Louise (assumed ally)",
             kind: "level",
             value: 2,
+         });
+      }
+   }
+   if (gorLevel > 0) {
+      // Dedupe by building type — upstream uses a Set, so a player with
+      // the same building on two trade tiles still only gets +GOR once
+      // for that type.
+      const distinctTypes = new Set<string>();
+      for (const tile of tiles) {
+         if (tile.building) distinctTypes.add(tile.building);
+      }
+      for (const buildingKey of distinctTypes) {
+         apply(out, buildingKey, {
+            source: `Great Ocean Road (lvl ${gorLevel})`,
+            kind: "level",
+            value: gorLevel,
          });
       }
    }
@@ -541,15 +550,22 @@ export const resolveBuildingBonuses = (
       if (targetDef && (targetDef.output.Worker ?? 0) > 0) continue;
       const baseLevel = userState.greatPeople[gp.key] ?? 0;
       const thisRunPicks = userState.thisRunGreatPeople?.[gp.key] ?? 0;
-      if (baseLevel <= 0 && thisRunPicks <= 0) continue;
+      const wonderBoosts = wonderGpBoosts[gp.age] ?? [];
+      // Per-tick GP loop in upstream calls tick() for perm AND this-run
+      // (no eligibility check); wonder cases (LHC, Sputnik1, Aphrodite)
+      // also call tick() on every GP of their age — Adaptive included.
+      // Each tick adds value(level) = level × valueMult to the assigned
+      // building's output + storage multipliers. value() is linear so we
+      // sum all sources into one effective level.
+      // Adaptive GPs are NOT eligible for Age of Wisdom (upstream's
+      // isEligibleForWisdom requires Normal && !city) — that source
+      // alone is excluded.
+      if (baseLevel <= 0 && thisRunPicks <= 0 && wonderBoosts.length === 0) {
+         continue;
+      }
       const thisRunLevel = harmonic(thisRunPicks);
-      // Adaptive GPs are NOT eligible for Age of Wisdom — only Normal
-      // type qualifies per upstream's isEligibleForWisdom. Don't add
-      // wonder GP-level boosts either (LHC etc. are documented to
-      // exclude level-boost-providing GPs but Adaptive isn't level-boost;
-      // empirically the in-game tooltip shows no wisdom/wonder line for
-      // Adaptive GPs, only perm + this-run).
-      const effectiveLevel = baseLevel + thisRunLevel;
+      const wonderTotal = wonderBoosts.reduce((s, b) => s + b.value, 0);
+      const effectiveLevel = baseLevel + thisRunLevel + wonderTotal;
       const valueMult = gp.valueMultiplier ?? 1;
       const contribution = effectiveLevel * valueMult;
 
@@ -557,6 +573,7 @@ export const resolveBuildingBonuses = (
       if (thisRunLevel > 0) {
          parts.push(`${thisRunLevel.toFixed(2)} this run (×${thisRunPicks})`);
       }
+      for (const wb of wonderBoosts) parts.push(`${wb.value} ${wb.name}`);
       const breakdown = parts.length > 1 ? ` = ${parts.join(" + ")}` : "";
       const valNote = valueMult !== 1 ? `, ×${valueMult} value` : "";
       const source = `${gp.name} → ${target} (lvl ${effectiveLevel.toFixed(2)}${breakdown}${valNote})`;
