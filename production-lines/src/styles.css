@@ -761,6 +761,24 @@ body {
    width: 36px;
 }
 
+/* CloneFactory / CloneLab "what to clone" dropdown — only rendered on
+   modal cards when the clone building is the chain root. */
+.card-clone-target {
+   margin-top: 4px;
+   width: 100%;
+   background: var(--bg);
+   color: var(--text);
+   border: 1px solid var(--panel-edge);
+   border-radius: 3px;
+   padding: 2px 4px;
+   font-size: 11px;
+   font-family: inherit;
+}
+.card-clone-target:focus {
+   outline: none;
+   border-color: var(--accent);
+}
+
 /* Fusion-vs-Nuclear toggle inside the rundown's Power section. */
 .rundown-toggle {
    margin-top: 8px;

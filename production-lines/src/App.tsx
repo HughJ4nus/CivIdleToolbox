@@ -344,6 +344,11 @@ interface TierWorldProps {
    /** Per-card electrification level. Optional — when undefined the
     *  Elec input doesn't render. */
    onElectrificationChange?: (key: string, value: number) => void;
+   /** Clone-factory cloning target + dropdown options. Render a
+    *  dropdown on CloneFactory / CloneLab cards. */
+   cloneFactoryTarget?: string;
+   cloneFactoryOptions?: string[];
+   onCloneFactoryTargetChange?: (material: string) => void;
    /** Pass `null` as amount to clear an override; otherwise an integer. */
    onAmountChange?: (key: string, amount: number | null) => void;
    /** Set of building keys that have a user-set amount override (so the
@@ -365,6 +370,9 @@ const TierWorld = ({
    onAmountChange,
    amountOverrideKeys,
    bonuses,
+   cloneFactoryTarget,
+   cloneFactoryOptions,
+   onCloneFactoryTargetChange,
 }: TierWorldProps): JSX.Element => {
    const layout = useMemo(() => {
       const map = new Map<string, CardPos>();
@@ -472,6 +480,27 @@ const TierWorld = ({
                >
                   <div className="card-title">{c.building.name}</div>
                   <div className="card-subtitle">{subtitleFor(c.building)}</div>
+                  {(c.building.key === "CloneFactory" ||
+                     c.building.key === "CloneLab") &&
+                     onCloneFactoryTargetChange &&
+                     cloneFactoryOptions && (
+                        <select
+                           className="card-clone-target"
+                           value={cloneFactoryTarget ?? ""}
+                           onClick={(e) => e.stopPropagation()}
+                           onMouseDown={(e) => e.stopPropagation()}
+                           onChange={(e) =>
+                              onCloneFactoryTargetChange(e.target.value)
+                           }
+                        >
+                           <option value="">— clone what? —</option>
+                           {cloneFactoryOptions.map((m) => (
+                              <option key={m} value={m}>
+                                 {m}
+                              </option>
+                           ))}
+                        </select>
+                     )}
                   {hasBonus && (
                      <div className="card-bonus-row" title={bonusTooltip}>
                         {bonus!.outputMultiplier > 0 && (
@@ -872,12 +901,47 @@ export const App = (): JSX.Element => {
 
    const subgraph = useMemo(() => {
       if (!selectedKey) return null;
-      const lineKeys = computeProductionLine(selectedKey, edges);
-      const subBuildings = allBuildings.filter((b) => lineKeys.has(b.key));
+      // CloneFactory / CloneLab roots only matter if the user has picked
+      // a material to clone. We inject {[target]:1} / {[target]:2} into
+      // its recipe so the chain math treats it as a real consumer +
+      // producer of that material. Per upstream IntraTickCache.ts:142.
+      const target = userState.cloneFactoryTarget;
+      const isCloneRoot =
+         (selectedKey === "CloneFactory" || selectedKey === "CloneLab") &&
+         !!target;
+      const buildingsForChain = isCloneRoot
+         ? allBuildings.map((b) =>
+              b.key === selectedKey
+                 ? { ...b, input: { [target!]: 1 }, output: { [target!]: 2 } }
+                 : b,
+           )
+         : allBuildings;
+      const edgesForChain = isCloneRoot
+         ? computeEdgesFor(buildingsForChain)
+         : edges;
+      const lineKeys = computeProductionLine(selectedKey, edgesForChain);
+      const subBuildings = buildingsForChain.filter((b) => lineKeys.has(b.key));
+      // Re-tier CloneFactory / CloneLab to max(others) + 1 inside this
+      // subgraph so the layout puts it rightmost regardless of its
+      // canonical tier-8 placement in the main view.
+      if (selectedKey === "CloneFactory" || selectedKey === "CloneLab") {
+         const cloneIdx = subBuildings.findIndex((b) => b.key === selectedKey);
+         if (cloneIdx >= 0) {
+            const others = subBuildings.filter((b) => b.key !== selectedKey);
+            const maxOther = others.reduce(
+               (m, b) => Math.max(m, b.tier ?? 0),
+               0,
+            );
+            subBuildings[cloneIdx] = {
+               ...subBuildings[cloneIdx],
+               tier: maxOther + 1,
+            };
+         }
+      }
       const subCols = computeColumnsFor(subBuildings);
       const subEdges = computeEdgesFor(subBuildings);
       const ordered = reorderCols(subCols, subEdges);
-      const root = allBuildings.find((b) => b.key === selectedKey);
+      const root = subBuildings.find((b) => b.key === selectedKey);
       return {
          columns: ordered,
          edges: subEdges,
@@ -885,7 +949,7 @@ export const App = (): JSX.Element => {
          count: subBuildings.length,
          buildings: subBuildings,
       };
-   }, [selectedKey, edges, allBuildings]);
+   }, [selectedKey, edges, allBuildings, userState.cloneFactoryTarget]);
 
    // Translate sidebar inputs into per-building bonus contributions.
    // Computed once (not just for the modal) so the main view can also
@@ -1035,6 +1099,30 @@ export const App = (): JSX.Element => {
    const onFusionPowerToggle = useCallback((checked: boolean) => {
       setUserState((prev) => ({ ...prev, useFusionPower: checked }));
    }, []);
+   const onCloneFactoryTargetChange = useCallback((material: string) => {
+      setUserState((prev) => ({
+         ...prev,
+         cloneFactoryTarget: material || undefined,
+      }));
+   }, []);
+   // Every material some production building actually produces — used
+   // as the dropdown options on CloneFactory / CloneLab cards. Sorted
+   // alphabetically for stable order. Filters out non-storable materials
+   // since CloneFactory can't produce things like Worker / Power /
+   // Science (NoStorage in upstream).
+   const cloneFactoryOptions = useMemo(() => {
+      const NON_STORABLE = new Set([
+         "Worker","Power","Science","Festival","Warp",
+         "Explorer","Teleport","Cycle","TradeValue",
+      ]);
+      const materials = new Set<string>();
+      for (const b of allBuildings) {
+         for (const m of Object.keys(b.output)) {
+            if (!NON_STORABLE.has(m)) materials.add(m);
+         }
+      }
+      return [...materials].sort((a, b) => a.localeCompare(b));
+   }, [allBuildings]);
 
    // The root's amount lives in `rootAmount` so the modal header can edit
    // it; non-root amounts go into `perBuildingAmounts`. Both paths funnel
@@ -1354,6 +1442,9 @@ export const App = (): JSX.Element => {
                               onAmountChange={onAmountChange}
                               amountOverrideKeys={amountOverrideKeysSet}
                               bonuses={bonuses}
+                              cloneFactoryTarget={userState.cloneFactoryTarget}
+                              cloneFactoryOptions={cloneFactoryOptions}
+                              onCloneFactoryTargetChange={onCloneFactoryTargetChange}
                            />
                         </div>
                      </div>

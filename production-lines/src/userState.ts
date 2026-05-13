@@ -78,6 +78,10 @@ export interface UserState {
    /** When true, the rundown's power-plant count uses FusionPowerPlant
     *  output as the supply; otherwise NuclearPowerPlant. */
    useFusionPower?: boolean;
+   /** Material a CloneFactory / CloneLab root is cloning. The chain
+    *  treats the clone building as `input: {[target]: 1}, output:
+    *  {[target]: 2}` (per upstream IntraTickCache.ts:142). */
+   cloneFactoryTarget?: string;
 }
 
 const empty = (): UserState => ({
@@ -179,6 +183,10 @@ export const loadUserState = (): UserState => {
          useFusionPower:
             typeof parsed.useFusionPower === "boolean"
                ? parsed.useFusionPower
+               : undefined,
+         cloneFactoryTarget:
+            typeof parsed.cloneFactoryTarget === "string"
+               ? parsed.cloneFactoryTarget
                : undefined,
       };
    } catch {
