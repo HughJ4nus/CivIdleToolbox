@@ -928,9 +928,18 @@ export const App = (): JSX.Element => {
    const subgraph = useMemo(() => {
       if (!selectedKey) return null;
       // CloneFactory / CloneLab roots only matter if the user has picked
-      // a material to clone. We inject {[target]:1} / {[target]:2} into
+      // a material to clone. We inject {[target]:1} / {[target]:1} into
       // its recipe so the chain math treats it as a real consumer +
-      // producer of that material. Per upstream IntraTickCache.ts:142.
+      // producer of that material.
+      //
+      // Upstream's intrinsic recipe is 1 input / 2 output per level
+      // (IntraTickCache.ts:142), but the output formula collapses to
+      // half-base + half-boosted (IntraTickCache.ts:181):
+      //   final = (2 × level) × 0.5 × (1 + bonuses) = level × (1 + bonuses)
+      // i.e. effectively 1 output per level with the full multiplier
+      // applied. Modelling the recipe as 1:1 mirrors that net behaviour
+      // — chain math then treats the building like a normal 1:1 producer
+      // and gets the right per-tile demand vs supply.
       const target = userState.cloneFactoryTarget;
       const isCloneRoot =
          (selectedKey === "CloneFactory" || selectedKey === "CloneLab") &&
@@ -938,7 +947,7 @@ export const App = (): JSX.Element => {
       const buildingsForChain = isCloneRoot
          ? allBuildings.map((b) =>
               b.key === selectedKey
-                 ? { ...b, input: { [target!]: 1 }, output: { [target!]: 2 } }
+                 ? { ...b, input: { [target!]: 1 }, output: { [target!]: 1 } }
                  : b,
            )
          : allBuildings;
