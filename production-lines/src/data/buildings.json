@@ -1,0 +1,3387 @@
+[
+  {
+    "key": "AbuSimbel",
+    "name": "Abu Simbel",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "ActorsGuild",
+    "name": "Actor's Guild",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Music": 1,
+      "Poem": 1
+    },
+    "output": {
+      "Opera": 2
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "AILab",
+    "name": "AI Lab",
+    "special": null,
+    "tier": 8,
+    "input": {
+      "Internet": 2,
+      "Supercomputer": 4,
+      "Radio": 2
+    },
+    "output": {
+      "CivGPT": 2
+    },
+    "requiresPower": true
+  },
+  {
+    "key": "AircraftCarrierYard",
+    "name": "Aircraft Carrier Yard",
+    "special": null,
+    "tier": 8,
+    "input": {
+      "Battleship": 1,
+      "FighterJet": 10
+    },
+    "output": {
+      "AircraftCarrier": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "AirplaneFactory",
+    "name": "Airplane Factory",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Biplane": 2
+    },
+    "output": {
+      "Airplane": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "AkademikLomonosov",
+    "name": "Akademik Lomonosov",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "AldersonDisk",
+    "name": "Alderson Disk",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "Alps",
+    "name": "Alps",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "AluminumSmelter",
+    "name": "Aluminum Smelter",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Aluminum": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "AngkorWat",
+    "name": "Angkor Wat",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
+  },
+  {
+    "key": "Apartment",
+    "name": "Apartment",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Cheese": 1,
+      "Meat": 2,
+      "Bread": 1
+    },
+    "output": {
+      "Worker": 84
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "Aphrodite",
+    "name": "Aphrodite",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "ApolloProgram",
+    "name": "Apollo Program",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "Aqueduct",
+    "name": "Aqueduct",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Water": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
+  },
+  {
+    "key": "ArcDeTriomphe",
+    "name": "Arc de Triomphe",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Armory",
+    "name": "Armory",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Tool": 2
+    },
+    "output": {
+      "Armor": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "ArtilleryFactory",
+    "name": "Artillery Factory",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "GatlingGun": 1,
+      "Dynamite": 1,
+      "Aluminum": 5
+    },
+    "output": {
+      "Artillery": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "AtlasMountains",
+    "name": "Atlas Mountains",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "AtomicFacility",
+    "name": "Atomic Facility",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Dynamite": 10,
+      "Uranium": 10
+    },
+    "output": {
+      "AtomicBomb": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "Atomium",
+    "name": "Atomium",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "AuroraBorealis",
+    "name": "Aurora Borealis",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Bakery",
+    "name": "Bakery",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Water": 1,
+      "Flour": 1
+    },
+    "output": {
+      "Bread": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "Bank",
+    "name": "Bank",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Coin": 3
+    },
+    "output": {
+      "Banknote": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "BattleshipBuilder",
+    "name": "Battleship Builder",
+    "special": null,
+    "tier": 7,
+    "input": {
+      "Ironclad": 1,
+      "Artillery": 1,
+      "Cable": 5,
+      "Steel": 5,
+      "Aluminum": 5
+    },
+    "output": {
+      "Battleship": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "BigBen",
+    "name": "Big Ben",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "BiplaneFactory",
+    "name": "Biplane Factory",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Engine": 1,
+      "Steel": 1,
+      "Lens": 1,
+      "Petrol": 5
+    },
+    "output": {
+      "Biplane": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "BitcoinMiner",
+    "name": "Bitcoin Miner",
+    "special": null,
+    "tier": 8,
+    "input": {
+      "HedgeFund": 2,
+      "CivTok": 1
+    },
+    "output": {
+      "Bitcoin": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "BlackForest",
+    "name": "Black Forest",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Blacksmith",
+    "name": "Blacksmith",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Copper": 1,
+      "Wood": 1
+    },
+    "output": {
+      "Tool": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "BlueMosque",
+    "name": "Blue Mosque",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "BondMarket",
+    "name": "Bond Market",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Banknote": 3
+    },
+    "output": {
+      "Bond": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "BranCastle",
+    "name": "Bran Castle",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "BrandenburgGate",
+    "name": "Brandenburg Gate",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "Brewery",
+    "name": "Brewery",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Wheat": 1,
+      "Water": 1
+    },
+    "output": {
+      "Alcohol": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "Brickworks",
+    "name": "Brickworks",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Stone": 2
+    },
+    "output": {
+      "Brick": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
+  },
+  {
+    "key": "BritishMuseum",
+    "name": "British Museum",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Broadway",
+    "name": "Broadway",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "CableFactory",
+    "name": "Cable Factory",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Copper": 5
+    },
+    "output": {
+      "Cable": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "CambridgeUniversity",
+    "name": "Cambridge University",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "CannonWorkshop",
+    "name": "Cannon Workshop",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Iron": 2,
+      "Wood": 1,
+      "Tool": 1
+    },
+    "output": {
+      "Cannon": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "Cappadocia",
+    "name": "Cappadocia",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Capybara",
+    "name": "Capybara",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "CarFactory",
+    "name": "Car Factory",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Engine": 1,
+      "Steel": 1,
+      "Furniture": 1,
+      "Cable": 1,
+      "Plastics": 1,
+      "Petrol": 5
+    },
+    "output": {
+      "Car": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "Caravansary",
+    "name": "Caravansary",
+    "special": null,
+    "tier": null,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "CaravelBuilder",
+    "name": "Caravel Builder",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Lumber": 5,
+      "Cloth": 2,
+      "Tool": 2
+    },
+    "output": {
+      "Caravel": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
+  },
+  {
+    "key": "CathedralOfBrasilia",
+    "name": "Cathedral of Brasília",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "CentrePompidou",
+    "name": "Centre Pompidou",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "CerneAbbasGiant",
+    "name": "Cerne Abbas Giant",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "ChariotWorkshop",
+    "name": "Chariot Workshop",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Horse": 2,
+      "Lumber": 2,
+      "Copper": 1
+    },
+    "output": {
+      "Chariot": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "ChateauFrontenac",
+    "name": "Chateau Frontenac",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "CheeseMaker",
+    "name": "Cheese Maker",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Milk": 2
+    },
+    "output": {
+      "Cheese": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "ChichenItza",
+    "name": "Chichen Itza",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "ChoghaZanbil",
+    "name": "Chogha Zanbil",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "Church",
+    "name": "Church",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Music": 1,
+      "Poem": 1
+    },
+    "output": {
+      "Faith": 3
+    },
+    "requiresPower": false
+  },
+  {
+    "key": "CircusMaximus",
+    "name": "Circus Maximus",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "CivGPT",
+    "name": "CivGPT",
+    "special": null,
+    "tier": 8,
+    "input": {
+      "Internet": 1,
+      "Supercomputer": 2,
+      "Radio": 1
+    },
+    "output": {
+      "CivGPT": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "CivOasis",
+    "name": "CivOasis",
+    "special": null,
+    "tier": 8,
+    "input": {
+      "CivTok": 1,
+      "Supercomputer": 1,
+      "Diplomacy": 2
+    },
+    "output": {
+      "CivOasis": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "CivTok",
+    "name": "CivTok",
+    "special": null,
+    "tier": 7,
+    "input": {
+      "Internet": 1,
+      "Politics": 1
+    },
+    "output": {
+      "CivTok": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "CloneFactory",
+    "name": "Clone Factory",
+    "special": null,
+    "tier": 8,
+    "input": {},
+    "output": {},
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "CloneLab",
+    "name": "Clone Lab",
+    "special": null,
+    "tier": 8,
+    "input": {},
+    "output": {},
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "CNTower",
+    "name": "CN Tower",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "CoalMine",
+    "name": "Coal Mine",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Coal": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "CoalPowerPlant",
+    "name": "Coal Power Plant",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Coal": 1
+    },
+    "output": {
+      "Power": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "CoinMint",
+    "name": "Coin Mint",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Gold": 3
+    },
+    "output": {
+      "Coin": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "CologneCathedral",
+    "name": "Cologne Cathedral",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Colosseum",
+    "name": "Colosseum",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {
+      "Chariot": 10
+    },
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "ColossusOfRhodes",
+    "name": "Colossus of Rhodes",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "ComputerFactory",
+    "name": "Computer Factory",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Semiconductor": 5,
+      "Plastics": 5,
+      "Aluminum": 5
+    },
+    "output": {
+      "Computer": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "ComputerLab",
+    "name": "Computer Lab",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Computer": 1
+    },
+    "output": {
+      "Science": 80625
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "ConcretePlant",
+    "name": "Concrete Plant",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Brick": 5,
+      "Sand": 5,
+      "Tool": 5
+    },
+    "output": {
+      "Concrete": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "Condo",
+    "name": "Condo",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Pizza": 3
+    },
+    "output": {
+      "Worker": 510
+    },
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "CopperMiningCamp",
+    "name": "Copper Mining Camp",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Copper": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "Cosmodrome",
+    "name": "Cosmodrome",
+    "special": null,
+    "tier": 8,
+    "input": {
+      "Rocket": 4,
+      "Satellite": 4,
+      "Airplane": 4
+    },
+    "output": {
+      "Spacecraft": 2
+    },
+    "requiresPower": true
+  },
+  {
+    "key": "CothonOfCarthage",
+    "name": "Cothon of Carthage",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "CottonMill",
+    "name": "Cotton Mill",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Cotton": 2
+    },
+    "output": {
+      "Cloth": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "CottonPlantation",
+    "name": "Cotton Plantation",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Cotton": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "Courthouse",
+    "name": "Courthouse",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Philosophy": 1,
+      "Faith": 1,
+      "Culture": 1
+    },
+    "output": {
+      "Law": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "CristoRedentor",
+    "name": "Cristo Redentor",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "DairyFarm",
+    "name": "Dairy Farm",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Wheat": 2
+    },
+    "output": {
+      "Milk": 2
+    },
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "DinosaurProvincialPark",
+    "name": "Dinosaur Provincial Park",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "DuneOfPilat",
+    "name": "Dune of Pilat",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "DynamiteWorkshop",
+    "name": "Dynamite Workshop",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Wheat": 1,
+      "Gunpowder": 1,
+      "Coal": 1
+    },
+    "output": {
+      "Dynamite": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "DysonSphere",
+    "name": "Dyson Sphere",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "EastIndiaCompany",
+    "name": "East India Company",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "EasterBunny",
+    "name": "Easter Bunny",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "EiffelTower",
+    "name": "Eiffel Tower",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "Elbphilharmonie",
+    "name": "Elbphilharmonie",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Embassy",
+    "name": "Embassy",
+    "special": null,
+    "tier": 7,
+    "input": {
+      "Law": 5,
+      "Politics": 5,
+      "Philosophy": 5
+    },
+    "output": {
+      "Diplomacy": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "EuphratesRiver",
+    "name": "Euphrates River",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "FighterJetPlant",
+    "name": "Fighter Jet Plant",
+    "special": null,
+    "tier": 6,
+    "input": {
+      "Airplane": 1,
+      "Artillery": 1
+    },
+    "output": {
+      "FighterJet": 2
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "FlourMill",
+    "name": "Flour Mill",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Wheat": 2
+    },
+    "output": {
+      "Flour": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "ForbiddenCity",
+    "name": "Forbidden City",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "ForexMarket",
+    "name": "Forex Market",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Banknote": 2,
+      "Bond": 2
+    },
+    "output": {
+      "Forex": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "FrigateBuilder",
+    "name": "Frigate Builder",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Galleon": 1,
+      "Knight": 1,
+      "Cannon": 1,
+      "Lens": 1
+    },
+    "output": {
+      "Frigate": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "FurnitureWorkshop",
+    "name": "Furniture Workshop",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Lumber": 2,
+      "Copper": 1
+    },
+    "output": {
+      "Furniture": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "FusionFuelPlant",
+    "name": "Fusion Fuel Plant",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "NuclearFuelRod": 10
+    },
+    "output": {
+      "FusionFuel": 1
+    },
+    "requiresPower": true
+  },
+  {
+    "key": "FusionPowerPlant",
+    "name": "Fusion Power Plant",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "FusionFuel": 2
+    },
+    "output": {
+      "Power": 1140
+    },
+    "requiresPower": false
+  },
+  {
+    "key": "GalleonBuilder",
+    "name": "Galleon Builder",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Caravel": 1,
+      "Sword": 1,
+      "SiegeRam": 1,
+      "Armor": 1
+    },
+    "output": {
+      "Galleon": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
+  },
+  {
+    "key": "GangesRiver",
+    "name": "Ganges River",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "GarmentWorkshop",
+    "name": "Garment Workshop",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Cloth": 2
+    },
+    "output": {
+      "Garment": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
+  },
+  {
+    "key": "GasPlasticsPlant",
+    "name": "Gas Plastics Plant",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "NaturalGas": 2
+    },
+    "output": {
+      "Plastics": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "GasPowerPlant",
+    "name": "Gas Power Plant",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "NaturalGas": 2
+    },
+    "output": {
+      "Power": 3
+    },
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "GatlingGunFactory",
+    "name": "Gatling Gun Factory",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Rifle": 1,
+      "Gunpowder": 5
+    },
+    "output": {
+      "GatlingGun": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "GiantOtter",
+    "name": "Giant Otter",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "GlassFrog",
+    "name": "Glass Frog",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Glassworks",
+    "name": "Glassworks",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Sand": 2
+    },
+    "output": {
+      "Glass": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "GoldMiningCamp",
+    "name": "Gold Mining Camp",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Gold": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "GoldenGateBridge",
+    "name": "Golden Gate Bridge",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "GoldenPavilion",
+    "name": "Golden Pavilion",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "GrandBazaar",
+    "name": "Grand Bazaar",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
+  },
+  {
+    "key": "Shenandoah",
+    "name": "Grand Canyon",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "GreatBarrierReef",
+    "name": "Great Barrier Reef",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "GreatDagonPagoda",
+    "name": "Great Dagon Pagoda",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "GreatMosqueOfSamarra",
+    "name": "Great Mosque of Samarra",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "GreatOceanRoad",
+    "name": "Great Ocean Road",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "GreatSphinx",
+    "name": "Great Sphinx",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "GreatWall",
+    "name": "Great Wall",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "GrottaAzzurra",
+    "name": "Grotta Azzurra",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "GunpowderMill",
+    "name": "Gunpowder Mill",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Wood": 1,
+      "Coal": 1
+    },
+    "output": {
+      "Gunpowder": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "Habitat67",
+    "name": "Habitat 67",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "HagiaSophia",
+    "name": "Hagia Sophia",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
+  },
+  {
+    "key": "HangingGarden",
+    "name": "Hanging Garden",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "HatshepsutTemple",
+    "name": "Hatshepsut Temple",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "Headquarter",
+    "name": "Headquarter",
+    "special": "HQ",
+    "tier": 0,
+    "input": {},
+    "output": {
+      "Worker": 10
+    },
+    "requiresPower": false
+  },
+  {
+    "key": "HedgeFund",
+    "name": "Hedge Fund",
+    "special": null,
+    "tier": 7,
+    "input": {
+      "MutualFund": 2
+    },
+    "output": {
+      "HedgeFund": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "Hermitage",
+    "name": "Hermitage",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "HimejiCastle",
+    "name": "Himeji Castle",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "Hoatzin",
+    "name": "Hoatzin",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Hollywood",
+    "name": "Hollywood",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "House",
+    "name": "House",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Wheat": 1,
+      "Water": 1
+    },
+    "output": {
+      "Worker": 6
+    },
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "Hut",
+    "name": "Hut",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Worker": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
+  },
+  {
+    "key": "HydroDam",
+    "name": "Hydro Dam",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Water": 1,
+      "Power": 2
+    },
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "InternationalSpaceStation",
+    "name": "International Space Station",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "InternetServiceProvider",
+    "name": "Internet Service Provider",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Computer": 1,
+      "OpticalFiber": 5
+    },
+    "output": {
+      "Internet": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "IronForge",
+    "name": "Iron Forge",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Iron": 1
+    },
+    "output": {
+      "Tool": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "IronMiningCamp",
+    "name": "Iron Mining Camp",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Iron": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "IroncladBuilder",
+    "name": "Ironclad Builder",
+    "special": null,
+    "tier": 6,
+    "input": {
+      "GatlingGun": 1,
+      "Rifle": 1,
+      "Frigate": 1
+    },
+    "output": {
+      "Ironclad": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "ItaipuDam",
+    "name": "Itaipu Dam",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "ItsukushimaShrine",
+    "name": "Itsukushima Shrine",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Kanagawa",
+    "name": "Kanagawa",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "KizhiPogost",
+    "name": "Kizhi Pogost",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "KnightCamp",
+    "name": "Knight Camp",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Horse": 1,
+      "Armor": 1,
+      "Sword": 1
+    },
+    "output": {
+      "Knight": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
+  },
+  {
+    "key": "LakeBaikal",
+    "name": "Lake Baikal",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "LakeLouise",
+    "name": "Lake Louise",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Lapland",
+    "name": "Lapland",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "LargeHadronCollider",
+    "name": "Large Hadron Collider",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "LensWorkshop",
+    "name": "Lens Workshop",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Glass": 2
+    },
+    "output": {
+      "Lens": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "Library",
+    "name": "Library",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Paper": 4
+    },
+    "output": {
+      "Science": 140
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "LighthouseOfAlexandria",
+    "name": "Lighthouse of Alexandria",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "LocomotiveFactory",
+    "name": "Locomotive Factory",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Engine": 1,
+      "Steel": 10
+    },
+    "output": {
+      "Train": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "LoggingCamp",
+    "name": "Logging Camp",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Wood": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
+  },
+  {
+    "key": "Louvre",
+    "name": "Louvre",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "LumberMill",
+    "name": "Lumber Mill",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Wood": 2
+    },
+    "output": {
+      "Lumber": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
+  },
+  {
+    "key": "YearOfTheSnake",
+    "name": "Lunar New Year",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "LuxorTemple",
+    "name": "Luxor Temple",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "MagazinePublisher",
+    "name": "Magazine Publisher",
+    "special": null,
+    "tier": 6,
+    "input": {
+      "Sports": 2,
+      "Book": 10
+    },
+    "output": {
+      "Magazine": 1,
+      "Science": 1000
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "MaglevFactory",
+    "name": "Maglev Factory",
+    "special": null,
+    "tier": 6,
+    "input": {
+      "Train": 15,
+      "Airplane": 15,
+      "Car": 15
+    },
+    "output": {
+      "Maglev": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "ManhattanProject",
+    "name": "Manhattan Project",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "Marbleworks",
+    "name": "Marbleworks",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Stone": 2,
+      "Tool": 1
+    },
+    "output": {
+      "Marble": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "MarinaBaySands",
+    "name": "Marina Bay Sands",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "Market",
+    "name": "Market",
+    "special": null,
+    "tier": null,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "MatrioshkaBrain",
+    "name": "Matrioshka Brain",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "MausoleumAtHalicarnassus",
+    "name": "Mausoleum at Halicarnassus",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "MogaoCaves",
+    "name": "Mogao Caves",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
+  },
+  {
+    "key": "MontSaintMichel",
+    "name": "Mont Saint-Michel",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Mosque",
+    "name": "Mosque",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Cheese": 1,
+      "Opera": 1
+    },
+    "output": {
+      "Faith": 4
+    },
+    "requiresPower": false
+  },
+  {
+    "key": "MountArarat",
+    "name": "Mount Ararat",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "MountFuji",
+    "name": "Mount Fuji",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "MountSinai",
+    "name": "Mount Sinai",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "MountTai",
+    "name": "Mount Tai",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "MovieStudio",
+    "name": "Movie Studio",
+    "special": null,
+    "tier": 6,
+    "input": {
+      "Sports": 5,
+      "Lens": 5,
+      "Garment": 5
+    },
+    "output": {
+      "Movie": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "Museum",
+    "name": "Museum",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Music": 2,
+      "Painting": 2
+    },
+    "output": {
+      "Culture": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "MusiciansGuild",
+    "name": "Musician's Guild",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Alcohol": 2
+    },
+    "output": {
+      "Music": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "MutualFund",
+    "name": "Mutual Fund",
+    "special": null,
+    "tier": 6,
+    "input": {
+      "Forex": 1,
+      "Stock": 1
+    },
+    "output": {
+      "MutualFund": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "NaturalGasWell",
+    "name": "Natural Gas Well",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "NaturalGas": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "Neuschwanstein",
+    "name": "Neuschwanstein",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "NiagaraFalls",
+    "name": "Niagara Falls",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "NileRiver",
+    "name": "Nile River",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "NuclearMissileSilo",
+    "name": "Nuclear Missile Silo",
+    "special": null,
+    "tier": 7,
+    "input": {
+      "AtomicBomb": 1,
+      "Rocket": 1
+    },
+    "output": {
+      "NuclearMissile": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "NuclearPowerPlant",
+    "name": "Nuclear Power Plant",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "NuclearFuelRod": 2
+    },
+    "output": {
+      "Power": 65
+    },
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "NuclearSubmarineYard",
+    "name": "Nuclear Submarine Yard",
+    "special": null,
+    "tier": 8,
+    "input": {
+      "Submarine": 2,
+      "NuclearMissile": 2
+    },
+    "output": {
+      "NuclearSubmarine": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "OilRefinery",
+    "name": "Oil Refinery",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Oil": 2
+    },
+    "output": {
+      "Petrol": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "OilWell",
+    "name": "Oil Well",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Oil": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "OpticalFiberPlant",
+    "name": "Optical Fiber Factory",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Cable": 10,
+      "Glass": 10,
+      "Plastics": 10
+    },
+    "output": {
+      "OpticalFiber": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "OsakaCastle",
+    "name": "Osaka Castle",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "OxfordUniversity",
+    "name": "Oxford University",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "Pagoda",
+    "name": "Pagoda",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Painting": 1,
+      "Furniture": 1
+    },
+    "output": {
+      "Faith": 3
+    },
+    "requiresPower": false
+  },
+  {
+    "key": "PaintersGuild",
+    "name": "Painter's Guild",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Paper": 2
+    },
+    "output": {
+      "Painting": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "PalmJumeirah",
+    "name": "Palm Jumeirah",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "Pamukkale",
+    "name": "Pamukkale",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Pantheon",
+    "name": "Pantheon",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "PaperMaker",
+    "name": "Paper Maker",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Wood": 1,
+      "Water": 1
+    },
+    "output": {
+      "Paper": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "Parliament",
+    "name": "Parliament",
+    "special": null,
+    "tier": 6,
+    "input": {
+      "Culture": 2,
+      "Philosophy": 2,
+      "Law": 2
+    },
+    "output": {
+      "Politics": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "Parthenon",
+    "name": "Parthenon",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Peacekeeper",
+    "name": "Peacekeeper",
+    "special": null,
+    "tier": 8,
+    "input": {
+      "NuclearMissile": 4,
+      "Diplomacy": 1,
+      "Radio": 1
+    },
+    "output": {
+      "Peace": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "Penthouse",
+    "name": "Penthouse",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Bond": 1
+    },
+    "output": {
+      "Worker": 4358
+    },
+    "requiresPower": false
+  },
+  {
+    "key": "Persepolis",
+    "name": "Persepolis",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "Petra",
+    "name": "Petra",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "Pizzeria",
+    "name": "Pizzeria",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Cheese": 1,
+      "Meat": 1,
+      "Flour": 2,
+      "Water": 2
+    },
+    "output": {
+      "Pizza": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "PlasticsFactory",
+    "name": "Plastics Factory",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Oil": 2
+    },
+    "output": {
+      "Plastics": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "PoetrySchool",
+    "name": "Poetry School",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Paper": 2,
+      "Alcohol": 1
+    },
+    "output": {
+      "Poem": 2
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "PorcelainTower",
+    "name": "Porcelain Tower",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "PortOfSingapore",
+    "name": "Port of Singapore",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "Poseidon",
+    "name": "Poseidon",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "PoultryFarm",
+    "name": "Poultry Farm",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Wheat": 2
+    },
+    "output": {
+      "Meat": 2
+    },
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "PrintingHouse",
+    "name": "Printing House",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Paper": 5,
+      "Poem": 1
+    },
+    "output": {
+      "Book": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "ProphetsMosque",
+    "name": "Prophet's Mosque",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "PublishingHouse",
+    "name": "Publishing House",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Philosophy": 2,
+      "Book": 10
+    },
+    "output": {
+      "Newspaper": 1,
+      "Science": 1000
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "PygmyMarmoset",
+    "name": "Pygmy Marmoset",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "PyramidOfGiza",
+    "name": "Pyramid of Giza",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
+  },
+  {
+    "key": "QutbMinar",
+    "name": "Qutb Minar",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "RadioStation",
+    "name": "Radio Station",
+    "special": null,
+    "tier": 7,
+    "input": {
+      "Magazine": 5,
+      "Newspaper": 5,
+      "Culture": 5
+    },
+    "output": {
+      "Radio": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "RebarPlant",
+    "name": "Rebar Plant",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Steel": 5
+    },
+    "output": {
+      "Rebar": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "RedFort",
+    "name": "Red Fort",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "ReinforcedConcretePlant",
+    "name": "Reinforced Concrete Plant",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Rebar": 5,
+      "Concrete": 5
+    },
+    "output": {
+      "ReinforcedConcrete": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "ResearchFund",
+    "name": "Research Fund",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Banknote": 1,
+      "Bond": 1
+    },
+    "output": {
+      "Science": 25940
+    },
+    "requiresPower": false
+  },
+  {
+    "key": "ResearchLab",
+    "name": "Research Lab",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Culture": 3,
+      "Philosophy": 3
+    },
+    "output": {
+      "Science": 7500
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "RhineGorge",
+    "name": "Rhine Gorge",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "RifleFactory",
+    "name": "Rifle Factory",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Gunpowder": 5,
+      "Tool": 5
+    },
+    "output": {
+      "Rifle": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "Rijksmuseum",
+    "name": "Rijksmuseum",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "RobocarFactory",
+    "name": "Robocar Factory",
+    "special": null,
+    "tier": 8,
+    "input": {
+      "Car": 5,
+      "Supercomputer": 2,
+      "Satellite": 1
+    },
+    "output": {
+      "Robocar": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "RockefellerCenterChristmasTree",
+    "name": "Rockefeller Center Christmas Tree",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "RocketFactory",
+    "name": "Rocket Factory",
+    "special": null,
+    "tier": 6,
+    "input": {
+      "Engine": 1,
+      "Artillery": 1,
+      "Steel": 5,
+      "Cable": 5,
+      "Petrol": 10
+    },
+    "output": {
+      "Rocket": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "RoyalFlycatcher",
+    "name": "Royal Flycatcher",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "SagradaFamilia",
+    "name": "Sagrada Familia",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "SaintBasilsCathedral",
+    "name": "Saint Basil's Cathedral",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "SanchiStupa",
+    "name": "Sanchi Stupa",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Sandpit",
+    "name": "Sandpit",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Sand": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "SantaClausVillage",
+    "name": "Santa Claus Village",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "SatelliteFactory",
+    "name": "Satellite Factory",
+    "special": null,
+    "tier": 7,
+    "input": {
+      "Rocket": 2
+    },
+    "output": {
+      "Satellite": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "School",
+    "name": "School",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Faith": 2,
+      "Poem": 2
+    },
+    "output": {
+      "Science": 800
+    },
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
+  },
+  {
+    "key": "SemiconductorFab",
+    "name": "Semiconductor Fab",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Silicon": 10,
+      "Copper": 10
+    },
+    "output": {
+      "Semiconductor": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "Shrine",
+    "name": "Shrine",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Horse": 1,
+      "Alcohol": 1
+    },
+    "output": {
+      "Faith": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "SiegeWorkshop",
+    "name": "Siege Workshop",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Lumber": 2,
+      "Iron": 2,
+      "Tool": 1
+    },
+    "output": {
+      "SiegeRam": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "SiliconSmelter",
+    "name": "Silicon Smelter",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Sand": 5
+    },
+    "output": {
+      "Silicon": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "SoftwareCompany",
+    "name": "Software Company",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Computer": 1,
+      "Philosophy": 10
+    },
+    "output": {
+      "Software": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "SpaceCenter",
+    "name": "Space Center",
+    "special": null,
+    "tier": 8,
+    "input": {
+      "Maglev": 1,
+      "Radio": 1,
+      "Supercomputer": 1
+    },
+    "output": {
+      "PlanetaryRover": 2
+    },
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "SpaceNeedle",
+    "name": "Space Needle",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "SpacecraftFactory",
+    "name": "Spacecraft Factory",
+    "special": null,
+    "tier": 8,
+    "input": {
+      "Rocket": 2,
+      "Satellite": 2,
+      "Airplane": 2
+    },
+    "output": {
+      "Spacecraft": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "Sputnik1",
+    "name": "Sputnik 1",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "StPetersBasilica",
+    "name": "St. Peter's Basilica",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Stable",
+    "name": "Stable",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Wheat": 2
+    },
+    "output": {
+      "Horse": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "BronzeAge"
+  },
+  {
+    "key": "Stadium",
+    "name": "Stadium",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Culture": 1,
+      "Opera": 1,
+      "Philosophy": 1
+    },
+    "output": {
+      "Sports": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "Statistics",
+    "name": "Statistics Office",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
+  },
+  {
+    "key": "StatueOfLiberty",
+    "name": "Statue of Liberty",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "StatueOfZeus",
+    "name": "Statue of Zeus",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Steamworks",
+    "name": "Steamworks",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Iron": 1,
+      "Coal": 1,
+      "Tool": 1
+    },
+    "output": {
+      "Engine": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "SteelMill",
+    "name": "Steel Mill",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Iron": 1,
+      "Coal": 1
+    },
+    "output": {
+      "Steel": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "StockExchange",
+    "name": "Stock Exchange",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Bond": 3
+    },
+    "output": {
+      "Stock": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "StoneQuarry",
+    "name": "Stone Quarry",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Stone": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
+  },
+  {
+    "key": "Stonehenge",
+    "name": "Stonehenge",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "SubmarineYard",
+    "name": "Submarine Yard",
+    "special": null,
+    "tier": 7,
+    "input": {
+      "Ironclad": 2
+    },
+    "output": {
+      "Submarine": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "SummerPalace",
+    "name": "Summer Palace",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "Sundarbans",
+    "name": "Sundarbans",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "SupercomputerLab",
+    "name": "Supercomputer Lab",
+    "special": null,
+    "tier": 6,
+    "input": {
+      "Software": 1,
+      "Computer": 5
+    },
+    "output": {
+      "Supercomputer": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "SwissBank",
+    "name": "Swiss Bank",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "SwordForge",
+    "name": "Sword Forge",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Tool": 2
+    },
+    "output": {
+      "Sword": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "SydneyHarbourBridge",
+    "name": "Sydney Harbour Bridge",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "SydneyOperaHouse",
+    "name": "Sydney Opera House",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "TajMahal",
+    "name": "Taj Mahal",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "TankFactory",
+    "name": "Tank Factory",
+    "special": null,
+    "tier": 5,
+    "input": {
+      "Engine": 1,
+      "Steel": 10,
+      "Cannon": 1,
+      "GatlingGun": 1
+    },
+    "output": {
+      "Tank": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "IndustrialAge"
+  },
+  {
+    "key": "TempleOfArtemis",
+    "name": "Temple Of Artemis",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "MiddleAge"
+  },
+  {
+    "key": "TempleOfHeaven",
+    "name": "Temple of Heaven",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "TerracottaArmy",
+    "name": "Terracotta Army",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "TheMet",
+    "name": "The Pentagon",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "TopkapiPalace",
+    "name": "Topkapı Palace",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "TowerBridge",
+    "name": "Tower Bridge",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "TowerOfBabel",
+    "name": "Tower of Babel",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "TVStation",
+    "name": "TV Station",
+    "special": null,
+    "tier": 8,
+    "input": {
+      "Radio": 2,
+      "Movie": 10
+    },
+    "output": {
+      "TV": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "ColdWarAge"
+  },
+  {
+    "key": "Uluru",
+    "name": "Uluru",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "UnitedNations",
+    "name": "United Nations",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "University",
+    "name": "University",
+    "special": null,
+    "tier": 4,
+    "input": {
+      "Poem": 2,
+      "Faith": 2
+    },
+    "output": {
+      "Philosophy": 1,
+      "Science": 250
+    },
+    "requiresPower": false,
+    "unlockAge": "RenaissanceAge"
+  },
+  {
+    "key": "UraniumEnrichmentPlant",
+    "name": "Uranium Enrichment Plant",
+    "special": null,
+    "tier": 2,
+    "input": {
+      "Uranium": 10
+    },
+    "output": {
+      "NuclearFuelRod": 1
+    },
+    "requiresPower": true,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "UraniumMine",
+    "name": "Uranium Mine",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Uranium": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "WorldWarAge"
+  },
+  {
+    "key": "WallOfBabylon",
+    "name": "Wall of Babylon",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "WallStreet",
+    "name": "Wall Street",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Warehouse",
+    "name": "Warehouse",
+    "special": null,
+    "tier": null,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "IronAge"
+  },
+  {
+    "key": "WheatFarm",
+    "name": "Wheat Farm",
+    "special": null,
+    "tier": 1,
+    "input": {},
+    "output": {
+      "Wheat": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "StoneAge"
+  },
+  {
+    "key": "WorldTradeOrganization",
+    "name": "World Trade Organization",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false,
+    "unlockAge": "InformationAge"
+  },
+  {
+    "key": "WritersGuild",
+    "name": "Writer's Guild",
+    "special": null,
+    "tier": 3,
+    "input": {
+      "Paper": 2
+    },
+    "output": {
+      "Poem": 1
+    },
+    "requiresPower": false,
+    "unlockAge": "ClassicalAge"
+  },
+  {
+    "key": "YangtzeRiver",
+    "name": "Yangtze River",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "YellowCraneTower",
+    "name": "Yellow Crane Tower",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "ZagrosMountains",
+    "name": "Zagros Mountains",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "ZigguratOfUr",
+    "name": "Ziggurat of Ur",
+    "special": "WorldWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  },
+  {
+    "key": "Zugspitze",
+    "name": "Zugspitze",
+    "special": "NaturalWonder",
+    "tier": 0,
+    "input": {},
+    "output": {},
+    "requiresPower": false
+  }
+]
