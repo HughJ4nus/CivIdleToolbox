@@ -27,6 +27,10 @@ interface GreatPersonEntry {
    kind: "boost" | "levelBoost" | "adaptive";
    multipliers?: string[];
    buildings?: string[];
+   /** Civilization the GP is locked to (Babylon, Indian, etc.). When
+    *  set, the GP is NOT eligible for Age of Wisdom (per upstream's
+    *  isEligibleForWisdom: Normal && !city). */
+   city?: string;
 }
 
 interface WonderEntry {
@@ -548,6 +552,33 @@ export const Sidebar = ({
       () => TECHS_WITH_BONUS.filter((t) => unlockedTechs[t.key]).length,
       [unlockedTechs],
    );
+
+   // Wonders that tick GP effective levels each game tick — LHC for
+   // InformationAge, Sputnik 1 for ColdWarAge, Aphrodite for ClassicalAge.
+   // Mirrors WONDER_GP_LEVEL_BOOSTS in bonusResolver. Surfaced via the
+   // per-GP "+N" badge so the user can see why an Adaptive GP (Sid Meier
+   // etc.) or city-restricted GP gets boosted past their picked level.
+   // None of these wonders have a paired LevelBoost GP, so base level
+   // is the effective level — no harmonic this-run extras to thread in.
+   const wonderGpBoostByAge = useMemo(() => {
+      const out: Record<string, Array<{ name: string; value: number }>> = {};
+      const lhc = wonderLevels.LargeHadronCollider ?? 0;
+      if (lhc > 0) {
+         (out.InformationAge ??= []).push({
+            name: "Large Hadron Collider",
+            value: lhc + 1,
+         });
+      }
+      const sputnik = wonderLevels.Sputnik1 ?? 0;
+      if (sputnik > 0) {
+         (out.ColdWarAge ??= []).push({ name: "Sputnik 1", value: sputnik });
+      }
+      const aphrodite = wonderLevels.Aphrodite ?? 0;
+      if (aphrodite > 0) {
+         (out.ClassicalAge ??= []).push({ name: "Aphrodite", value: 1 });
+      }
+      return out;
+   }, [wonderLevels]);
 
    // Sorted list of buildings for the trade tile dropdown. The game only
    // assigns trade tile bonuses to Classical-Age-and-later production
@@ -1104,26 +1135,57 @@ export const Sidebar = ({
                                           )
                                        }
                                     />
-                                    {/* +X wisdom badge — only meaningful for
-                                        boost-style GPs (Adaptive + LevelBoost
-                                        aren't wisdom-eligible per upstream's
-                                        isEligibleForWisdom). */}
-                                    {!isAdaptive && gp.kind !== "levelBoost" ? (
-                                       <span
-                                          className={`sidebar-wisdom-add${
-                                             wisdomBonus > 0 && baseLevel > 0 ? "" : " empty"
-                                          }`}
-                                          title={
-                                             wisdomBonus > 0
-                                                ? `+${wisdomBonus} from Age of Wisdom (effective ${baseLevel + wisdomBonus})`
-                                                : "No Age of Wisdom for this age"
+                                    {/* +X badge — sums Age of Wisdom and
+                                        any wonder GP-level ticks (LHC,
+                                        Sputnik 1, Aphrodite). Wisdom only
+                                        applies to Boost GPs without a city
+                                        restriction (upstream's
+                                        isEligibleForWisdom). Wonder ticks
+                                        apply to Boost + Adaptive (LevelBoost
+                                        GPs have empty tick bodies upstream,
+                                        so LHC ticking them is a no-op). */}
+                                    {(() => {
+                                       const wonderBoosts =
+                                          wonderGpBoostByAge[age] ?? [];
+                                       const wonderTotal = wonderBoosts.reduce(
+                                          (s, b) => s + b.value,
+                                          0,
+                                       );
+                                       const wisdomEligible =
+                                          gp.kind === "boost" && !gp.city;
+                                       const wonderEligible =
+                                          gp.kind === "boost" || isAdaptive;
+                                       const wisdomApplied = wisdomEligible
+                                          ? wisdomBonus
+                                          : 0;
+                                       const wonderApplied = wonderEligible
+                                          ? wonderTotal
+                                          : 0;
+                                       const total = wisdomApplied + wonderApplied;
+                                       const show = total > 0 && baseLevel > 0;
+                                       const parts: string[] = [];
+                                       if (wisdomApplied > 0) {
+                                          parts.push(
+                                             `+${wisdomApplied} Age of Wisdom`,
+                                          );
+                                       }
+                                       if (wonderEligible) {
+                                          for (const w of wonderBoosts) {
+                                             parts.push(`+${w.value} ${w.name}`);
                                           }
-                                       >
-                                          {wisdomBonus > 0 ? `+${wisdomBonus}` : ""}
-                                       </span>
-                                    ) : (
-                                       <span className="sidebar-wisdom-add empty" />
-                                    )}
+                                       }
+                                       const title = show
+                                          ? `${parts.join(", ")} (effective ${baseLevel + total})`
+                                          : "No level boosts for this GP";
+                                       return (
+                                          <span
+                                             className={`sidebar-wisdom-add${show ? "" : " empty"}`}
+                                             title={title}
+                                          >
+                                             {show ? `+${total}` : ""}
+                                          </span>
+                                       );
+                                    })()}
                                  </li>
                               );
                            })}
