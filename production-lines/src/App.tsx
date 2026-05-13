@@ -882,6 +882,29 @@ export const App = (): JSX.Element => {
       });
    }, [subgraph, selectedKey, rootAmount, rootLevel, perBuildingLevels, perBuildingAmounts, bonuses]);
 
+   // Hide upstream buildings the chain math doesn't actually need
+   // (amount = 0). Examples: when the root has multiple producers and
+   // the user picks a path that bypasses some of them, those bypassed
+   // producers — and any unique ancestors only they reach — would
+   // otherwise sit in the modal at amount 0. The root is always kept.
+   const visibleSubgraph = useMemo(() => {
+      if (!subgraph || !chainResults || !selectedKey) return subgraph;
+      const visible = subgraph.buildings.filter(
+         (b) => b.key === selectedKey || (chainResults.get(b.key)?.amount ?? 0) > 0,
+      );
+      if (visible.length === subgraph.buildings.length) return subgraph;
+      const cols = computeColumnsFor(visible);
+      const subEdges = computeEdgesFor(visible);
+      const ordered = reorderCols(cols, subEdges);
+      return {
+         columns: ordered,
+         edges: subEdges,
+         root: subgraph.root,
+         count: visible.length,
+         buildings: visible,
+      };
+   }, [subgraph, chainResults, selectedKey]);
+
    useEffect(() => {
       if (!selectedKey) return;
       const onKey = (e: KeyboardEvent) => {
@@ -1085,14 +1108,14 @@ export const App = (): JSX.Element => {
             </div>
          </div>
 
-         {subgraph && (
+         {visibleSubgraph && (
             <div className="modal-backdrop" onClick={() => setSelectedKey(null)}>
                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                   <header className="modal-header">
                      <h3>
                         Production line for{" "}
-                        <span className="modal-root-name">{subgraph.root?.name}</span>
-                        <span className="modal-count">{subgraph.count} buildings</span>
+                        <span className="modal-root-name">{visibleSubgraph.root?.name}</span>
+                        <span className="modal-count">{visibleSubgraph.count} buildings</span>
                      </h3>
                      <div className="modal-header-actions">
                         <label
@@ -1170,8 +1193,8 @@ export const App = (): JSX.Element => {
                            }}
                         >
                            <TierWorld
-                              columns={subgraph.columns}
-                              edges={subgraph.edges}
+                              columns={visibleSubgraph.columns}
+                              edges={visibleSubgraph.edges}
                               highlightKey={selectedKey ?? undefined}
                               chainResults={chainResults}
                               onLevelChange={onLevelChange}
