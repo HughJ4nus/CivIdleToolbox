@@ -857,6 +857,48 @@ body {
    gap: 16px;
 }
 
+/* First-visit welcome modal — much smaller than the production-line
+   modal; centred, fixed width, plain text body. */
+.welcome-modal {
+   width: min(95vw, 460px);
+   height: auto;
+   max-height: 90vh;
+}
+.welcome-body {
+   padding: 18px 22px 22px;
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+   color: var(--text);
+   font-size: 14px;
+   line-height: 1.5;
+   background: var(--panel);
+}
+.welcome-body p {
+   margin: 0;
+}
+.welcome-caveat {
+   color: var(--text-dim);
+   font-style: italic;
+   font-size: 13px;
+}
+.welcome-dismiss {
+   align-self: flex-end;
+   margin-top: 4px;
+   padding: 6px 14px;
+   background: var(--accent);
+   color: var(--bg);
+   border: 0;
+   border-radius: 4px;
+   font-size: 13px;
+   font-weight: 600;
+   cursor: pointer;
+   font-family: inherit;
+}
+.welcome-dismiss:hover {
+   filter: brightness(1.1);
+}
+
 /* Bulk-set-level input in the modal header. Mirrors the GP "Set all to N"
    helper in the sidebar — pushes one value to every card's level. */
 .modal-bulk-level {

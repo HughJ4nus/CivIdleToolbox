@@ -605,6 +605,22 @@ export const App = (): JSX.Element => {
    useEffect(() => {
       saveUserState(userState);
    }, [userState]);
+
+   // First-visit welcome modal. localStorage flag flips on dismiss so it
+   // only shows once per browser; guard reads against SSR-style absence.
+   const WELCOME_KEY = "production-lines:welcome-seen:v1";
+   const [showWelcome, setShowWelcome] = useState(() => {
+      if (typeof localStorage === "undefined") return false;
+      return localStorage.getItem(WELCOME_KEY) !== "true";
+   });
+   const dismissWelcome = useCallback(() => {
+      try {
+         localStorage.setItem(WELCOME_KEY, "true");
+      } catch {
+         /* private mode / quota — flag won't stick but the modal closes */
+      }
+      setShowWelcome(false);
+   }, []);
    const onGpChange = useCallback((key: string, level: number) => {
       setUserState((prev) => ({
          ...prev,
@@ -1240,6 +1256,44 @@ export const App = (): JSX.Element => {
                            </section>
                         </aside>
                      )}
+                  </div>
+               </div>
+            </div>
+         )}
+
+         {showWelcome && (
+            <div className="modal-backdrop" onClick={dismissWelcome}>
+               <div
+                  className="modal-content welcome-modal"
+                  onClick={(e) => e.stopPropagation()}
+               >
+                  <header className="modal-header">
+                     <h3>Welcome</h3>
+                     <button
+                        type="button"
+                        className="modal-close"
+                        aria-label="Close"
+                        onClick={dismissWelcome}
+                     >
+                        ×
+                     </button>
+                  </header>
+                  <div className="modal-body welcome-body">
+                     <p>
+                        Load your save file, or manually input your values. Click
+                        the end product you want to produce, and input your
+                        desired levels and amounts.
+                     </p>
+                     <p className="welcome-caveat">
+                        Electrification not yet supported.
+                     </p>
+                     <button
+                        type="button"
+                        className="welcome-dismiss"
+                        onClick={dismissWelcome}
+                     >
+                        Got it
+                     </button>
                   </div>
                </div>
             </div>
