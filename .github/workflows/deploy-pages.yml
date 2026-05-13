@@ -6,6 +6,7 @@ on:
       paths:
          - "hex-map/**"
          - "egp-planner/**"
+         - "production-lines/**"
          - "index.html"
          - ".github/workflows/deploy-pages.yml"
    workflow_dispatch:
@@ -35,8 +36,10 @@ jobs:
            with:
               node-version: 20
               cache: pnpm
-              # Lockfile lives in the subdir, not the repo root.
-              cache-dependency-path: hex-map/pnpm-lock.yaml
+              # Lockfiles live in each tool's subdir, not the repo root.
+              cache-dependency-path: |
+                 hex-map/pnpm-lock.yaml
+                 production-lines/pnpm-lock.yaml
 
          - name: Install hex-map
            run: pnpm install --frozen-lockfile
@@ -52,13 +55,24 @@ jobs:
            run: pnpm build
            working-directory: hex-map
 
+         - name: Install production-lines
+           run: pnpm install --frozen-lockfile
+           working-directory: production-lines
+
+         - name: Build production-lines
+           env:
+              VITE_BASE: /CivIdleToolbox/production-lines/
+           run: pnpm build
+           working-directory: production-lines
+
          - name: Assemble combined dist/
            # Landing page is index.html at the repo root. Each tool gets its
            # own dist/<tool-id>/ subdir. egp-planner is a single static file
            # with no build step.
            run: |
-              mkdir -p dist/hex-map dist/egp-planner
+              mkdir -p dist/hex-map dist/egp-planner dist/production-lines
               cp -R hex-map/dist/. dist/hex-map/
+              cp -R production-lines/dist/. dist/production-lines/
               cp -R egp-planner/. dist/egp-planner/
               cp index.html dist/
 
