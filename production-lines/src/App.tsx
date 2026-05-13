@@ -1054,6 +1054,7 @@ export const App = (): JSX.Element => {
          <div className="main">
             <Sidebar
                gpLevels={userState.greatPeople}
+               thisRunGreatPeople={userState.thisRunGreatPeople ?? {}}
                wonderLevels={userState.wonders}
                ageWisdom={userState.ageWisdom}
                tradeTiles={userState.tradeTiles ?? []}
