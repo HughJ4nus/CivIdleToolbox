@@ -19,12 +19,21 @@ interface DirectionalWonderDef {
    kindLabel: string;
    paths: Record<string, string[]>;
 }
+interface TechEntry {
+   key: string;
+   name: string;
+   age: string | null;
+   column: number | null;
+   buildingMultiplier: UpgradeEffect;
+}
 const EXT = bonusData as unknown as {
    directionalWonders?: Record<string, DirectionalWonderDef>;
    upgrades?: Record<string, UpgradeEffect>;
+   techs?: TechEntry[];
 };
 const DIRECTIONAL = EXT.directionalWonders ?? {};
 const UPGRADES = EXT.upgrades ?? {};
+const TECHS = EXT.techs ?? [];
 
 interface GreatPersonEntry {
    key: string;
@@ -33,6 +42,12 @@ interface GreatPersonEntry {
    kind: "boost" | "levelBoost";
    multipliers?: string[];
    buildings?: string[];
+   /** value(level) = level × valueMultiplier. Most GPs have 1; some
+    *  (Aristotle, Julius Caesar etc.) have 2. */
+   valueMultiplier?: number;
+   /** Civ restriction. GPs with a `city` are NOT eligible for Age of
+    *  Wisdom (per upstream's isEligibleForWisdom). */
+   city?: string | null;
 }
 interface WonderEntry {
    key: string;
@@ -57,6 +72,34 @@ export interface Contributor {
    kind: "output" | "worker" | "storage" | "level";
    value: number;
 }
+
+// Materials that can't be stored in inventory — Worker, Power, Science
+// etc. Mirrors upstream's NoStorage set. Used by canBeElectrified below.
+const NON_STORABLE = new Set([
+   "Worker",
+   "Power",
+   "Science",
+   "Festival",
+   "Warp",
+   "Explorer",
+   "Teleport",
+   "Cycle",
+   "TradeValue",
+]);
+
+// Mirror of upstream's BuildingLogic.canBeElectrified(): non-special
+// production building whose every output is a storable resource.
+// SwissBank is a documented exception; CloneFactory too. CloneLab is
+// gated by OsakaCastle in upstream which we don't track — including it
+// unconditionally over-applies in the rare CloneLab-without-Osaka case.
+const ELECTRIFIABLE_EXTRAS = new Set(["SwissBank", "CloneFactory"]);
+const isElectrifiable = (b: Building): boolean => {
+   if (ELECTRIFIABLE_EXTRAS.has(b.key)) return true;
+   if (b.special) return false;
+   const outs = Object.keys(b.output);
+   if (outs.length === 0) return false;
+   return outs.every((o) => !NON_STORABLE.has(o));
+};
 
 const ensure = (
    map: Map<string, BuildingBonus>,
@@ -158,6 +201,16 @@ const WONDER_EFFECTS: Record<string, WonderEffect> = {
    ApolloProgram: () => [
       { building: "RocketFactory", kind: "output", value: 2 },
    ],
+   // Temple of Artemis: +1 output/worker/storage to SwordForge + Armory.
+   // Per OnProductionComplete.tsx:591.
+   TempleOfArtemis: () => [
+      { building: "SwordForge", kind: "output", value: 1 },
+      { building: "SwordForge", kind: "worker", value: 1 },
+      { building: "SwordForge", kind: "storage", value: 1 },
+      { building: "Armory", kind: "output", value: 1 },
+      { building: "Armory", kind: "worker", value: 1 },
+      { building: "Armory", kind: "storage", value: 1 },
+   ],
 
    // ── Per-building-type globals (level-scaled) ────────────────────────
    Sputnik1: (level) => [
@@ -213,6 +266,18 @@ const WONDER_EFFECTS: Record<string, WonderEffect> = {
       ctx.prod
          .filter((b) => (b.output.Science ?? 0) > 0)
          .map((b) => ({ building: b.key, kind: "output", value: 1 })),
+   // Yangtze River: every Water-CONSUMING building gets +1 output and
+   // +1 worker. Storage piece adds +(1 + WuZetian permanent) per
+   // building — Wu-Zetian-level dependency handled inline below.
+   // Plus triggers ZhengHe.tick(getTotalLevel) — also handled inline.
+   // Per OnProductionComplete.tsx:960.
+   YangtzeRiver: (_, ctx) =>
+      ctx.prod
+         .filter((b) => (b.input.Water ?? 0) > 0)
+         .flatMap((b) => [
+            { building: b.key, kind: "output" as const, value: 1 },
+            { building: b.key, kind: "worker" as const, value: 1 },
+         ]),
    BlackForest: (_, ctx) =>
       ctx.prod
          .filter((b) => (b.input.Wood ?? 0) > 0 || (b.input.Lumber ?? 0) > 0)
@@ -235,7 +300,6 @@ const WONDER_EFFECTS: Record<string, WonderEffect> = {
    // Intentionally unwired for first pass (need extra inputs / state):
    //   CentrePompidou      — needs city count
    //   Poseidon, WallStreet, GreatOceanRoad — festival only
-   //   YangtzeRiver        — depends on a Wu-Zetian GP level
    //   Shenandoah, ZigguratOfUr, EuphratesRiver, CNTower — unstable / state-dependent
    //   TempleOfHeaven, TajMahal, Neuschwanstein — apply to placed buildings,
    //                                              not modelled here
@@ -348,31 +412,59 @@ export const resolveBuildingBonuses = (
       }
    }
 
-   // Great People — boost-style only. Effective level = base + Age of
-   // Wisdom for that age + Σ wonder GP-level boosts for that age. The
-   // source string lays out the breakdown so the per-building tooltip
-   // explains where every level point came from.
+   // Harmonic series for this-run GP picks: amount → 1 + 1/2 + … + 1/amount.
+   // Mirrors RebirthLogic.getGreatPersonThisRunLevel in upstream.
+   const harmonic = (n: number): number => {
+      if (!Number.isFinite(n) || n <= 0) return 0;
+      let s = 0;
+      for (let i = 1; i <= n; i++) s += 1 / i;
+      return s;
+   };
+
+   // Great People — boost-style only. Effective level = permanent base
+   // + harmonic(thisRunPicks) + Age of Wisdom for that age + Σ wonder
+   // GP-level boosts. The source string lays out the breakdown so the
+   // per-building tooltip explains where every level point came from.
+   //
+   // We iterate every GP that has either a permanent level OR this-run
+   // picks — a fresh-start GP picked this rebirth still buffs buildings
+   // even with permanent=0.
    for (const gp of DATA.greatPeople) {
       if (gp.kind !== "boost") continue;
       const baseLevel = userState.greatPeople[gp.key] ?? 0;
-      if (baseLevel <= 0) continue;
-      const wisdom = userState.ageWisdom[gp.age] ?? 0;
+      const thisRunPicks = userState.thisRunGreatPeople?.[gp.key] ?? 0;
+      if (baseLevel <= 0 && thisRunPicks <= 0) continue;
+      const thisRunLevel = harmonic(thisRunPicks);
+      // Wisdom only applies to GPs without a city restriction
+      // (isEligibleForWisdom in upstream).
+      const wisdomEligible = !gp.city;
+      const wisdom = wisdomEligible ? (userState.ageWisdom[gp.age] ?? 0) : 0;
       const wonderBoosts = wonderGpBoosts[gp.age] ?? [];
       const wonderTotal = wonderBoosts.reduce((s, b) => s + b.value, 0);
-      const effective = baseLevel + wisdom + wonderTotal;
+      const effectiveLevel = baseLevel + thisRunLevel + wisdom + wonderTotal;
+      // Per-tick contribution = value(level) = level × valueMultiplier.
+      // Game makes separate tick() calls per source (perm/this-run/
+      // wisdom/wonder-boost), each calling value() — but value() is
+      // linear so summing first is mathematically equivalent.
+      const valueMult = gp.valueMultiplier ?? 1;
+      const contribution = effectiveLevel * valueMult;
 
-      // Compose a "5 + 2 wisdom + 4 LHC" style breakdown when extras apply.
+      // Compose a "5 + 1.83 this run + 2 wisdom + 4 LHC, ×2 value" breakdown.
       const parts: string[] = [`${baseLevel}`];
+      if (thisRunLevel > 0) {
+         parts.push(`${thisRunLevel.toFixed(2)} this run (×${thisRunPicks})`);
+      }
       if (wisdom > 0) parts.push(`${wisdom} wisdom`);
       for (const wb of wonderBoosts) parts.push(`${wb.value} ${wb.name}`);
       const breakdown = parts.length > 1 ? ` = ${parts.join(" + ")}` : "";
-      const source = `${gp.name} (lvl ${effective}${breakdown})`;
+      const valNote = valueMult !== 1 ? `, ×${valueMult} value` : "";
+      const source = `${gp.name} (lvl ${effectiveLevel.toFixed(2)}${breakdown}${valNote})`;
 
       const buildings = gp.buildings ?? [];
       const multipliers = (gp.multipliers ?? []) as Contributor["kind"][];
       for (const buildingKey of buildings) {
          for (const mult of multipliers) {
-            apply(out, buildingKey, { source, kind: mult, value: effective });
+            apply(out, buildingKey, { source, kind: mult, value: contribution });
          }
       }
    }
@@ -387,6 +479,82 @@ export const resolveBuildingBonuses = (
       const source = `${wonder.name} (lvl ${level})`;
       for (const d of fn(level, ctx)) {
          apply(out, d.building, { source, kind: d.kind, value: d.value });
+      }
+   }
+
+   // PoweredBuilding boost — Update.ts:702 in upstream. Every electrifiable
+   // building with `power: true` gets +5 effective level once the
+   // Electricity feature is unlocked (which is true for any player
+   // late enough to be tweaking bonuses in this tool). We apply it
+   // unconditionally; a pre-Electricity user would see a small over-
+   // prediction here.
+   for (const b of prod) {
+      if (!b.requiresPower) continue;
+      if (!isElectrifiable(b)) continue;
+      apply(out, b.key, {
+         source: "Powered building",
+         kind: "level",
+         value: 5,
+      });
+   }
+
+   // Researched techs — each unlocked tech with a buildingMultiplier
+   // contributes its multipliers to the listed buildings (output / worker
+   // / storage). Mirrors how Upgrades work; tech defs use the same shape.
+   for (const tech of TECHS) {
+      if (!userState.unlockedTechs?.[tech.key]) continue;
+      const source = `Tech: ${tech.name}`;
+      for (const [buildingKey, kinds] of Object.entries(tech.buildingMultiplier)) {
+         if (typeof kinds.output === "number" && kinds.output !== 0) {
+            apply(out, buildingKey, { source, kind: "output", value: kinds.output });
+         }
+         if (typeof kinds.worker === "number" && kinds.worker !== 0) {
+            apply(out, buildingKey, { source, kind: "worker", value: kinds.worker });
+         }
+         if (typeof kinds.storage === "number" && kinds.storage !== 0) {
+            apply(out, buildingKey, { source, kind: "storage", value: kinds.storage });
+         }
+      }
+   }
+
+   // Yangtze River — Wu-Zetian-dependent storage + ZhengHe-trigger
+   // pieces. The base +1 output / +1 worker to Water consumers is
+   // already in WONDER_EFFECTS above. Per OnProductionComplete.tsx:960.
+   const yangtzeLevel = userState.wonders.YangtzeRiver ?? 0;
+   if (yangtzeLevel > 0) {
+      const wuZetian = userState.greatPeople.WuZetian ?? 0;
+      // Storage: +1 + wuZetian to Water-consumers, +wuZetian to others.
+      for (const b of prod) {
+         const consumesWater = (b.input.Water ?? 0) > 0;
+         if (consumesWater) {
+            apply(out, b.key, {
+               source: `Yangtze River (Wu Zetian +${wuZetian})`,
+               kind: "storage",
+               value: 1 + wuZetian,
+            });
+         } else if (wuZetian > 0) {
+            apply(out, b.key, {
+               source: `Yangtze River (Wu Zetian +${wuZetian})`,
+               kind: "storage",
+               value: wuZetian,
+            });
+         }
+      }
+      // ZhengHe.tick(getGreatPersonTotalLevel("ZhengHe")) — total =
+      // permanent + harmonic(thisRunPicks). NB: wisdom is NOT included
+      // (per RebirthLogic.getGreatPersonTotalLevel).
+      const zhengPerm = userState.greatPeople.ZhengHe ?? 0;
+      const zhengThisRun = harmonic(userState.thisRunGreatPeople?.ZhengHe ?? 0);
+      const zhengTotal = zhengPerm + zhengThisRun;
+      if (zhengTotal > 0) {
+         // ZhengHe value(level) = level (multiplier 1). Boosts
+         // CaravelBuilder + GalleonBuilder, output + storage.
+         const zhengContribution = zhengTotal; // valueMultiplier = 1
+         const src = `Yangtze River → Zheng He (lvl ${zhengTotal.toFixed(2)})`;
+         for (const buildingKey of ["CaravelBuilder", "GalleonBuilder"]) {
+            apply(out, buildingKey, { source: src, kind: "output", value: zhengContribution });
+            apply(out, buildingKey, { source: src, kind: "storage", value: zhengContribution });
+         }
       }
    }
 
@@ -491,30 +659,51 @@ export const resolveBuildingBonuses = (
       const reached = Math.min(wonderLevel, path.length);
       for (let i = 0; i < reached; i++) {
          const upgradeKey = path[i];
-         const effects = UPGRADES[upgradeKey];
-         if (!effects) continue;
          const source = `${wonderName} · ${direction} ${["I", "II", "III", "IV", "V"][i] ?? i + 1}`;
-         for (const [buildingKey, kinds] of Object.entries(effects)) {
-            if (typeof kinds.output === "number" && kinds.output !== 0) {
-               apply(out, buildingKey, {
-                  source,
-                  kind: "output",
-                  value: kinds.output,
-               });
+         const effects = UPGRADES[upgradeKey];
+         if (effects) {
+            for (const [buildingKey, kinds] of Object.entries(effects)) {
+               if (typeof kinds.output === "number" && kinds.output !== 0) {
+                  apply(out, buildingKey, {
+                     source,
+                     kind: "output",
+                     value: kinds.output,
+                  });
+               }
+               if (typeof kinds.worker === "number" && kinds.worker !== 0) {
+                  apply(out, buildingKey, {
+                     source,
+                     kind: "worker",
+                     value: kinds.worker,
+                  });
+               }
+               if (typeof kinds.storage === "number" && kinds.storage !== 0) {
+                  apply(out, buildingKey, {
+                     source,
+                     kind: "storage",
+                     value: kinds.storage,
+                  });
+               }
             }
-            if (typeof kinds.worker === "number" && kinds.worker !== 0) {
-               apply(out, buildingKey, {
-                  source,
-                  kind: "worker",
-                  value: kinds.worker,
-               });
+         }
+         // Special-case upgrades whose effect isn't expressible as a
+         // static buildingMultiplier map — these need bespoke handling
+         // matched against upstream's per-tick code.
+         if (upgradeKey === "Liberalism5") {
+            // "All buildings that can be electrified get +5 Building
+            // Level Boost for free." — Update.ts:704.
+            for (const b of prod) {
+               if (!isElectrifiable(b)) continue;
+               apply(out, b.key, { source, kind: "level", value: 5 });
             }
-            if (typeof kinds.storage === "number" && kinds.storage !== 0) {
-               apply(out, buildingKey, {
-                  source,
-                  kind: "storage",
-                  value: kinds.storage,
-               });
+         }
+         if (upgradeKey === "Liberalism4") {
+            // "All power plants get +1 Production Multiplier." —
+            // Liberalism4.tick in UpgradeDefinitions.ts.
+            for (const b of prod) {
+               if ((b.output.Power ?? 0) > 0) {
+                  apply(out, b.key, { source, kind: "output", value: 1 });
+               }
             }
          }
       }

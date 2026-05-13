@@ -60,6 +60,21 @@ const DIRECTIONAL_WONDERS = (
    }
 ).directionalWonders ?? {};
 
+// Techs that grant a buildingMultiplier — extracted from upstream's
+// TechDefinitions.ts. Sidebar shows them as checkboxes grouped by age.
+interface TechEntry {
+   key: string;
+   name: string;
+   age: string | null;
+   buildingMultiplier: Record<
+      string,
+      { output?: number; worker?: number; storage?: number }
+   >;
+}
+const TECHS_WITH_BONUS = (
+   bonusData as unknown as { techs?: TechEntry[] }
+).techs ?? [];
+
 const AGE_ORDER = [
    "StoneAge",
    "BronzeAge",
@@ -355,6 +370,10 @@ interface SidebarProps {
    /** Picked path per directional wonder (ChoghaZanbil/LuxorTemple/BigBen). */
    wonderDirections: Record<string, string>;
    onWonderDirectionChange: (key: string, direction: string) => void;
+   /** Researched techs (only those with a buildingMultiplier). Map of
+    *  tech key → checked. Save importer fills this from gs.unlockedTech. */
+   unlockedTechs: Record<string, boolean>;
+   onTechChange: (key: string, checked: boolean) => void;
    /** Bulk-set every GP's level (testing helper). */
    onSetAllGpLevels: (level: number) => void;
    /** Replace GPs / wonders / Age of Wisdom with values parsed from a
@@ -389,6 +408,8 @@ export const Sidebar = ({
    onUnBuildingChange,
    wonderDirections,
    onWonderDirectionChange,
+   unlockedTechs,
+   onTechChange,
    onSetAllGpLevels,
    onImportSave,
 }: SidebarProps): JSX.Element => {
@@ -405,7 +426,7 @@ export const Sidebar = ({
          onImportSave(parsed);
          setImportStatus({
             kind: "ok",
-            msg: `Imported ${parsed.stats.gpCount} GPs · ${parsed.stats.wonderCount} wonders · ${parsed.stats.ageWisdomCount} ages`,
+            msg: `Imported ${parsed.stats.gpCount} GPs (+${parsed.stats.thisRunGpCount} this-run) · ${parsed.stats.wonderCount} wonders · ${parsed.stats.ageWisdomCount} ages · ${parsed.stats.techCount} techs`,
          });
       } catch (e) {
          setImportStatus({
@@ -429,6 +450,29 @@ export const Sidebar = ({
 
    // Only show Age of Wisdom inputs for ages that actually have GPs.
    const wisdomAges = useMemo(() => groupedGPs.map((g) => g.age), [groupedGPs]);
+
+   // Techs grouped by age, in canonical age order. Only techs with a
+   // buildingMultiplier are surfaced (the rest just unlock buildings
+   // and don't affect production).
+   const groupedTechs = useMemo(() => {
+      const buckets = new Map<string, TechEntry[]>();
+      for (const t of TECHS_WITH_BONUS) {
+         const age = t.age ?? "Unknown";
+         if (!buckets.has(age)) buckets.set(age, []);
+         buckets.get(age)!.push(t);
+      }
+      return AGE_ORDER.filter((a) => buckets.has(a)).map((age) => ({
+         age,
+         entries: buckets
+            .get(age)!
+            .sort((a, b) => a.name.localeCompare(b.name)),
+      }));
+   }, []);
+   const techCount = TECHS_WITH_BONUS.length;
+   const techCheckedCount = useMemo(
+      () => TECHS_WITH_BONUS.filter((t) => unlockedTechs[t.key]).length,
+      [unlockedTechs],
+   );
 
    // Sorted list of buildings for the trade tile dropdown. The game only
    // assigns trade tile bonuses to Classical-Age-and-later production
@@ -714,6 +758,89 @@ export const Sidebar = ({
                   )}
                </>
             )}
+         </section>
+
+         {/* Researched techs — checkbox per tech that grants a building
+             multiplier. The vast majority of techs only unlock buildings
+             and aren't shown here; only the ones with a static
+             buildingMultiplier (8 in current upstream) qualify. */}
+         <section className="sidebar-section">
+            <button
+               type="button"
+               className="sidebar-section-toggle"
+               onClick={() => toggle("techs")}
+               aria-expanded={openSections.techs ?? false}
+            >
+               <span className="caret">{openSections.techs ? "▾" : "▸"}</span>
+               Researched techs
+               <span className="sidebar-age-count">
+                  {techCheckedCount > 0
+                     ? `${techCheckedCount}/${techCount}`
+                     : techCount}
+               </span>
+            </button>
+            {openSections.techs &&
+               groupedTechs.map(({ age, entries }) => {
+                  const id = `tech-age-${age}`;
+                  const open = openSections[id] ?? false;
+                  const checkedInAge = entries.filter(
+                     (t) => unlockedTechs[t.key],
+                  ).length;
+                  return (
+                     <div key={age} className="sidebar-subsection">
+                        <button
+                           type="button"
+                           className="sidebar-section-toggle sub"
+                           onClick={() => toggle(id)}
+                           aria-expanded={open}
+                        >
+                           <span className="caret">{open ? "▾" : "▸"}</span>
+                           {ageLabel[age] ?? age}
+                           <span className="sidebar-age-count">
+                              {checkedInAge > 0
+                                 ? `${checkedInAge}/${entries.length}`
+                                 : entries.length}
+                           </span>
+                        </button>
+                        {open && (
+                           <ul className="sidebar-list">
+                              {entries.map((t) => {
+                                 const targets = Object.entries(t.buildingMultiplier);
+                                 const summary = targets
+                                    .map(([b, kinds]) => {
+                                       const parts: string[] = [];
+                                       if (kinds.output) parts.push(`+${kinds.output} out`);
+                                       if (kinds.worker) parts.push(`+${kinds.worker} wkr`);
+                                       if (kinds.storage) parts.push(`+${kinds.storage} stg`);
+                                       return `${b} (${parts.join(", ")})`;
+                                    })
+                                    .join(" · ");
+                                 return (
+                                    <li key={t.key} className="sidebar-row">
+                                       <div className="sidebar-row-text">
+                                          <div className="sidebar-row-name">
+                                             {t.name}
+                                          </div>
+                                          <div className="sidebar-row-effect">
+                                             {summary}
+                                          </div>
+                                       </div>
+                                       <input
+                                          type="checkbox"
+                                          className="sidebar-checkbox"
+                                          checked={!!unlockedTechs[t.key]}
+                                          onChange={(e) =>
+                                             onTechChange(t.key, e.target.checked)
+                                          }
+                                       />
+                                    </li>
+                                 );
+                              })}
+                           </ul>
+                        )}
+                     </div>
+                  );
+               })}
          </section>
 
          {/* Trade tiles — each gives +5 output to its target building.

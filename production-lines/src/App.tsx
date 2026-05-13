@@ -766,6 +766,17 @@ export const App = (): JSX.Element => {
       [],
    );
 
+   // Toggle a research tech on/off. Save importer fills the same map
+   // from gs.unlockedTech; either source is the same shape.
+   const onTechChange = useCallback((key: string, checked: boolean) => {
+      setUserState((prev) => {
+         const next = { ...(prev.unlockedTechs ?? {}) };
+         if (checked) next[key] = true;
+         else delete next[key];
+         return { ...prev, unlockedTechs: next };
+      });
+   }, []);
+
    // Save import: replace GPs / wonders / Age of Wisdom with values from
    // a parsed save file, but keep trade tiles + CoB list intact (they're
    // either multiplayer state or a manual user-curated approximation
@@ -773,6 +784,7 @@ export const App = (): JSX.Element => {
    const onImportSave = useCallback((parsed: ParsedSave) => {
       setUserState((prev) => ({
          greatPeople: parsed.greatPeople,
+         thisRunGreatPeople: parsed.thisRunGreatPeople,
          wonders: parsed.wonders,
          ageWisdom: parsed.ageWisdom,
          tradeTiles: prev.tradeTiles ?? [],
@@ -786,6 +798,8 @@ export const App = (): JSX.Element => {
             ...(prev.wonderDirections ?? {}),
             ...parsed.wonderDirections,
          },
+         // Tech list comes straight from the save's unlockedTech Set.
+         unlockedTechs: parsed.unlockedTechs,
       }));
    }, []);
 
@@ -1029,6 +1043,8 @@ export const App = (): JSX.Element => {
                onUnBuildingChange={onUnBuildingChange}
                wonderDirections={userState.wonderDirections ?? {}}
                onWonderDirectionChange={onWonderDirectionChange}
+               unlockedTechs={userState.unlockedTechs ?? {}}
+               onTechChange={onTechChange}
                onSetAllGpLevels={onSetAllGpLevels}
                onImportSave={onImportSave}
             />

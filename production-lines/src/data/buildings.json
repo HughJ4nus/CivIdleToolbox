@@ -5,7 +5,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "ActorsGuild",
@@ -18,7 +19,8 @@
     },
     "output": {
       "Opera": 2
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "AILab",
@@ -32,7 +34,8 @@
     },
     "output": {
       "CivGPT": 2
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "AircraftCarrierYard",
@@ -45,7 +48,8 @@
     },
     "output": {
       "AircraftCarrier": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "AirplaneFactory",
@@ -57,7 +61,8 @@
     },
     "output": {
       "Airplane": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "AkademikLomonosov",
@@ -65,7 +70,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "AldersonDisk",
@@ -73,7 +79,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Alps",
@@ -81,7 +88,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "AluminumSmelter",
@@ -91,7 +99,8 @@
     "input": {},
     "output": {
       "Aluminum": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "AngkorWat",
@@ -99,7 +108,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Apartment",
@@ -113,7 +123,8 @@
     },
     "output": {
       "Worker": 84
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Aphrodite",
@@ -121,7 +132,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "ApolloProgram",
@@ -129,7 +141,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Aqueduct",
@@ -139,7 +152,8 @@
     "input": {},
     "output": {
       "Water": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "ArcDeTriomphe",
@@ -147,7 +161,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Armory",
@@ -159,7 +174,8 @@
     },
     "output": {
       "Armor": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "ArtilleryFactory",
@@ -173,7 +189,8 @@
     },
     "output": {
       "Artillery": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "AtlasMountains",
@@ -181,7 +198,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "AtomicFacility",
@@ -194,7 +212,8 @@
     },
     "output": {
       "AtomicBomb": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "Atomium",
@@ -202,7 +221,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "AuroraBorealis",
@@ -210,7 +230,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Bakery",
@@ -223,7 +244,8 @@
     },
     "output": {
       "Bread": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Bank",
@@ -235,7 +257,8 @@
     },
     "output": {
       "Banknote": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "BattleshipBuilder",
@@ -251,7 +274,8 @@
     },
     "output": {
       "Battleship": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "BigBen",
@@ -259,7 +283,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "BiplaneFactory",
@@ -274,7 +299,8 @@
     },
     "output": {
       "Biplane": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "BitcoinMiner",
@@ -287,7 +313,8 @@
     },
     "output": {
       "Bitcoin": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "BlackForest",
@@ -295,7 +322,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Blacksmith",
@@ -308,7 +336,8 @@
     },
     "output": {
       "Tool": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "BlueMosque",
@@ -316,7 +345,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "BondMarket",
@@ -328,7 +358,8 @@
     },
     "output": {
       "Bond": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "BranCastle",
@@ -336,7 +367,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "BrandenburgGate",
@@ -344,7 +376,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Brewery",
@@ -357,7 +390,8 @@
     },
     "output": {
       "Alcohol": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Brickworks",
@@ -369,7 +403,8 @@
     },
     "output": {
       "Brick": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "BritishMuseum",
@@ -377,7 +412,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Broadway",
@@ -385,7 +421,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "CableFactory",
@@ -397,7 +434,8 @@
     },
     "output": {
       "Cable": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "CambridgeUniversity",
@@ -405,7 +443,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "CannonWorkshop",
@@ -419,7 +458,8 @@
     },
     "output": {
       "Cannon": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Cappadocia",
@@ -427,7 +467,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Capybara",
@@ -435,7 +476,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "CarFactory",
@@ -452,7 +494,8 @@
     },
     "output": {
       "Car": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "Caravansary",
@@ -460,7 +503,8 @@
     "special": null,
     "tier": null,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "CaravelBuilder",
@@ -474,7 +518,8 @@
     },
     "output": {
       "Caravel": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "CathedralOfBrasilia",
@@ -482,7 +527,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "CentrePompidou",
@@ -490,7 +536,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "CerneAbbasGiant",
@@ -498,7 +545,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "ChariotWorkshop",
@@ -512,7 +560,8 @@
     },
     "output": {
       "Chariot": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "ChateauFrontenac",
@@ -520,7 +569,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "CheeseMaker",
@@ -532,7 +582,8 @@
     },
     "output": {
       "Cheese": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "ChichenItza",
@@ -540,7 +591,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "ChoghaZanbil",
@@ -548,7 +600,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Church",
@@ -561,7 +614,8 @@
     },
     "output": {
       "Faith": 3
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "CircusMaximus",
@@ -569,7 +623,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "CivGPT",
@@ -583,7 +638,8 @@
     },
     "output": {
       "CivGPT": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "CivOasis",
@@ -597,7 +653,8 @@
     },
     "output": {
       "CivOasis": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "CivTok",
@@ -610,7 +667,8 @@
     },
     "output": {
       "CivTok": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "CloneFactory",
@@ -618,7 +676,8 @@
     "special": null,
     "tier": 8,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": true
   },
   {
     "key": "CloneLab",
@@ -626,7 +685,8 @@
     "special": null,
     "tier": 8,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": true
   },
   {
     "key": "CNTower",
@@ -634,7 +694,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "CoalMine",
@@ -644,7 +705,8 @@
     "input": {},
     "output": {
       "Coal": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "CoalPowerPlant",
@@ -656,7 +718,8 @@
     },
     "output": {
       "Power": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "CoinMint",
@@ -668,7 +731,8 @@
     },
     "output": {
       "Coin": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "CologneCathedral",
@@ -676,7 +740,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Colosseum",
@@ -686,7 +751,8 @@
     "input": {
       "Chariot": 10
     },
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "ColossusOfRhodes",
@@ -694,7 +760,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "ComputerFactory",
@@ -708,7 +775,8 @@
     },
     "output": {
       "Computer": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "ComputerLab",
@@ -720,7 +788,8 @@
     },
     "output": {
       "Science": 80625
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "ConcretePlant",
@@ -734,7 +803,8 @@
     },
     "output": {
       "Concrete": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Condo",
@@ -746,7 +816,8 @@
     },
     "output": {
       "Worker": 510
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "CopperMiningCamp",
@@ -756,7 +827,8 @@
     "input": {},
     "output": {
       "Copper": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Cosmodrome",
@@ -770,7 +842,8 @@
     },
     "output": {
       "Spacecraft": 2
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "CothonOfCarthage",
@@ -778,7 +851,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "CottonMill",
@@ -790,7 +864,8 @@
     },
     "output": {
       "Cloth": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "CottonPlantation",
@@ -800,7 +875,8 @@
     "input": {},
     "output": {
       "Cotton": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Courthouse",
@@ -814,7 +890,8 @@
     },
     "output": {
       "Law": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "CristoRedentor",
@@ -822,7 +899,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "DairyFarm",
@@ -834,7 +912,8 @@
     },
     "output": {
       "Milk": 2
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "DinosaurProvincialPark",
@@ -842,7 +921,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "DuneOfPilat",
@@ -850,7 +930,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "DynamiteWorkshop",
@@ -864,7 +945,8 @@
     },
     "output": {
       "Dynamite": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "DysonSphere",
@@ -872,7 +954,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "EastIndiaCompany",
@@ -880,7 +963,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "EasterBunny",
@@ -888,7 +972,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "EiffelTower",
@@ -896,7 +981,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Elbphilharmonie",
@@ -904,7 +990,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Embassy",
@@ -918,7 +1005,8 @@
     },
     "output": {
       "Diplomacy": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "EuphratesRiver",
@@ -926,7 +1014,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "FighterJetPlant",
@@ -939,7 +1028,8 @@
     },
     "output": {
       "FighterJet": 2
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "FlourMill",
@@ -951,7 +1041,8 @@
     },
     "output": {
       "Flour": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "ForbiddenCity",
@@ -959,7 +1050,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "ForexMarket",
@@ -972,7 +1064,8 @@
     },
     "output": {
       "Forex": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "FrigateBuilder",
@@ -987,7 +1080,8 @@
     },
     "output": {
       "Frigate": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "FurnitureWorkshop",
@@ -1000,7 +1094,8 @@
     },
     "output": {
       "Furniture": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "FusionFuelPlant",
@@ -1012,7 +1107,8 @@
     },
     "output": {
       "FusionFuel": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "FusionPowerPlant",
@@ -1024,7 +1120,8 @@
     },
     "output": {
       "Power": 1140
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "GalleonBuilder",
@@ -1039,7 +1136,8 @@
     },
     "output": {
       "Galleon": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "GangesRiver",
@@ -1047,7 +1145,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "GarmentWorkshop",
@@ -1059,7 +1158,8 @@
     },
     "output": {
       "Garment": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "GasPlasticsPlant",
@@ -1071,7 +1171,8 @@
     },
     "output": {
       "Plastics": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "GasPowerPlant",
@@ -1083,7 +1184,8 @@
     },
     "output": {
       "Power": 3
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "GatlingGunFactory",
@@ -1096,7 +1198,8 @@
     },
     "output": {
       "GatlingGun": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "GiantOtter",
@@ -1104,7 +1207,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "GlassFrog",
@@ -1112,7 +1216,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Glassworks",
@@ -1124,7 +1229,8 @@
     },
     "output": {
       "Glass": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "GoldMiningCamp",
@@ -1134,7 +1240,8 @@
     "input": {},
     "output": {
       "Gold": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "GoldenGateBridge",
@@ -1142,7 +1249,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "GoldenPavilion",
@@ -1150,7 +1258,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "GrandBazaar",
@@ -1158,7 +1267,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Shenandoah",
@@ -1166,7 +1276,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "GreatBarrierReef",
@@ -1174,7 +1285,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "GreatDagonPagoda",
@@ -1182,7 +1294,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "GreatMosqueOfSamarra",
@@ -1190,7 +1303,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "GreatOceanRoad",
@@ -1198,7 +1312,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "GreatSphinx",
@@ -1206,7 +1321,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "GreatWall",
@@ -1214,7 +1330,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "GrottaAzzurra",
@@ -1222,7 +1339,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "GunpowderMill",
@@ -1235,7 +1353,8 @@
     },
     "output": {
       "Gunpowder": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Habitat67",
@@ -1243,7 +1362,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "HagiaSophia",
@@ -1251,7 +1371,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "HangingGarden",
@@ -1259,7 +1380,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "HatshepsutTemple",
@@ -1267,7 +1389,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Headquarter",
@@ -1277,7 +1400,8 @@
     "input": {},
     "output": {
       "Worker": 10
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "HedgeFund",
@@ -1289,7 +1413,8 @@
     },
     "output": {
       "HedgeFund": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Hermitage",
@@ -1297,7 +1422,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "HimejiCastle",
@@ -1305,7 +1431,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Hoatzin",
@@ -1313,7 +1440,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Hollywood",
@@ -1321,7 +1449,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "House",
@@ -1334,7 +1463,8 @@
     },
     "output": {
       "Worker": 6
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Hut",
@@ -1344,7 +1474,8 @@
     "input": {},
     "output": {
       "Worker": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "HydroDam",
@@ -1355,7 +1486,8 @@
     "output": {
       "Water": 1,
       "Power": 2
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "InternationalSpaceStation",
@@ -1363,7 +1495,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "InternetServiceProvider",
@@ -1376,7 +1509,8 @@
     },
     "output": {
       "Internet": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "IronForge",
@@ -1388,7 +1522,8 @@
     },
     "output": {
       "Tool": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "IronMiningCamp",
@@ -1398,7 +1533,8 @@
     "input": {},
     "output": {
       "Iron": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "IroncladBuilder",
@@ -1412,7 +1548,8 @@
     },
     "output": {
       "Ironclad": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "ItaipuDam",
@@ -1420,7 +1557,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "ItsukushimaShrine",
@@ -1428,7 +1566,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Kanagawa",
@@ -1436,7 +1575,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "KizhiPogost",
@@ -1444,7 +1584,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "KnightCamp",
@@ -1458,7 +1599,8 @@
     },
     "output": {
       "Knight": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "LakeBaikal",
@@ -1466,7 +1608,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "LakeLouise",
@@ -1474,7 +1617,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Lapland",
@@ -1482,7 +1626,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "LargeHadronCollider",
@@ -1490,7 +1635,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "LensWorkshop",
@@ -1502,7 +1648,8 @@
     },
     "output": {
       "Lens": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Library",
@@ -1514,7 +1661,8 @@
     },
     "output": {
       "Science": 140
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "LighthouseOfAlexandria",
@@ -1522,7 +1670,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "LocomotiveFactory",
@@ -1535,7 +1684,8 @@
     },
     "output": {
       "Train": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "LoggingCamp",
@@ -1545,7 +1695,8 @@
     "input": {},
     "output": {
       "Wood": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Louvre",
@@ -1553,7 +1704,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "LumberMill",
@@ -1565,7 +1717,8 @@
     },
     "output": {
       "Lumber": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "YearOfTheSnake",
@@ -1573,7 +1726,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "LuxorTemple",
@@ -1581,7 +1735,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "MagazinePublisher",
@@ -1595,7 +1750,8 @@
     "output": {
       "Magazine": 1,
       "Science": 1000
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "MaglevFactory",
@@ -1609,7 +1765,8 @@
     },
     "output": {
       "Maglev": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "ManhattanProject",
@@ -1617,7 +1774,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Marbleworks",
@@ -1630,7 +1788,8 @@
     },
     "output": {
       "Marble": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "MarinaBaySands",
@@ -1638,7 +1797,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Market",
@@ -1646,7 +1806,8 @@
     "special": null,
     "tier": null,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "MatrioshkaBrain",
@@ -1654,7 +1815,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "MausoleumAtHalicarnassus",
@@ -1662,7 +1824,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "MogaoCaves",
@@ -1670,7 +1833,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "MontSaintMichel",
@@ -1678,7 +1842,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Mosque",
@@ -1691,7 +1856,8 @@
     },
     "output": {
       "Faith": 4
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "MountArarat",
@@ -1699,7 +1865,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "MountFuji",
@@ -1707,7 +1874,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "MountSinai",
@@ -1715,7 +1883,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "MountTai",
@@ -1723,7 +1892,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "MovieStudio",
@@ -1737,7 +1907,8 @@
     },
     "output": {
       "Movie": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "Museum",
@@ -1750,7 +1921,8 @@
     },
     "output": {
       "Culture": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "MusiciansGuild",
@@ -1762,7 +1934,8 @@
     },
     "output": {
       "Music": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "MutualFund",
@@ -1775,7 +1948,8 @@
     },
     "output": {
       "MutualFund": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "NaturalGasWell",
@@ -1785,7 +1959,8 @@
     "input": {},
     "output": {
       "NaturalGas": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Neuschwanstein",
@@ -1793,7 +1968,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "NiagaraFalls",
@@ -1801,7 +1977,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "NileRiver",
@@ -1809,7 +1986,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "NuclearMissileSilo",
@@ -1822,7 +2000,8 @@
     },
     "output": {
       "NuclearMissile": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "NuclearPowerPlant",
@@ -1834,7 +2013,8 @@
     },
     "output": {
       "Power": 65
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "NuclearSubmarineYard",
@@ -1847,7 +2027,8 @@
     },
     "output": {
       "NuclearSubmarine": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "OilRefinery",
@@ -1859,7 +2040,8 @@
     },
     "output": {
       "Petrol": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "OilWell",
@@ -1869,7 +2051,8 @@
     "input": {},
     "output": {
       "Oil": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "OpticalFiberPlant",
@@ -1883,7 +2066,8 @@
     },
     "output": {
       "OpticalFiber": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "OsakaCastle",
@@ -1891,7 +2075,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "OxfordUniversity",
@@ -1899,7 +2084,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Pagoda",
@@ -1912,7 +2098,8 @@
     },
     "output": {
       "Faith": 3
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "PaintersGuild",
@@ -1924,7 +2111,8 @@
     },
     "output": {
       "Painting": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "PalmJumeirah",
@@ -1932,7 +2120,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Pamukkale",
@@ -1940,7 +2129,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Pantheon",
@@ -1948,7 +2138,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "PaperMaker",
@@ -1961,7 +2152,8 @@
     },
     "output": {
       "Paper": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Parliament",
@@ -1975,7 +2167,8 @@
     },
     "output": {
       "Politics": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Parthenon",
@@ -1983,7 +2176,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Peacekeeper",
@@ -1997,7 +2191,8 @@
     },
     "output": {
       "Peace": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "Penthouse",
@@ -2009,7 +2204,8 @@
     },
     "output": {
       "Worker": 4358
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Persepolis",
@@ -2017,7 +2213,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Petra",
@@ -2025,7 +2222,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Pizzeria",
@@ -2040,7 +2238,8 @@
     },
     "output": {
       "Pizza": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "PlasticsFactory",
@@ -2052,7 +2251,8 @@
     },
     "output": {
       "Plastics": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "PoetrySchool",
@@ -2065,7 +2265,8 @@
     },
     "output": {
       "Poem": 2
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "PorcelainTower",
@@ -2073,7 +2274,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "PortOfSingapore",
@@ -2081,7 +2283,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Poseidon",
@@ -2089,7 +2292,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "PoultryFarm",
@@ -2101,7 +2305,8 @@
     },
     "output": {
       "Meat": 2
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "PrintingHouse",
@@ -2114,7 +2319,8 @@
     },
     "output": {
       "Book": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "ProphetsMosque",
@@ -2122,7 +2328,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "PublishingHouse",
@@ -2136,7 +2343,8 @@
     "output": {
       "Newspaper": 1,
       "Science": 1000
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "PygmyMarmoset",
@@ -2144,7 +2352,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "PyramidOfGiza",
@@ -2152,7 +2361,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "QutbMinar",
@@ -2160,7 +2370,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "RadioStation",
@@ -2174,7 +2385,8 @@
     },
     "output": {
       "Radio": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "RebarPlant",
@@ -2186,7 +2398,8 @@
     },
     "output": {
       "Rebar": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "RedFort",
@@ -2194,7 +2407,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "ReinforcedConcretePlant",
@@ -2207,7 +2421,8 @@
     },
     "output": {
       "ReinforcedConcrete": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "ResearchFund",
@@ -2220,7 +2435,8 @@
     },
     "output": {
       "Science": 25940
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "ResearchLab",
@@ -2233,7 +2449,8 @@
     },
     "output": {
       "Science": 7500
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "RhineGorge",
@@ -2241,7 +2458,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "RifleFactory",
@@ -2254,7 +2472,8 @@
     },
     "output": {
       "Rifle": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Rijksmuseum",
@@ -2262,7 +2481,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "RobocarFactory",
@@ -2276,7 +2496,8 @@
     },
     "output": {
       "Robocar": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "RockefellerCenterChristmasTree",
@@ -2284,7 +2505,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "RocketFactory",
@@ -2300,7 +2522,8 @@
     },
     "output": {
       "Rocket": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "RoyalFlycatcher",
@@ -2308,7 +2531,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "SagradaFamilia",
@@ -2316,7 +2540,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "SaintBasilsCathedral",
@@ -2324,7 +2549,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "SanchiStupa",
@@ -2332,7 +2558,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Sandpit",
@@ -2342,7 +2569,8 @@
     "input": {},
     "output": {
       "Sand": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "SantaClausVillage",
@@ -2350,7 +2578,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "SatelliteFactory",
@@ -2362,7 +2591,8 @@
     },
     "output": {
       "Satellite": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "School",
@@ -2375,7 +2605,8 @@
     },
     "output": {
       "Science": 800
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "SemiconductorFab",
@@ -2388,7 +2619,8 @@
     },
     "output": {
       "Semiconductor": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "Shrine",
@@ -2401,7 +2633,8 @@
     },
     "output": {
       "Faith": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "SiegeWorkshop",
@@ -2415,7 +2648,8 @@
     },
     "output": {
       "SiegeRam": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "SiliconSmelter",
@@ -2427,7 +2661,8 @@
     },
     "output": {
       "Silicon": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "SoftwareCompany",
@@ -2440,7 +2675,8 @@
     },
     "output": {
       "Software": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "SpaceCenter",
@@ -2454,7 +2690,8 @@
     },
     "output": {
       "PlanetaryRover": 2
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "SpaceNeedle",
@@ -2462,7 +2699,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "SpacecraftFactory",
@@ -2476,7 +2714,8 @@
     },
     "output": {
       "Spacecraft": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "Sputnik1",
@@ -2484,7 +2723,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "StPetersBasilica",
@@ -2492,7 +2732,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Stable",
@@ -2504,7 +2745,8 @@
     },
     "output": {
       "Horse": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Stadium",
@@ -2518,7 +2760,8 @@
     },
     "output": {
       "Sports": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Statistics",
@@ -2526,7 +2769,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "StatueOfLiberty",
@@ -2534,7 +2778,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "StatueOfZeus",
@@ -2542,7 +2787,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Steamworks",
@@ -2556,7 +2802,8 @@
     },
     "output": {
       "Engine": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "SteelMill",
@@ -2569,7 +2816,8 @@
     },
     "output": {
       "Steel": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "StockExchange",
@@ -2581,7 +2829,8 @@
     },
     "output": {
       "Stock": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "StoneQuarry",
@@ -2591,7 +2840,8 @@
     "input": {},
     "output": {
       "Stone": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "Stonehenge",
@@ -2599,7 +2849,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "SubmarineYard",
@@ -2611,7 +2862,8 @@
     },
     "output": {
       "Submarine": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "SummerPalace",
@@ -2619,7 +2871,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Sundarbans",
@@ -2627,7 +2880,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "SupercomputerLab",
@@ -2640,7 +2894,8 @@
     },
     "output": {
       "Supercomputer": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "SwissBank",
@@ -2648,7 +2903,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "SwordForge",
@@ -2660,7 +2916,8 @@
     },
     "output": {
       "Sword": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "SydneyHarbourBridge",
@@ -2668,7 +2925,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "SydneyOperaHouse",
@@ -2676,7 +2934,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "TajMahal",
@@ -2684,7 +2943,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "TankFactory",
@@ -2699,7 +2959,8 @@
     },
     "output": {
       "Tank": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "TempleOfArtemis",
@@ -2707,7 +2968,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "TempleOfHeaven",
@@ -2715,7 +2977,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "TerracottaArmy",
@@ -2723,7 +2986,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "TheMet",
@@ -2731,7 +2995,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "TopkapiPalace",
@@ -2739,7 +3004,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "TowerBridge",
@@ -2747,7 +3013,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "TowerOfBabel",
@@ -2755,7 +3022,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "TVStation",
@@ -2768,7 +3036,8 @@
     },
     "output": {
       "TV": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "Uluru",
@@ -2776,7 +3045,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "UnitedNations",
@@ -2784,7 +3054,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "University",
@@ -2798,7 +3069,8 @@
     "output": {
       "Philosophy": 1,
       "Science": 250
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "UraniumEnrichmentPlant",
@@ -2810,7 +3082,8 @@
     },
     "output": {
       "NuclearFuelRod": 1
-    }
+    },
+    "requiresPower": true
   },
   {
     "key": "UraniumMine",
@@ -2820,7 +3093,8 @@
     "input": {},
     "output": {
       "Uranium": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "WallOfBabylon",
@@ -2828,7 +3102,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "WallStreet",
@@ -2836,7 +3111,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Warehouse",
@@ -2844,7 +3120,8 @@
     "special": null,
     "tier": null,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "WheatFarm",
@@ -2854,7 +3131,8 @@
     "input": {},
     "output": {
       "Wheat": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "WorldTradeOrganization",
@@ -2862,7 +3140,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "WritersGuild",
@@ -2874,7 +3153,8 @@
     },
     "output": {
       "Poem": 1
-    }
+    },
+    "requiresPower": false
   },
   {
     "key": "YangtzeRiver",
@@ -2882,7 +3162,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "YellowCraneTower",
@@ -2890,7 +3171,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "ZagrosMountains",
@@ -2898,7 +3180,8 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "ZigguratOfUr",
@@ -2906,7 +3189,8 @@
     "special": "WorldWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   },
   {
     "key": "Zugspitze",
@@ -2914,6 +3198,7 @@
     "special": "NaturalWonder",
     "tier": 0,
     "input": {},
-    "output": {}
+    "output": {},
+    "requiresPower": false
   }
 ]

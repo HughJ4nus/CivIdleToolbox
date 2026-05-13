@@ -8,4 +8,8 @@ export interface Building {
    tier: number | null;
    input: Record<string, number>;
    output: Record<string, number>;
+   /** Building requires Power to be electrified (`power: true` upstream).
+    *  Earns a +5 "PoweredBuilding" levelBoost from Update.ts:702 once
+    *  the Electricity feature is unlocked. */
+   requiresPower?: boolean;
 }

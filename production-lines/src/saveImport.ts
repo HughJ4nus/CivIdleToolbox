@@ -59,15 +59,22 @@ const wonderLevelOverride = (b: BuildingLite): number | null => {
 
 export interface ParsedSave {
    greatPeople: Record<string, number>;
+   /** This-run great-person picks (count per GP), not levels. */
+   thisRunGreatPeople: Record<string, number>;
    wonders: Record<string, number>;
    ageWisdom: Record<string, number>;
    /** Picked path per directional wonder (ChoghaZanbil/LuxorTemple/BigBen). */
    wonderDirections: Record<string, string>;
+   /** Map of researched tech key → true. Drives the "Researched techs"
+    *  sidebar section. */
+   unlockedTechs: Record<string, boolean>;
    /** Stats so the user can sanity-check the import. */
    stats: {
       gpCount: number;
       wonderCount: number;
       ageWisdomCount: number;
+      techCount: number;
+      thisRunGpCount: number;
    };
 }
 
@@ -127,7 +134,12 @@ export const parseSaveFile = async (file: File): Promise<ParsedSave> => {
    const bytes = new Uint8Array(await file.arrayBuffer());
    const json = await decodeBytes(bytes);
    const save = JSON.parse(json, reviver) as {
-      current?: { tiles?: Map<unknown, TileLite> };
+      current?: {
+         tiles?: Map<unknown, TileLite>;
+         unlockedTech?: Set<string> | Record<string, unknown>;
+         /** Per-GP this-run pick count. */
+         greatPeople?: Record<string, number>;
+      };
       options?: {
          greatPeople?: Record<string, { level?: number } | number>;
          ageWisdom?: Record<string, number>;
@@ -145,6 +157,16 @@ export const parseSaveFile = async (file: File): Promise<ParsedSave> => {
             ? entry
             : ((entry as { level?: number } | null)?.level ?? 0);
       if (lvl > 0) greatPeople[key] = lvl;
+   }
+
+   // ── This-run great-people picks: gs.greatPeople[key] = pickCount.
+   //    Per upstream's RebirthLogic.getGreatPersonThisRunLevel, the
+   //    level contribution is the harmonic series of pickCount.
+   const thisRunGreatPeople: Record<string, number> = {};
+   for (const [key, count] of Object.entries(save.current?.greatPeople ?? {})) {
+      if (typeof count === "number" && count > 0) {
+         thisRunGreatPeople[key] = count;
+      }
    }
 
    // ── Age of Wisdom: options.ageWisdom is already plain numbers ────
@@ -185,15 +207,35 @@ export const parseSaveFile = async (file: File): Promise<ParsedSave> => {
       }
    }
 
+   // Researched techs — gs.unlockedTech is a Set<Tech> in upstream
+   // (PartialSet); after our reviver it's a real Set. Older saves /
+   // browser exports may serialise it as a plain object {Tech: true};
+   // handle both shapes.
+   const unlockedTechs: Record<string, boolean> = {};
+   const ut = save.current?.unlockedTech;
+   if (ut instanceof Set) {
+      for (const k of ut) {
+         if (typeof k === "string") unlockedTechs[k] = true;
+      }
+   } else if (ut && typeof ut === "object") {
+      for (const [k, v] of Object.entries(ut)) {
+         if (v) unlockedTechs[k] = true;
+      }
+   }
+
    return {
       greatPeople,
+      thisRunGreatPeople,
       wonders,
       ageWisdom,
       wonderDirections,
+      unlockedTechs,
       stats: {
          gpCount: Object.keys(greatPeople).length,
          wonderCount: Object.keys(wonders).length,
          ageWisdomCount: Object.keys(ageWisdom).length,
+         techCount: Object.keys(unlockedTechs).length,
+         thisRunGpCount: Object.keys(thisRunGreatPeople).length,
       },
    };
 };

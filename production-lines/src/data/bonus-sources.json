@@ -12,7 +12,9 @@
       "buildings": [
         "House",
         "Hut"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Hatshepsut",
@@ -26,7 +28,9 @@
       "buildings": [
         "Aqueduct",
         "Brickworks"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "SargonOfAkkad",
@@ -40,7 +44,9 @@
       "buildings": [
         "LoggingCamp",
         "LumberMill"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Agamemnon",
@@ -54,7 +60,9 @@
       "buildings": [
         "StoneQuarry",
         "Marbleworks"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Dido",
@@ -68,7 +76,9 @@
       "buildings": [
         "DairyFarm",
         "PoultryFarm"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "DukeOfZhou",
@@ -82,7 +92,9 @@
       "buildings": [
         "CopperMiningCamp",
         "Blacksmith"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Samsuiluna",
@@ -95,7 +107,9 @@
       ],
       "buildings": [
         "Marbleworks"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "Babylon"
     },
     {
       "key": "Zoroaster",
@@ -109,7 +123,9 @@
       "buildings": [
         "CottonPlantation",
         "CottonMill"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Aeschylus",
@@ -123,7 +139,9 @@
       "buildings": [
         "FlourMill",
         "Bakery"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Archimedes",
@@ -137,7 +155,9 @@
       "buildings": [
         "Caravansary",
         "Warehouse"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Aristotle",
@@ -150,7 +170,9 @@
       ],
       "buildings": [
         "Library"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "Athens"
     },
     {
       "key": "Ashurbanipal",
@@ -164,7 +186,9 @@
       "buildings": [
         "Sandpit",
         "Glassworks"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Cleopatra",
@@ -177,7 +201,9 @@
       ],
       "buildings": [
         "Shrine"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "Memphis"
     },
     {
       "key": "CyrusII",
@@ -191,7 +217,9 @@
       "buildings": [
         "IronMiningCamp",
         "IronForge"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "EmperorWuOfHan",
@@ -204,7 +232,9 @@
       ],
       "buildings": [
         "Caravansary"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "Beijing"
     },
     {
       "key": "Hannibal",
@@ -218,7 +248,9 @@
       "buildings": [
         "SiegeWorkshop",
         "SwordForge"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": "Carthaginian"
     },
     {
       "key": "Herodotus",
@@ -232,7 +264,9 @@
       "buildings": [
         "PaperMaker",
         "MusiciansGuild"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Homer",
@@ -246,7 +280,9 @@
       "buildings": [
         "Stable",
         "PoetrySchool"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "JuliusCaesar",
@@ -259,7 +295,9 @@
       ],
       "buildings": [
         "GoldMiningCamp"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "Rome"
     },
     {
       "key": "NebuchadnezzarII",
@@ -273,7 +311,9 @@
       "buildings": [
         "WheatFarm",
         "Brewery"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "QinShiHuang",
@@ -287,7 +327,9 @@
       "buildings": [
         "ChariotWorkshop",
         "Armory"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Zenobia",
@@ -307,7 +349,9 @@
       "buildings": [
         "SwordForge",
         "KnightCamp"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "HarunAlRashid",
@@ -321,7 +365,9 @@
       "buildings": [
         "CheeseMaker",
         "Mosque"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Justinian",
@@ -335,7 +381,9 @@
       "buildings": [
         "FurnitureWorkshop",
         "GarmentWorkshop"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Xuanzang",
@@ -349,7 +397,9 @@
       "buildings": [
         "Library",
         "Pagoda"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "CosimoDeMedici",
@@ -363,7 +413,9 @@
       "buildings": [
         "GoldMiningCamp",
         "CoinMint"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "GeorgiusAgricola",
@@ -377,7 +429,9 @@
       "buildings": [
         "SiegeWorkshop",
         "CoalMine"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "JohannesKepler",
@@ -391,7 +445,9 @@
       "buildings": [
         "Shrine",
         "LensWorkshop"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "LeonardoDaVinci",
@@ -405,7 +461,9 @@
       "buildings": [
         "PaintersGuild",
         "University"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "MartinLuther",
@@ -419,7 +477,9 @@
       "buildings": [
         "Church",
         "School"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "OdaNobunaga",
@@ -432,7 +492,9 @@
       ],
       "buildings": [
         "FrigateBuilder"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "Kyoto"
     },
     {
       "key": "ReneDescartes",
@@ -445,7 +507,9 @@
       ],
       "buildings": [
         "School"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": null
     },
     {
       "key": "SuleimanI",
@@ -458,7 +522,9 @@
       ],
       "buildings": [
         "Bank"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "Ottoman"
     },
     {
       "key": "ThomasGresham",
@@ -471,7 +537,9 @@
       ],
       "buildings": [
         "BondMarket"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "English"
     },
     {
       "key": "Voltaire",
@@ -484,7 +552,9 @@
       ],
       "buildings": [
         "Museum"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "French"
     },
     {
       "key": "WilliamShakespeare",
@@ -498,7 +568,9 @@
       "buildings": [
         "WritersGuild",
         "ActorsGuild"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "ZhengHe",
@@ -512,7 +584,9 @@
       "buildings": [
         "CaravelBuilder",
         "GalleonBuilder"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "AdaLovelace",
@@ -526,7 +600,9 @@
       "buildings": [
         "PrintingHouse",
         "Museum"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "AkbarTheGreat",
@@ -546,7 +622,9 @@
       "buildings": [
         "Bank",
         "SteelMill"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "GeorgeWashington",
@@ -559,7 +637,9 @@
       ],
       "buildings": [
         "Parliament"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "NewYork"
     },
     {
       "key": "IsambardKingdomBrunel",
@@ -573,7 +653,9 @@
       "buildings": [
         "FrigateBuilder",
         "ConcretePlant"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "JPMorgan",
@@ -587,7 +669,9 @@
       "buildings": [
         "BondMarket",
         "RifleFactory"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "JamesWatt",
@@ -601,7 +685,9 @@
       "buildings": [
         "Steamworks",
         "DynamiteWorkshop"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "KarlMarx",
@@ -615,7 +701,9 @@
       "buildings": [
         "Courthouse",
         "Parliament"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Beethoven",
@@ -635,7 +723,9 @@
       "buildings": [
         "CannonWorkshop",
         "GunpowderMill"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Tchaikovsky",
@@ -654,7 +744,9 @@
       ],
       "buildings": [
         "ResearchLab"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": null
     },
     {
       "key": "AmeliaEarhart",
@@ -668,7 +760,9 @@
       "buildings": [
         "BiplaneFactory",
         "GasPowerPlant"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "CharlesMartinHall",
@@ -682,7 +776,9 @@
       "buildings": [
         "NaturalGasWell",
         "AluminumSmelter"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "CharlesParsons",
@@ -696,7 +792,9 @@
       "buildings": [
         "CoalPowerPlant",
         "IroncladBuilder"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "HeitorVillaLobos",
@@ -709,7 +807,9 @@
       ],
       "buildings": [
         "RadioStation"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "Brazilian"
     },
     {
       "key": "HenryFord",
@@ -724,7 +824,9 @@
         "CarFactory",
         "PlasticsFactory",
         "GasPlasticsPlant"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "JohnBradfield",
@@ -744,7 +846,9 @@
       "buildings": [
         "OilWell",
         "StockExchange"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "JosephMonier",
@@ -758,7 +862,9 @@
       "buildings": [
         "RebarPlant",
         "ReinforcedConcretePlant"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "JosephPulitzer",
@@ -772,7 +878,9 @@
       "buildings": [
         "MagazinePublisher",
         "Pizzeria"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "MarieCurie",
@@ -786,7 +894,9 @@
       "buildings": [
         "CableFactory",
         "UraniumMine"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "OttoVonBismarck",
@@ -799,7 +909,9 @@
       ],
       "buildings": [
         "BattleshipBuilder"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "German"
     },
     {
       "key": "PierreDeCoubertin",
@@ -813,7 +925,9 @@
       "buildings": [
         "PublishingHouse",
         "Stadium"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "RabindranathTagore",
@@ -826,7 +940,9 @@
       ],
       "buildings": [
         "Embassy"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "Indian"
     },
     {
       "key": "RichardJordanGatling",
@@ -840,7 +956,9 @@
       "buildings": [
         "GatlingGunFactory",
         "TankFactory"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "RudolfDiesel",
@@ -854,7 +972,9 @@
       "buildings": [
         "OilRefinery",
         "LocomotiveFactory"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "AndreyKolmogorov",
@@ -868,7 +988,9 @@
       "buildings": [
         "SatelliteFactory",
         "Cosmodrome"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": "Russian"
     },
     {
       "key": "ChesterWNimitz",
@@ -882,7 +1004,9 @@
       "buildings": [
         "BattleshipBuilder",
         "HydroDam"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "EnricoFermi",
@@ -896,7 +1020,9 @@
       "buildings": [
         "NuclearPowerPlant",
         "SubmarineYard"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "FrankWhittle",
@@ -910,7 +1036,9 @@
       "buildings": [
         "AirplaneFactory",
         "FighterJetPlant"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "FriedrichHayek",
@@ -922,7 +1050,9 @@
       ],
       "buildings": [
         "SwissBank"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "GeorgeCMarshall",
@@ -936,7 +1066,9 @@
       "buildings": [
         "Embassy",
         "ForexMarket"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "JRobertOppenheimer",
@@ -950,7 +1082,9 @@
       "buildings": [
         "UraniumEnrichmentPlant",
         "AtomicFacility"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "Pele",
@@ -970,7 +1104,9 @@
       "buildings": [
         "TVStation",
         "NuclearMissileSilo"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "RobertNoyce",
@@ -984,7 +1120,9 @@
       "buildings": [
         "SemiconductorFab",
         "SiliconSmelter"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "SergeiKorolev",
@@ -998,7 +1136,9 @@
       "buildings": [
         "SatelliteFactory",
         "SpacecraftFactory"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "TerryFox",
@@ -1011,7 +1151,9 @@
       ],
       "buildings": [
         "TVStation"
-      ]
+      ],
+      "valueMultiplier": 2,
+      "city": "Canadian"
     },
     {
       "key": "WaltDisney",
@@ -1025,7 +1167,9 @@
       "buildings": [
         "MovieStudio",
         "RadioStation"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "WernherVonBraun",
@@ -1039,7 +1183,9 @@
       "buildings": [
         "RocketFactory",
         "ArtilleryFactory"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "BrianSchmidt",
@@ -1053,7 +1199,9 @@
       "buildings": [
         "FusionFuelPlant",
         "FusionPowerPlant"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": "Australian"
     },
     {
       "key": "CarlSagan",
@@ -1067,7 +1215,9 @@
       "buildings": [
         "SpaceCenter",
         "Peacekeeper"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "DanAlderson",
@@ -1087,7 +1237,9 @@
       "buildings": [
         "SoftwareCompany",
         "MaglevFactory"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "EmmanuelleCharpentier",
@@ -1119,7 +1271,9 @@
       "buildings": [
         "ComputerFactory",
         "SupercomputerLab"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "HarryMarkowitz",
@@ -1133,7 +1287,9 @@
       "buildings": [
         "MutualFund",
         "HedgeFund"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "HymanGRickover",
@@ -1147,7 +1303,9 @@
       "buildings": [
         "AircraftCarrierYard",
         "NuclearSubmarineYard"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "JohnCarmack",
@@ -1161,7 +1319,9 @@
       "buildings": [
         "ComputerLab",
         "CivOasis"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "JohnMcCarthy",
@@ -1175,7 +1335,9 @@
       "buildings": [
         "CivGPT",
         "RobocarFactory"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "LeeKuanYew",
@@ -1195,7 +1357,9 @@
       "buildings": [
         "CivTok",
         "BitcoinMiner"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "TimBernersLee",
@@ -1209,7 +1373,9 @@
       "buildings": [
         "InternetServiceProvider",
         "OpticalFiberPlant"
-      ]
+      ],
+      "valueMultiplier": 1,
+      "city": null
     },
     {
       "key": "VeraRubin",
@@ -2127,5 +2293,145 @@
         "storage": 1
       }
     }
-  }
+  },
+  "techs": [
+    {
+      "key": "Housing",
+      "name": "Housing",
+      "age": "BronzeAge",
+      "column": 2,
+      "buildingMultiplier": {
+        "Hut": {
+          "output": 1
+        }
+      }
+    },
+    {
+      "key": "RoadAndWheel",
+      "name": "Road & Wheel",
+      "age": "IronAge",
+      "column": 4,
+      "buildingMultiplier": {
+        "House": {
+          "worker": 1
+        }
+      }
+    },
+    {
+      "key": "Geography",
+      "name": "Geography",
+      "age": "MiddleAge",
+      "column": 9,
+      "buildingMultiplier": {
+        "Library": {
+          "output": 1
+        }
+      }
+    },
+    {
+      "key": "Optics",
+      "name": "Optics",
+      "age": "RenaissanceAge",
+      "column": 11,
+      "buildingMultiplier": {
+        "Library": {
+          "output": 1
+        },
+        "School": {
+          "output": 1
+        }
+      }
+    },
+    {
+      "key": "Chemistry",
+      "name": "Chemistry",
+      "age": "RenaissanceAge",
+      "column": 11,
+      "buildingMultiplier": {
+        "StoneQuarry": {
+          "storage": 1,
+          "output": 1
+        },
+        "LoggingCamp": {
+          "storage": 1,
+          "output": 1
+        },
+        "IronMiningCamp": {
+          "storage": 1,
+          "output": 1
+        },
+        "CopperMiningCamp": {
+          "storage": 1,
+          "output": 1
+        },
+        "Sandpit": {
+          "storage": 1,
+          "output": 1
+        }
+      }
+    },
+    {
+      "key": "Capitalism",
+      "name": "Capitalism",
+      "age": "IndustrialAge",
+      "column": 14,
+      "buildingMultiplier": {
+        "Library": {
+          "output": 1
+        },
+        "School": {
+          "output": 1
+        },
+        "University": {
+          "output": 1
+        }
+      }
+    },
+    {
+      "key": "AtomicTheory",
+      "name": "Atomic Theory",
+      "age": "WorldWarAge",
+      "column": 18,
+      "buildingMultiplier": {
+        "Library": {
+          "output": 1
+        },
+        "School": {
+          "output": 1
+        },
+        "University": {
+          "output": 1
+        },
+        "PublishingHouse": {
+          "output": 1
+        },
+        "ResearchLab": {
+          "output": 1
+        }
+      }
+    },
+    {
+      "key": "Skyscraper",
+      "name": "Skyscraper",
+      "age": "ColdWarAge",
+      "column": 21,
+      "buildingMultiplier": {
+        "Library": {
+          "output": 1
+        },
+        "School": {
+          "output": 1
+        },
+        "University": {
+          "output": 1
+        },
+        "PublishingHouse": {
+          "output": 1
+        },
+        "ResearchLab": {
+          "output": 1
+        }
+      }
+    }
+  ]
 }

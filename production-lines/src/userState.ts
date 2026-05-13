@@ -13,9 +13,15 @@ export interface TradeTileBonus {
 }
 
 export interface UserState {
-   /** Great-person key → base level (0 means "I don't have this one").
-    *  Effective level for chain math = base + ageWisdom[gp.age]. */
+   /** Great-person key → permanent base level (0 means "I don't have this
+    *  one permanently"). Effective level = base + harmonic(thisRunPicks)
+    *  + ageWisdom[gp.age] + any wonder-driven GP-level boosts. */
    greatPeople: Record<string, number>;
+   /** This-run picks per GP — the COUNT of times the player chose this
+    *  great person during the current rebirth. The level contribution
+    *  is the harmonic sum: 1 + 1/2 + 1/3 + … + 1/n (per upstream's
+    *  RebirthLogic.getGreatPersonThisRunLevel). */
+   thisRunGreatPeople: Record<string, number>;
    /** Wonder key → level. */
    wonders: Record<string, number>;
    /** Tech-age key → Age of Wisdom value. Adds directly to every GP of
@@ -48,10 +54,15 @@ export interface UserState {
     *  paths — ChoghaZanbil (Tradition), LuxorTemple (Religion), BigBen
     *  (Ideology). Empty / missing = no path picked yet. */
    wonderDirections: Record<string, string>;
+   /** Researched tech keys → true. Only the techs with a static
+    *  buildingMultiplier need to be checked here; the rest just
+    *  unlock buildings and don't affect production. */
+   unlockedTechs: Record<string, boolean>;
 }
 
 const empty = (): UserState => ({
    greatPeople: {},
+   thisRunGreatPeople: {},
    wonders: {},
    ageWisdom: {},
    tradeTiles: [],
@@ -60,6 +71,7 @@ const empty = (): UserState => ({
    unitedNationsBuildings: [],
    finalHappiness: 0,
    wonderDirections: {},
+   unlockedTechs: {},
 });
 
 export const loadUserState = (): UserState => {
@@ -72,6 +84,10 @@ export const loadUserState = (): UserState => {
          greatPeople:
             parsed.greatPeople && typeof parsed.greatPeople === "object"
                ? parsed.greatPeople
+               : {},
+         thisRunGreatPeople:
+            parsed.thisRunGreatPeople && typeof parsed.thisRunGreatPeople === "object"
+               ? parsed.thisRunGreatPeople
                : {},
          wonders:
             parsed.wonders && typeof parsed.wonders === "object" ? parsed.wonders : {},
@@ -115,6 +131,10 @@ export const loadUserState = (): UserState => {
          wonderDirections:
             parsed.wonderDirections && typeof parsed.wonderDirections === "object"
                ? parsed.wonderDirections
+               : {},
+         unlockedTechs:
+            parsed.unlockedTechs && typeof parsed.unlockedTechs === "object"
+               ? parsed.unlockedTechs
                : {},
       };
    } catch {

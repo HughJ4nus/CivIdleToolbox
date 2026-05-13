@@ -99,6 +99,19 @@ const greatPeople = [];
             const bm = boostBlock.match(/buildings:\s*\[([^\]]*)\]/);
             if (bm) buildings = [...bm[1].matchAll(/"(\w+)"/g)].map((x) => x[1]);
          }
+         // Some GPs have a value formula like `level * 2`. Most are
+         // `level` or `1 * level` (multiplier 1). We extract the
+         // constant so the resolver matches upstream's per-tick math
+         // (game calls value(level) per source tick — see ClientUpdate).
+         const valMatch = body.match(/value:\s*\(level\)\s*=>\s*(?:level\s*\*\s*(\d+(?:\.\d+)?)|(\d+(?:\.\d+)?)\s*\*\s*level|level)/);
+         const valueMultiplier = valMatch
+            ? Number(valMatch[1] ?? valMatch[2] ?? 1)
+            : 1;
+         // GPs with a `city: "X"` field are NOT eligible for Age of
+         // Wisdom (per isEligibleForWisdom upstream — wisdom only
+         // applies to Normal-type, non-civ-restricted GPs).
+         const cityMatch = body.match(/city:\s*"([A-Za-z]+)"/);
+         const city = cityMatch ? cityMatch[1] : null;
          greatPeople.push({
             key,
             name,
@@ -106,6 +119,8 @@ const greatPeople = [];
             kind: "boost",
             multipliers,
             buildings,
+            valueMultiplier,
+            city,
          });
          continue;
       }
@@ -389,8 +404,83 @@ const directionalWonders = {
    BigBen: { kindLabel: "Ideology", paths: ideologies },
 };
 
+// ── Techs with buildingMultiplier ──────────────────────────────────────
+//
+// Most techs only unlock buildings; a handful (8) also grant per-building
+// multipliers via a static `buildingMultiplier` field on the tech def.
+// Those plus the column→age mapping are extracted here so the sidebar
+// can show a checkable list grouped by tech age.
+
+const TECH_AGES_FILE = resolve(
+   CIVIDLE,
+   "shared/definitions/TechDefinitions.ts",
+);
+const techSrc = readFileSync(TECH_AGES_FILE, "utf8");
+
+// Extract age column ranges so we can map tech.column → age.
+const ageRanges = []; // [{ key, from, to, name }]
+{
+   const re = /^\s+([A-Za-z]+):\s+ITechAgeDefinition\s*=\s*\{([^}]*)\}/gm;
+   let m;
+   while ((m = re.exec(techSrc)) !== null) {
+      const key = m[1];
+      const body = m[2];
+      const from = Number(body.match(/from:\s*(\d+)/)?.[1] ?? -1);
+      const to = Number(body.match(/to:\s*(\d+)/)?.[1] ?? -1);
+      if (from >= 0 && to >= 0) ageRanges.push({ key, from, to });
+   }
+}
+const ageOfColumn = (col) => ageRanges.find((a) => col >= a.from && col <= a.to)?.key ?? null;
+
+const techsWithBonus = [];
+{
+   const re = /^\s+([A-Za-z]+):\s+ITechDefinition\s*=/gm;
+   let m;
+   while ((m = re.exec(techSrc)) !== null) {
+      const key = m[1];
+      const blockStart = techSrc.indexOf("{", m.index);
+      const blockEnd = matchBraces(techSrc, blockStart);
+      const body = techSrc.slice(blockStart, blockEnd);
+
+      const fieldIdx = body.indexOf("buildingMultiplier:");
+      if (fieldIdx === -1) continue;
+      const objStart = body.indexOf("{", fieldIdx);
+      const objEnd = matchBraces(body, objStart);
+      const objBody = body.slice(objStart + 1, objEnd - 1);
+
+      const buildings = {};
+      const rowRe = /([A-Za-z0-9_]+):\s*\{\s*([^}]+)\s*\}/g;
+      let rm;
+      while ((rm = rowRe.exec(objBody)) !== null) {
+         const buildingKey = rm[1];
+         const fields = rm[2];
+         const eff = {};
+         const fieldRe = /(output|worker|storage):\s*(-?\d+(?:\.\d+)?)/g;
+         let fm;
+         while ((fm = fieldRe.exec(fields)) !== null) {
+            eff[fm[1]] = Number(fm[2]);
+         }
+         if (Object.keys(eff).length > 0) buildings[buildingKey] = eff;
+      }
+
+      const colMatch = body.match(/column:\s*(\d+)/);
+      const col = colMatch ? Number(colMatch[1]) : null;
+      const nameMatch = body.match(/name:\s*\(\)\s*=>\s*\$t\(L\.([A-Za-z0-9_]+)\)/);
+      const displayName = nameMatch
+         ? (enKeys.get(nameMatch[1]) ?? key)
+         : key;
+      techsWithBonus.push({
+         key,
+         name: displayName,
+         age: col !== null ? ageOfColumn(col) : null,
+         column: col,
+         buildingMultiplier: buildings,
+      });
+   }
+}
+
 // ── Write ───────────────────────────────────────────────────────────────
-const out = { greatPeople, wonders, directionalWonders, upgrades };
+const out = { greatPeople, wonders, directionalWonders, upgrades, techs: techsWithBonus };
 const dest = resolve(ROOT, "src/data/bonus-sources.json");
 mkdirSync(dirname(dest), { recursive: true });
 writeFileSync(dest, `${JSON.stringify(out, null, 2)}\n`);

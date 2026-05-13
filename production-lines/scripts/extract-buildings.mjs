@@ -72,6 +72,10 @@ for (const m of src.matchAll(re)) {
    const outputBlock = getBlockField(body, "output");
    const specialMatch = body.match(/special:\s*BuildingSpecial\.([A-Za-z]+)/);
    const nameMatch = body.match(/name:\s*\(\)\s*=>\s*\$t\(L\.([A-Za-z0-9_]+)\)/);
+   // `power: true` on a building def means the building requires power
+   // (electrification). It earns a +5 "PoweredBuilding" levelBoost in
+   // upstream's Update.ts:702 once the Electricity feature is unlocked.
+   const requiresPower = /\bpower:\s*true\b/.test(body);
 
    out.push({
       key,
@@ -80,6 +84,7 @@ for (const m of src.matchAll(re)) {
       output: outputBlock ? parseFlatTab(outputBlock) : {},
       special: specialMatch ? specialMatch[1] : null,
       tier: null,
+      requiresPower,
    });
 }
 
@@ -119,13 +124,14 @@ for (const b of out) {
 
 // Keep input + output so the UI can render a subtitle (what the building
 // produces / consumes).
-const slim = out.map(({ key, name, special, tier, input, output }) => ({
+const slim = out.map(({ key, name, special, tier, input, output, requiresPower }) => ({
    key,
    name,
    special,
    tier,
    input,
    output,
+   requiresPower,
 }));
 slim.sort((a, b) => a.name.localeCompare(b.name));
 
