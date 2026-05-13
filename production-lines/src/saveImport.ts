@@ -18,6 +18,9 @@ import bonusData from "./data/bonus-sources.json";
 interface BuildingLite {
    type: string;
    level?: number;
+   /** Target level for an in-progress upgrade. The game stores this
+    *  even before the upgrade completes. */
+   desiredLevel?: number;
    status?: string;
    /** Centre Pompidou's special field (Set<City> in upstream) — its
     *  in-game potency is `cities.size + 1`, not the building.level. */
@@ -195,9 +198,16 @@ export const parseSaveFile = async (file: File): Promise<ParsedSave> => {
          const b = tile?.building;
          if (!b) continue;
          if (!WONDER_KEYS.has(b.type)) continue;
-         if (b.status && b.status !== "completed") continue;
+         // Skip "building" (initial construction not finished yet) but
+         // accept "upgrading" — the wonder is already producing at its
+         // current level and will jump to desiredLevel when the upgrade
+         // completes. Use the higher of the two so the resolver bakes
+         // in the soon-to-be value the user is planning around.
+         if (b.status && b.status !== "completed" && b.status !== "upgrading") continue;
          const override = wonderLevelOverride(b);
-         const lvl = override ?? Math.max(1, b.level ?? 1);
+         const lvl =
+            override ??
+            Math.max(1, b.desiredLevel ?? 0, b.level ?? 1);
          // If multiple cities ever stack the same wonder somehow, keep
          // the higher level — defensive, doesn't normally happen.
          wonders[b.type] = Math.max(wonders[b.type] ?? 0, lvl);
