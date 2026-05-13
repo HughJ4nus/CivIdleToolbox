@@ -33,6 +33,14 @@
       "city": null
     },
     {
+      "key": "Narmer",
+      "name": "Narmer",
+      "age": "BronzeAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
       "key": "SargonOfAkkad",
       "name": "Sargon of Akkad",
       "age": "BronzeAge",
@@ -93,6 +101,14 @@
         "CopperMiningCamp",
         "Blacksmith"
       ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "KingDavid",
+      "name": "King David",
+      "age": "IronAge",
+      "kind": "adaptive",
       "valueMultiplier": 1,
       "city": null
     },
@@ -300,6 +316,14 @@
       "city": "Rome"
     },
     {
+      "key": "Laozi",
+      "name": "Laozi",
+      "age": "ClassicalAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
       "key": "NebuchadnezzarII",
       "name": "Nebuchadnezzar II",
       "age": "ClassicalAge",
@@ -354,6 +378,14 @@
       "city": null
     },
     {
+      "key": "GenghisKhan",
+      "name": "Genghis Khan",
+      "age": "MiddleAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
       "key": "HarunAlRashid",
       "name": "Harun al-Rashid",
       "age": "MiddleAge",
@@ -398,6 +430,14 @@
         "Library",
         "Pagoda"
       ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "ChristopherColumbus",
+      "name": "Christopher Columbus",
+      "age": "RenaissanceAge",
+      "kind": "adaptive",
       "valueMultiplier": 1,
       "city": null
     },
@@ -712,6 +752,14 @@
       "kind": "levelBoost"
     },
     {
+      "key": "MichaelFaraday",
+      "name": "Michael Faraday",
+      "age": "IndustrialAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
       "key": "NapoleonBonaparte",
       "name": "Napoleon Bonaparte",
       "age": "IndustrialAge",
@@ -895,6 +943,14 @@
         "CableFactory",
         "UraniumMine"
       ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "OskarSchindler",
+      "name": "Oskar Schindler",
+      "age": "WorldWarAge",
+      "kind": "adaptive",
       "valueMultiplier": 1,
       "city": null
     },
@@ -1083,6 +1139,14 @@
         "UraniumEnrichmentPlant",
         "AtomicFacility"
       ],
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
+      "key": "NeilArmstrong",
+      "name": "Neil Armstrong",
+      "age": "ColdWarAge",
+      "kind": "adaptive",
       "valueMultiplier": 1,
       "city": null
     },
@@ -1362,6 +1426,14 @@
       "city": null
     },
     {
+      "key": "SidMeier",
+      "name": "Sid Meier",
+      "age": "InformationAge",
+      "kind": "adaptive",
+      "valueMultiplier": 1,
+      "city": null
+    },
+    {
       "key": "TimBernersLee",
       "name": "Tim Berners-Lee",
       "age": "InformationAge",
@@ -1474,6 +1546,20 @@
       "name": "Sputnik 1",
       "levelable": true,
       "civilization": "Russian"
+    },
+    {
+      "key": "TempleOfArtemis",
+      "effect": "+1 output/worker/storage to Sword Forge & Armory",
+      "name": "Temple Of Artemis",
+      "levelable": false,
+      "civilization": null
+    },
+    {
+      "key": "TerracottaArmy",
+      "effect": "+1 output/worker/storage to Iron Mining Camp",
+      "name": "Terracotta Army",
+      "levelable": false,
+      "civilization": null
     },
     {
       "key": "GrottaAzzurra",

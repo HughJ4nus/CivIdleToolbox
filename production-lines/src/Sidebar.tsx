@@ -426,7 +426,7 @@ export const Sidebar = ({
          onImportSave(parsed);
          setImportStatus({
             kind: "ok",
-            msg: `Imported ${parsed.stats.gpCount} GPs (+${parsed.stats.thisRunGpCount} this-run) · ${parsed.stats.wonderCount} wonders · ${parsed.stats.ageWisdomCount} ages · ${parsed.stats.techCount} techs`,
+            msg: `Imported ${parsed.stats.gpCount} GPs (+${parsed.stats.thisRunGpCount} this-run, ${parsed.stats.adaptiveGpCount} adaptive) · ${parsed.stats.wonderCount} wonders · ${parsed.stats.ageWisdomCount} ages · ${parsed.stats.techCount} techs`,
          });
       } catch (e) {
          setImportStatus({

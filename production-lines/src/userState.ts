@@ -58,6 +58,10 @@ export interface UserState {
     *  buildingMultiplier need to be checked here; the rest just
     *  unlock buildings and don't affect production. */
    unlockedTechs: Record<string, boolean>;
+   /** Adaptive great-people assignments. Each Adaptive GP (Narmer,
+    *  Faraday, …) lets the player pick ONE building to boost. Format
+    *  is gp key → building key. Empty / missing entries mean unassigned. */
+   adaptiveGreatPeople: Record<string, string>;
 }
 
 const empty = (): UserState => ({
@@ -72,6 +76,7 @@ const empty = (): UserState => ({
    finalHappiness: 0,
    wonderDirections: {},
    unlockedTechs: {},
+   adaptiveGreatPeople: {},
 });
 
 export const loadUserState = (): UserState => {
@@ -135,6 +140,11 @@ export const loadUserState = (): UserState => {
          unlockedTechs:
             parsed.unlockedTechs && typeof parsed.unlockedTechs === "object"
                ? parsed.unlockedTechs
+               : {},
+         adaptiveGreatPeople:
+            parsed.adaptiveGreatPeople &&
+            typeof parsed.adaptiveGreatPeople === "object"
+               ? parsed.adaptiveGreatPeople
                : {},
       };
    } catch {

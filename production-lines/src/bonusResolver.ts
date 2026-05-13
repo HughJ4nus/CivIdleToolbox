@@ -39,7 +39,7 @@ interface GreatPersonEntry {
    key: string;
    name: string;
    age: string;
-   kind: "boost" | "levelBoost";
+   kind: "boost" | "levelBoost" | "adaptive";
    multipliers?: string[];
    buildings?: string[];
    /** value(level) = level × valueMultiplier. Most GPs have 1; some
@@ -210,6 +210,13 @@ const WONDER_EFFECTS: Record<string, WonderEffect> = {
       { building: "Armory", kind: "output", value: 1 },
       { building: "Armory", kind: "worker", value: 1 },
       { building: "Armory", kind: "storage", value: 1 },
+   ],
+   // Terracotta Army: +1 output/worker/storage to IronMiningCamp.
+   // Per OnProductionComplete.tsx:437.
+   TerracottaArmy: () => [
+      { building: "IronMiningCamp", kind: "output", value: 1 },
+      { building: "IronMiningCamp", kind: "worker", value: 1 },
+      { building: "IronMiningCamp", kind: "storage", value: 1 },
    ],
 
    // ── Per-building-type globals (level-scaled) ────────────────────────
@@ -467,6 +474,44 @@ export const resolveBuildingBonuses = (
             apply(out, buildingKey, { source, kind: mult, value: contribution });
          }
       }
+   }
+
+   // Adaptive Great People — player picks ONE building per Adaptive GP
+   // (Narmer, KingDavid, Laozi, GenghisKhan, ChristopherColumbus,
+   // MichaelFaraday, OskarSchindler, NeilArmstrong, SidMeier). The
+   // chosen building gets value(level) output + storage. Skipped by
+   // the game when the chosen building produces Worker (per
+   // tickAdaptiveGreatPerson).
+   for (const gp of DATA.greatPeople) {
+      if (gp.kind !== "adaptive") continue;
+      const target = userState.adaptiveGreatPeople?.[gp.key];
+      if (!target) continue;
+      const targetDef = allBuildings.find((b) => b.key === target);
+      if (targetDef && (targetDef.output.Worker ?? 0) > 0) continue;
+      const baseLevel = userState.greatPeople[gp.key] ?? 0;
+      const thisRunPicks = userState.thisRunGreatPeople?.[gp.key] ?? 0;
+      if (baseLevel <= 0 && thisRunPicks <= 0) continue;
+      const thisRunLevel = harmonic(thisRunPicks);
+      // Adaptive GPs are NOT eligible for Age of Wisdom — only Normal
+      // type qualifies per upstream's isEligibleForWisdom. Don't add
+      // wonder GP-level boosts either (LHC etc. are documented to
+      // exclude level-boost-providing GPs but Adaptive isn't level-boost;
+      // empirically the in-game tooltip shows no wisdom/wonder line for
+      // Adaptive GPs, only perm + this-run).
+      const effectiveLevel = baseLevel + thisRunLevel;
+      const valueMult = gp.valueMultiplier ?? 1;
+      const contribution = effectiveLevel * valueMult;
+
+      const parts: string[] = [`${baseLevel}`];
+      if (thisRunLevel > 0) {
+         parts.push(`${thisRunLevel.toFixed(2)} this run (×${thisRunPicks})`);
+      }
+      const breakdown = parts.length > 1 ? ` = ${parts.join(" + ")}` : "";
+      const valNote = valueMult !== 1 ? `, ×${valueMult} value` : "";
+      const source = `${gp.name} → ${target} (lvl ${effectiveLevel.toFixed(2)}${breakdown}${valNote})`;
+
+      apply(out, target, { source, kind: "output", value: contribution });
+      apply(out, target, { source, kind: "storage", value: contribution });
    }
 
    // Wonders — only those with effect entries above.

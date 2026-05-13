@@ -125,12 +125,27 @@ const greatPeople = [];
          continue;
       }
 
-      // Non-boost: keep the LevelBoost ones (they raise output indirectly
-      // via the building's effective level). Skip wildcard/promotion/etc.
+      // Non-boost: keep LevelBoost (raises building level indirectly)
+      // and Adaptive (player picks one building to boost; output +
+      // storage by value(level)).
       const typeMatch = body.match(/type:\s*GreatPersonType\.([A-Za-z]+)/);
       const t = typeMatch ? typeMatch[1] : null;
       if (t === "LevelBoost") {
          greatPeople.push({ key, name, age, kind: "levelBoost" });
+      } else if (t === "Adaptive") {
+         const valMatch = body.match(/value:\s*\(level\)\s*=>\s*(?:level\s*\*\s*(\d+(?:\.\d+)?)|(\d+(?:\.\d+)?)\s*\*\s*level|level)/);
+         const valueMultiplier = valMatch
+            ? Number(valMatch[1] ?? valMatch[2] ?? 1)
+            : 1;
+         const cityMatch = body.match(/city:\s*"([A-Za-z]+)"/);
+         greatPeople.push({
+            key,
+            name,
+            age,
+            kind: "adaptive",
+            valueMultiplier,
+            city: cityMatch ? cityMatch[1] : null,
+         });
       }
    }
 }
@@ -182,6 +197,8 @@ const wonderEntries = [
    { key: "ManhattanProject", effect: "+2 output to Uranium Mine" },
    { key: "ApolloProgram", effect: "+2 output to Rocket Factory" },
    { key: "Sputnik1", effect: "+level output/storage to Cosmodrome AND +level effective level to every Cold War Age GP" },
+   { key: "TempleOfArtemis", effect: "+1 output/worker/storage to Sword Forge & Armory" },
+   { key: "TerracottaArmy", effect: "+1 output/worker/storage to Iron Mining Camp" },
 
    // — Filter-based globals —
    { key: "GrottaAzzurra", effect: "+1 output/worker/storage to all tier-1 buildings" },
@@ -488,6 +505,7 @@ writeFileSync(dest, `${JSON.stringify(out, null, 2)}\n`);
 const counts = {
    gpBoost: greatPeople.filter((g) => g.kind === "boost").length,
    gpLevelBoost: greatPeople.filter((g) => g.kind === "levelBoost").length,
+   gpAdaptive: greatPeople.filter((g) => g.kind === "adaptive").length,
    wonders: wonders.length,
 };
 console.log(`Wrote ${greatPeople.length} GPs + ${wonders.length} wonders to ${dest}`);

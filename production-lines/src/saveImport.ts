@@ -61,6 +61,8 @@ export interface ParsedSave {
    greatPeople: Record<string, number>;
    /** This-run great-person picks (count per GP), not levels. */
    thisRunGreatPeople: Record<string, number>;
+   /** Adaptive GP → assigned building. */
+   adaptiveGreatPeople: Record<string, string>;
    wonders: Record<string, number>;
    ageWisdom: Record<string, number>;
    /** Picked path per directional wonder (ChoghaZanbil/LuxorTemple/BigBen). */
@@ -75,6 +77,7 @@ export interface ParsedSave {
       ageWisdomCount: number;
       techCount: number;
       thisRunGpCount: number;
+      adaptiveGpCount: number;
    };
 }
 
@@ -139,6 +142,8 @@ export const parseSaveFile = async (file: File): Promise<ParsedSave> => {
          unlockedTech?: Set<string> | Record<string, unknown>;
          /** Per-GP this-run pick count. */
          greatPeople?: Record<string, number>;
+         /** Adaptive GP → assigned building (Map after reviver). */
+         adaptiveGreatPeople?: Map<string, string> | Record<string, string>;
       };
       options?: {
          greatPeople?: Record<string, { level?: number } | number>;
@@ -223,9 +228,27 @@ export const parseSaveFile = async (file: File): Promise<ParsedSave> => {
       }
    }
 
+   // Adaptive great-people assignments: Map<GreatPerson, Building>.
+   // Reviver turns it into a real Map; older browser saves may
+   // serialise as a plain object — handle both.
+   const adaptiveGreatPeople: Record<string, string> = {};
+   const ag = save.current?.adaptiveGreatPeople;
+   if (ag instanceof Map) {
+      for (const [gp, building] of ag.entries()) {
+         if (typeof gp === "string" && typeof building === "string") {
+            adaptiveGreatPeople[gp] = building;
+         }
+      }
+   } else if (ag && typeof ag === "object") {
+      for (const [gp, building] of Object.entries(ag)) {
+         if (typeof building === "string") adaptiveGreatPeople[gp] = building;
+      }
+   }
+
    return {
       greatPeople,
       thisRunGreatPeople,
+      adaptiveGreatPeople,
       wonders,
       ageWisdom,
       wonderDirections,
@@ -236,6 +259,7 @@ export const parseSaveFile = async (file: File): Promise<ParsedSave> => {
          ageWisdomCount: Object.keys(ageWisdom).length,
          techCount: Object.keys(unlockedTechs).length,
          thisRunGpCount: Object.keys(thisRunGreatPeople).length,
+         adaptiveGpCount: Object.keys(adaptiveGreatPeople).length,
       },
    };
 };

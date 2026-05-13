@@ -800,6 +800,8 @@ export const App = (): JSX.Element => {
          },
          // Tech list comes straight from the save's unlockedTech Set.
          unlockedTechs: parsed.unlockedTechs,
+         // Adaptive GP assignments come from gs.adaptiveGreatPeople Map.
+         adaptiveGreatPeople: parsed.adaptiveGreatPeople,
       }));
    }, []);
 
