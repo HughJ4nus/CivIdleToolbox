@@ -68,6 +68,16 @@ export interface UserState {
     *  Buddhism respectively). When set, chain math uses only this
     *  building as a Faith producer instead of splitting demand. */
    preferredFaithBuilding?: string;
+   /** Per-building electrification level. Adds directly to effective
+    *  level (output scales linearly) at the cost of round(4^level)
+    *  Power per tile. Capped to the building's actual level upstream. */
+   electrificationOverrides?: Record<string, number>;
+   /** Default electrification applied to every electrifiable card in
+    *  the production line unless an override is set. */
+   defaultElectrification?: number;
+   /** When true, the rundown's power-plant count uses FusionPowerPlant
+    *  output as the supply; otherwise NuclearPowerPlant. */
+   useFusionPower?: boolean;
 }
 
 const empty = (): UserState => ({
@@ -155,6 +165,20 @@ export const loadUserState = (): UserState => {
          preferredFaithBuilding:
             typeof parsed.preferredFaithBuilding === "string"
                ? parsed.preferredFaithBuilding
+               : undefined,
+         electrificationOverrides:
+            parsed.electrificationOverrides &&
+            typeof parsed.electrificationOverrides === "object"
+               ? parsed.electrificationOverrides
+               : undefined,
+         defaultElectrification:
+            typeof parsed.defaultElectrification === "number" &&
+            parsed.defaultElectrification >= 0
+               ? parsed.defaultElectrification
+               : undefined,
+         useFusionPower:
+            typeof parsed.useFusionPower === "boolean"
+               ? parsed.useFusionPower
                : undefined,
       };
    } catch {

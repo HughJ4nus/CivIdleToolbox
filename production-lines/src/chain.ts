@@ -29,12 +29,29 @@ const NON_WALKABLE_INPUTS = new Set([
    "TradeValue",
 ]);
 
+// Mirrors BuildingLogic.canBeElectrified: non-special production
+// building whose every output is a storable resource. (Same logic the
+// resolver uses for Liberalism V; replicated here so chain.ts doesn't
+// have to import bonusResolver.)
+const ELECTRIFIABLE_EXTRAS = new Set(["SwissBank", "CloneFactory"]);
+const isElectrifiable = (b: Building): boolean => {
+   if (ELECTRIFIABLE_EXTRAS.has(b.key)) return true;
+   if (b.special) return false;
+   const outs = Object.keys(b.output);
+   if (outs.length === 0) return false;
+   return outs.every((o) => !NON_WALKABLE_INPUTS.has(o));
+};
+
 export interface ChainResult {
    /** User-set or computed building count. */
    amount: number;
    /** Base level *as displayed in the level input* (without bonus boosts). */
    level: number;
-   /** Effective level used by the math: `level + bonus.levelBoost`. */
+   /** Electrification level applied to each building of this type (capped
+    *  at `level`). 0 = not electrified. */
+   electrification: number;
+   /** Effective level used by the math: `level + bonus.levelBoost
+    *  + electrification`. */
    effectiveLevel: number;
    /** Effective per-unit per-tick output multiplier: 1 + Σ output mults.
     *  1.0 means no bonuses, 1.5 means a +50% effective bonus. */
@@ -42,6 +59,8 @@ export interface ChainResult {
    /** Per-tick output of each output material at this amount × effective
     *  level × output multiplier. */
    outputPerTick: Map<string, number>;
+   /** Total power demand for this building type (amount × round(4^elec)). */
+   powerDemand: number;
 }
 
 export interface ChainOptions {
@@ -64,6 +83,13 @@ export interface ChainOptions {
     *  that material's demand. Used to constrain Faith to a single
     *  building (Shrine vs the Luxor-unlocked one). */
    allowedProducers?: (material: string) => Set<string> | null | undefined;
+   /** Per-building electrification level (clamped to that building's
+    *  current level). Bumps effective level by that much; the resulting
+    *  power demand is exposed via ChainResult.powerDemand. */
+   electrificationOverrides?: Record<string, number>;
+   /** Fallback electrification applied to any electrifiable building
+    *  that lacks an override. */
+   defaultElectrification?: number;
 }
 
 export const computeChainAmounts = ({
@@ -75,15 +101,36 @@ export const computeChainAmounts = ({
    subgraph,
    bonuses,
    allowedProducers,
+   electrificationOverrides,
+   defaultElectrification,
 }: ChainOptions): Map<string, ChainResult> => {
    const levels = new Map<string, number>();
    for (const b of subgraph) {
       const override = levelOverrides[b.key];
       levels.set(b.key, Number.isFinite(override) && override > 0 ? override : rootLevel);
    }
-   // Effective level = base level + any levelBoost from bonuses.
+   // Index buildings by key once so the helpers below can look up
+   // recipes / `requiresPower` without walking the array every call.
+   const buildingByKey = new Map<string, Building>();
+   for (const b of subgraph) buildingByKey.set(b.key, b);
+
+   // Electrification per building, clamped to the base level just like
+   // getElectrificationLevel() does upstream (a building can't be
+   // electrified higher than its current level).
+   const electrificationOf = (key: string): number => {
+      const b = buildingByKey.get(key);
+      if (!b || !isElectrifiable(b)) return 0;
+      const raw =
+         electrificationOverrides?.[key] ?? defaultElectrification ?? 0;
+      if (!Number.isFinite(raw) || raw <= 0) return 0;
+      return Math.min(Math.floor(raw), levels.get(key) ?? rootLevel);
+   };
+   // Effective level = base level + any levelBoost from bonuses + the
+   // building's electrification (matches IntraTickCache.ts:165 upstream).
    const effectiveLevelOf = (key: string): number =>
-      (levels.get(key) ?? rootLevel) + (bonuses.get(key)?.levelBoost ?? 0);
+      (levels.get(key) ?? rootLevel) +
+      (bonuses.get(key)?.levelBoost ?? 0) +
+      electrificationOf(key);
    const outputFactorOf = (key: string): number =>
       1 + (bonuses.get(key)?.outputMultiplier ?? 0);
 
@@ -190,18 +237,27 @@ export const computeChainAmounts = ({
    for (const b of subgraph) {
       const amount = amounts.get(b.key) ?? 0;
       const level = levels.get(b.key) ?? rootLevel;
+      const electrification = electrificationOf(b.key);
       const effectiveLevel = effectiveLevelOf(b.key);
       const outputMultiplier = outputFactorOf(b.key);
       const outputPerTick = new Map<string, number>();
       for (const [m, n] of Object.entries(b.output)) {
          outputPerTick.set(m, n * effectiveLevel * outputMultiplier * amount);
       }
+      // Power demand per BuildingLogic.getPowerRequired: round(4^elec)
+      // per electrified tile, times the building count.
+      const powerDemand =
+         electrification > 0
+            ? Math.round(4 ** electrification) * amount
+            : 0;
       result.set(b.key, {
          amount,
          level,
+         electrification,
          effectiveLevel,
          outputMultiplier,
          outputPerTick,
+         powerDemand,
       });
    }
    return result;

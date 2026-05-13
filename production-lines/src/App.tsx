@@ -341,6 +341,9 @@ interface TierWorldProps {
    /** When provided, each card shows its calculated amount + an editable level. */
    chainResults?: Map<string, ChainResult>;
    onLevelChange?: (key: string, level: number) => void;
+   /** Per-card electrification level. Optional — when undefined the
+    *  Elec input doesn't render. */
+   onElectrificationChange?: (key: string, value: number) => void;
    /** Pass `null` as amount to clear an override; otherwise an integer. */
    onAmountChange?: (key: string, amount: number | null) => void;
    /** Set of building keys that have a user-set amount override (so the
@@ -358,6 +361,7 @@ const TierWorld = ({
    highlightKey,
    chainResults,
    onLevelChange,
+   onElectrificationChange,
    onAmountChange,
    amountOverrideKeys,
    bonuses,
@@ -546,6 +550,30 @@ const TierWorld = ({
                               </span>
                            )}
                         </label>
+                        {onElectrificationChange && (
+                           <label
+                              className="card-level card-elec"
+                              title={
+                                 result.electrification > 0
+                                    ? `+${result.electrification} effective level · ${result.powerDemand.toLocaleString()} Power demand`
+                                    : "Electrification level (each tier-up costs round(4^level) Power per tile)"
+                              }
+                           >
+                              Elec
+                              <input
+                                 type="number"
+                                 min={0}
+                                 max={result.level}
+                                 value={result.electrification}
+                                 onClick={(e) => e.stopPropagation()}
+                                 onMouseDown={(e) => e.stopPropagation()}
+                                 onChange={(e) => {
+                                    const v = Math.max(0, Math.floor(Number(e.target.value) || 0));
+                                    onElectrificationChange(c.building.key, v);
+                                 }}
+                              />
+                           </label>
+                        )}
                      </div>
                   )}
                </div>
@@ -919,8 +947,10 @@ export const App = (): JSX.Element => {
          subgraph: subgraph.buildings,
          bonuses,
          allowedProducers,
+         electrificationOverrides: userState.electrificationOverrides,
+         defaultElectrification: userState.defaultElectrification,
       });
-   }, [subgraph, selectedKey, rootAmount, rootLevel, perBuildingLevels, perBuildingAmounts, bonuses, allowedProducers]);
+   }, [subgraph, selectedKey, rootAmount, rootLevel, perBuildingLevels, perBuildingAmounts, bonuses, allowedProducers, userState.electrificationOverrides, userState.defaultElectrification]);
 
    // Hide upstream buildings the chain math doesn't actually need
    // (amount = 0). Examples: when the root has multiple producers and
@@ -977,6 +1007,35 @@ export const App = (): JSX.Element => {
    }, []);
    const [bulkChainLevel, setBulkChainLevel] = useState(10);
 
+   // Per-card electrification override. Writing 0 = "leave at default";
+   // the chain math falls back to userState.defaultElectrification.
+   const onElectrificationChange = useCallback(
+      (key: string, value: number) => {
+         const clamped = Math.max(0, Math.floor(value));
+         setUserState((prev) => {
+            const next = { ...(prev.electrificationOverrides ?? {}) };
+            if (clamped === 0) delete next[key];
+            else next[key] = clamped;
+            return { ...prev, electrificationOverrides: next };
+         });
+      },
+      [],
+   );
+   // Bulk-set default electrification + clear per-card overrides so every
+   // electrifiable card uniformly uses N. Mirrors onSetAllChainLevels.
+   const onSetAllElectrification = useCallback((value: number) => {
+      const clamped = Math.max(0, Math.floor(value));
+      setUserState((prev) => ({
+         ...prev,
+         defaultElectrification: clamped,
+         electrificationOverrides: {},
+      }));
+   }, []);
+   const [bulkElectrification, setBulkElectrification] = useState(0);
+   const onFusionPowerToggle = useCallback((checked: boolean) => {
+      setUserState((prev) => ({ ...prev, useFusionPower: checked }));
+   }, []);
+
    // The root's amount lives in `rootAmount` so the modal header can edit
    // it; non-root amounts go into `perBuildingAmounts`. Both paths funnel
    // through this one callback so the card UI can stay uniform.
@@ -1032,14 +1091,40 @@ export const App = (): JSX.Element => {
       const finalOutput = rootResult
          ? [...rootResult.outputPerTick.entries()].filter(([, n]) => n > 0)
          : [];
+      // Total Power demand from all electrified buildings, plus how many
+      // selected-type power plants we'd need to supply it. Same effective-
+      // level + bonus math as any other producer.
+      const powerDemand = entries.reduce(
+         (s, e) => s + e.result.powerDemand,
+         0,
+      );
+      const plantKey = userState.useFusionPower
+         ? "FusionPowerPlant"
+         : "NuclearPowerPlant";
+      const plantDef = allBuildings.find((b) => b.key === plantKey);
+      const plantBaseOutput = plantDef?.output.Power ?? 0;
+      const plantBonus = bonuses.get(plantKey);
+      const plantLevel = rootLevel + (plantBonus?.levelBoost ?? 0);
+      const plantSupply =
+         plantBaseOutput *
+         plantLevel *
+         (1 + (plantBonus?.outputMultiplier ?? 0));
+      const powerPlantsNeeded =
+         powerDemand > 0 && plantSupply > 0
+            ? Math.ceil(powerDemand / plantSupply)
+            : 0;
       return {
          entries,
          totalBuildings,
          distinctTypes,
          happiness,
          finalOutput,
+         powerDemand,
+         powerPlantsNeeded,
+         plantKey,
+         plantSupply,
       };
-   }, [subgraph, chainResults, selectedKey]);
+   }, [subgraph, chainResults, selectedKey, allBuildings, bonuses, rootLevel, userState.useFusionPower]);
 
    // ── Pan + zoom: one independent state for the main view, one for the
    //    modal. The modal viewport is mounted/unmounted with selectedKey,
@@ -1206,6 +1291,29 @@ export const App = (): JSX.Element => {
                               Apply
                            </button>
                         </label>
+                        <label
+                           className="modal-bulk-level"
+                           title="Apply this electrification level to every electrifiable building (clears per-card overrides)"
+                        >
+                           Set all elec
+                           <input
+                              type="number"
+                              min={0}
+                              max={99}
+                              value={bulkElectrification}
+                              onChange={(e) =>
+                                 setBulkElectrification(
+                                    Math.max(0, Math.floor(Number(e.target.value) || 0)),
+                                 )
+                              }
+                           />
+                           <button
+                              type="button"
+                              onClick={() => onSetAllElectrification(bulkElectrification)}
+                           >
+                              Apply
+                           </button>
+                        </label>
                         <div className="zoom-readout">
                            <span>{Math.round(modal.zoom * 100)}%</span>
                            <button type="button" onClick={modal.reset}>
@@ -1242,6 +1350,7 @@ export const App = (): JSX.Element => {
                               highlightKey={selectedKey ?? undefined}
                               chainResults={chainResults}
                               onLevelChange={onLevelChange}
+                              onElectrificationChange={onElectrificationChange}
                               onAmountChange={onAmountChange}
                               amountOverrideKeys={amountOverrideKeysSet}
                               bonuses={bonuses}
@@ -1283,6 +1392,36 @@ export const App = (): JSX.Element => {
                                     <em>(1 of each type is free)</em>
                                  </span>
                               </div>
+                           </section>
+                           <section className="rundown-section">
+                              <h4>Power</h4>
+                              {rundown.powerDemand > 0 ? (
+                                 <div className="rundown-happiness">
+                                    <span className="rundown-happiness-num">
+                                       ×{rundown.powerPlantsNeeded}
+                                    </span>
+                                    <span className="rundown-happiness-detail">
+                                       {rundown.plantKey === "FusionPowerPlant"
+                                          ? "Fusion Power Plants"
+                                          : "Nuclear Power Plants"}
+                                       <br />
+                                       {rundown.powerDemand.toLocaleString()} Power
+                                       demand · {Math.round(rundown.plantSupply).toLocaleString()}/plant
+                                    </span>
+                                 </div>
+                              ) : (
+                                 <div className="rundown-empty">— no electrification —</div>
+                              )}
+                              <label className="rundown-toggle">
+                                 <input
+                                    type="checkbox"
+                                    checked={!!userState.useFusionPower}
+                                    onChange={(e) =>
+                                       onFusionPowerToggle(e.target.checked)
+                                    }
+                                 />
+                                 Use Fusion Power Plants
+                              </label>
                            </section>
                            <section className="rundown-section">
                               <h4>Buildings ({rundown.totalBuildings})</h4>
@@ -1336,9 +1475,6 @@ export const App = (): JSX.Element => {
                         UN General Assemblies and trade tile bonusses must be
                         added manually, as these values do not live in your save
                         file.
-                     </p>
-                     <p className="welcome-caveat">
-                        Electrification not yet supported.
                      </p>
                      <button
                         type="button"
