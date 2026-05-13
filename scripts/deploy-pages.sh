@@ -29,7 +29,9 @@ REPO_NAME="$(basename -s .git "$(git -C "$REPO_ROOT" remote get-url origin)")"
 
 # Delegate the build + assembly to scripts/build.sh, with the GitHub Pages
 # subpath as each tool's Vite base. (build.sh creates .nojekyll too.)
-HEX_MAP_BASE="/${REPO_NAME}/hex-map/" bash "$SCRIPT_DIR/build.sh"
+HEX_MAP_BASE="/${REPO_NAME}/hex-map/" \
+PROD_LINES_BASE="/${REPO_NAME}/production-lines/" \
+bash "$SCRIPT_DIR/build.sh"
 
 if [[ ! -f "$DIST_DIR/index.html" ]]; then
    echo "✗ Assembly did not produce dist/index.html" >&2
