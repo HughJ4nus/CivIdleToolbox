@@ -242,6 +242,84 @@
         color: var(--accent);
     }
 
+    /* Chart header row — the section title with a small mode toggle
+       to its right. */
+    .chart-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+    .chart-header-row h2 { margin: 0; }
+    .chart-mode {
+        display: flex;
+        border: 1px solid var(--panel-edge);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .mode-btn {
+        width: auto;
+        padding: 4px 10px;
+        background: var(--bg);
+        color: var(--text-dim);
+        border: none;
+        border-radius: 0;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+    .mode-btn:not(.active):hover {
+        background: var(--panel-edge);
+        color: var(--text);
+    }
+    .mode-btn.active {
+        background: var(--accent-strong);
+        color: var(--bg);
+    }
+    .curve-bezier {
+        fill: none;
+        stroke: var(--line);
+        stroke-width: 2;
+    }
+    .curve-bezier-egp {
+        fill: none;
+        stroke: var(--line-egp);
+        stroke-width: 2;
+        stroke-dasharray: 4 3;
+        opacity: 0.85;
+    }
+
+    /* Dismissible info banner above the chart. Reuses the .verdict.warn
+       palette but lays out as flex so the "×" sits at the right. */
+    .graph-info {
+        margin-top: 0;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .graph-info > span { flex: 1; }
+    .graph-info-close {
+        width: auto;
+        padding: 0 6px;
+        background: transparent;
+        color: inherit;
+        border: none;
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 700;
+        cursor: pointer;
+        opacity: 0.7;
+        flex: 0 0 auto;
+    }
+    .graph-info-close:hover {
+        background: transparent;
+        opacity: 1;
+    }
+
     /* SVG element styles */
     .axis-line { stroke: var(--panel-edge); stroke-width: 1; }
     .grid-line { stroke: var(--grid); stroke-width: 1; stroke-dasharray: 2 4; }
@@ -258,6 +336,27 @@
         stroke-dasharray: 1 3;
         opacity: 0.7;
     }
+
+    /* Hover overlay: invisible rect captures pointer events for the
+       crosshair tooltip; cursor stays as the default arrow. */
+    .hover-overlay { fill: transparent; cursor: default; }
+    .hover-guide { stroke: var(--text-dim); stroke-width: 1; opacity: 0.55; pointer-events: none; }
+    .hover-dot-ratio { fill: var(--line); stroke: var(--bg); stroke-width: 1.5; pointer-events: none; }
+    .hover-dot-egp { fill: var(--line-egp); stroke: var(--bg); stroke-width: 1.5; pointer-events: none; }
+    .hover-tooltip-bg {
+        fill: var(--panel);
+        stroke: var(--panel-edge);
+        stroke-width: 1;
+        rx: 4;
+        pointer-events: none;
+    }
+    .hover-tooltip-text {
+        fill: var(--text);
+        font-size: 11px;
+        font-family: inherit;
+        pointer-events: none;
+    }
+    .hover-tooltip-text .dim { fill: var(--text-dim); }
 </style>
 </head>
 <body>
@@ -274,21 +373,21 @@
 
                 <div class="field">
                     <label for="ev">Current EV</label>
-                    <input type="text" id="ev" value="640000000" placeholder="e.g. 8.2e16 or 82000000000000000">
+                    <input type="text" id="ev" placeholder="1000000000000, 1e12, 1t">
                     <div class="hint">Scientific notation OK.</div>
                 </div>
 
                 <div class="field">
                     <label>Current game time</label>
                     <div class="time-row">
-                        <input type="number" id="hours" value="1" min="0" placeholder="hours">
-                        <input type="number" id="minutes" value="0" min="0" max="59" placeholder="minutes">
+                        <input type="number" id="hours" min="0" placeholder="hours">
+                        <input type="number" id="minutes" min="0" max="59" placeholder="minutes">
                     </div>
                 </div>
 
                 <div class="field">
                     <label for="evps">Current EV/s</label>
-                    <input type="text" id="evps" value="64000000" placeholder="e.g. 6.49e12">
+                    <input type="text" id="evps" placeholder="1000000000000, 1e12, 1t">
                 </div>
 
                 <button id="calc">Compute</button>
@@ -306,13 +405,24 @@
                     <dt>Optimal stop time</dt><dd id="r-opt-time" class="highlight">—</dd>
                     <dt>EGP at optimum</dt><dd id="r-opt-egp" class="highlight">—</dd>
                     <dt>Peak EGP/min</dt><dd id="r-peak" class="highlight">—</dd>
+                    <dt>Current EGP/min</dt><dd id="r-current">—</dd>
                 </dl>
                 <div id="verdict"></div>
             </div>
         </div>
 
         <div class="panel chart-panel">
-            <h2>EGP / total game time</h2>
+            <div class="chart-header-row">
+                <h2>EGP / total game time</h2>
+                <div class="chart-mode" role="group" aria-label="Chart mode">
+                    <button type="button" class="mode-btn" data-mode="constant">Constant</button>
+                    <button type="button" class="mode-btn active" data-mode="pretty">Pretty</button>
+                </div>
+            </div>
+            <div id="graph-info" class="verdict warn graph-info" hidden>
+                <span id="graph-info-text"></span>
+                <button type="button" class="graph-info-close" aria-label="Dismiss">×</button>
+            </div>
             <div class="chart-wrap">
                 <svg class="chart" id="chart" viewBox="0 0 800 460" preserveAspectRatio="xMidYMid meet">
                     <text x="400" y="230" text-anchor="middle" class="axis-label">Enter values and press Compute</text>
@@ -364,54 +474,61 @@ function deriveRates(currentEv, currentTimeSeconds, currentEvPerSec) {
 }
 
 /**
- * Smooth (continuous) EGP value at any time t, using the two-rate model.
- * For t ≤ currentTime, EV grew at pastRate. For t > currentTime, EV grows
- * at futureRate from the user's banked currentEv.
+ * Smooth (continuous) EGP value at any time t, assuming the user has been
+ * (and continues to be) running at a constant futureRate. EV at any time t
+ * is currentEv + futureRate × (t - currentTime). For past times the second
+ * term is negative; we clamp at zero so the cube root stays defined.
  */
-function egpAtTime(timeSeconds, currentEv, currentTimeSeconds, pastRate, futureRate) {
-    if (timeSeconds <= currentTimeSeconds) {
-        return Math.cbrt(pastRate * timeSeconds / EV_CONSTANT);
-    }
-    const futureEv = currentEv + futureRate * (timeSeconds - currentTimeSeconds);
-    return Math.cbrt(futureEv / EV_CONSTANT);
+function egpAtTime(timeSeconds, currentEv, currentTimeSeconds, futureRate) {
+    const ev = currentEv + futureRate * (timeSeconds - currentTimeSeconds);
+    if (ev <= 0) return 0;
+    return Math.cbrt(ev / EV_CONSTANT);
 }
 
 /**
  * Generate one (egp, time, ratio) point for every discrete EGP unlock that
  * falls within the given time window, plus the user's current point.
  *
- * Past unlocks (egp < currentEgp) are placed using pastRate.
- * Future unlocks (egp > currentEgp) are placed using futureRate.
- * The current point sits at exactly (currentTime, currentEgp).
+ * Both past and future unlocks are placed using futureRate — we assume the
+ * user has been (and continues to be) running at the rate they reported.
+ * The current point sits at exactly (currentTime, currentEgpContinuous).
  */
-function generateUnlockSeries(currentEv, currentTimeSeconds, pastRate, futureRate,
+function generateUnlockSeries(currentEv, currentTimeSeconds, futureRate,
                               xMinSeconds, xMaxSeconds) {
     const points = [];
-    const currentEgp = Math.floor(egpFromEv(currentEv));
+    // Continuous current EGP — used for the anchor point so the polyline
+    // passes exactly through the (currentTime, currentEGP) the marker is
+    // drawn at. Floored value is only used as the iteration boundary for
+    // past/future integer unlocks.
+    const currentEgpContinuous = egpFromEv(currentEv);
+    const currentEgpFloor = Math.floor(currentEgpContinuous);
 
-    // Past unlocks. EGP n unlocks at t = n^3 * EV_CONSTANT / pastRate.
-    // We start from the smallest EGP that still falls inside the window.
-    const minEgpFromTime = Math.ceil(Math.cbrt(pastRate * xMinSeconds / EV_CONSTANT));
-    const minEgp = Math.max(1, minEgpFromTime);
-    for (let egp = minEgp; egp < currentEgp; egp++) {
-        const tSeconds = evFromEgp(egp) / pastRate;
-        if (tSeconds < xMinSeconds) continue;
+    // Past unlocks. We assume the user has always been running at the
+    // current futureRate, so EV(t) = currentEv − futureRate × (currentTime − t)
+    // for t < currentTime. Stop iterating downward when the implied EV
+    // would be ≤ 0 (the constant-rate model can't extend that far back).
+    for (let egp = currentEgpFloor; egp >= 1; egp--) {
+        const tSeconds = currentTimeSeconds - (currentEv - evFromEgp(egp)) / futureRate;
+        if (tSeconds <= 0) break;
+        if (tSeconds < xMinSeconds || tSeconds >= currentTimeSeconds) continue;
         points.push({
             egp: egp,
             timeSeconds: tSeconds,
             ratio: egp / tSeconds,
         });
     }
+    points.reverse(); // chronological order
 
-    // The current point — anchor between past and future.
+    // The current point — anchor between past and future. Continuous EGP
+    // so the polyline meets the marker exactly.
     points.push({
-        egp: currentEgp,
+        egp: currentEgpContinuous,
         timeSeconds: currentTimeSeconds,
-        ratio: currentEgp / currentTimeSeconds,
+        ratio: currentEgpContinuous / currentTimeSeconds,
     });
 
     // Future unlocks. Walk EGP upward until we leave the window.
-    let egp = currentEgp + 1;
+    let egp = currentEgpFloor + 1;
     while (true) {
         const tSeconds = currentTimeSeconds + (evFromEgp(egp) - currentEv) / futureRate;
         if (tSeconds > xMaxSeconds) break;
@@ -422,7 +539,7 @@ function generateUnlockSeries(currentEv, currentTimeSeconds, pastRate, futureRat
         });
         egp++;
         // Safety: avoid runaway loops if futureRate is pathologically tiny.
-        if (egp - currentEgp > 100000) break;
+        if (egp - currentEgpFloor > 100000) break;
     }
 
     return points;
@@ -444,6 +561,9 @@ function findFuturePeak(currentEv, currentTimeSeconds, pastRate, futureRate) {
     const tOptSeconds = 1.5 * (currentTimeSeconds - currentEv / futureRate);
     const evAtOpt = currentEv + futureRate * (tOptSeconds - currentTimeSeconds);
     // Snap to the nearest discrete EGP unlock for display consistency.
+    // The whole curve uses futureRate now, so one formula handles both
+    // past and future peak cases — tDiscrete falls naturally on the
+    // displayed polyline either way.
     const egpAtOpt = Math.round(egpFromEv(evAtOpt));
     const tDiscrete = currentTimeSeconds + (evFromEgp(egpAtOpt) - currentEv) / futureRate;
     return {
@@ -483,21 +603,57 @@ function formatEgp(egp) {
 // Input parsing
 // ============================================================================
 
+// SI-style suffixes accepted alongside scientific notation. The suffix
+// (one trailing character) is stripped and multiplied in. `Q` is treated
+// the same as `q` (both 1e15) so users can use either case for the
+// quadrillion suffix.
+const NUMBER_SUFFIXES = {
+    k: 1e3,
+    m: 1e6,
+    b: 1e9,
+    t: 1e12,
+    q: 1e15,
+    Q: 1e15,
+};
+
 function parseScientific(raw) {
     if (typeof raw !== 'string') raw = String(raw);
     const trimmed = raw.trim().replace(/[, _]/g, '');
-    const value = Number(trimmed);
+    let multiplier = 1;
+    let numericPart = trimmed;
+    if (trimmed.length > 0) {
+        const lastChar = trimmed[trimmed.length - 1];
+        if (Object.prototype.hasOwnProperty.call(NUMBER_SUFFIXES, lastChar)) {
+            multiplier = NUMBER_SUFFIXES[lastChar];
+            numericPart = trimmed.slice(0, -1);
+        }
+    }
+    const value = Number(numericPart);
     if (!Number.isFinite(value) || value < 0) {
         throw new Error(`Invalid number: "${raw}"`);
     }
-    return value;
+    return value * multiplier;
 }
 
+// Fallback values used whenever an input is left blank — also what the
+// page draws on first load, before the user has typed anything in.
+const DEFAULT_INPUTS = {
+    ev: 6.4e11,
+    hours: 5,
+    minutes: 0,
+    evps: 6.4e8,
+};
+
 function readInputs() {
-    const ev = parseScientific(document.getElementById('ev').value);
-    const hours = parseScientific(document.getElementById('hours').value);
-    const minutes = parseScientific(document.getElementById('minutes').value);
-    const evPerSec = parseScientific(document.getElementById('evps').value);
+    const readField = (id, fallback) => {
+        const raw = document.getElementById(id).value.trim();
+        if (raw === '') return fallback;
+        return parseScientific(raw); // throws on bad input
+    };
+    const ev = readField('ev', DEFAULT_INPUTS.ev);
+    const hours = readField('hours', DEFAULT_INPUTS.hours);
+    const minutes = readField('minutes', DEFAULT_INPUTS.minutes);
+    const evPerSec = readField('evps', DEFAULT_INPUTS.evps);
 
     if (ev === 0) throw new Error('Current EV must be greater than 0');
     if (hours === 0 && minutes === 0) throw new Error('Game time must be greater than 0');
@@ -574,7 +730,7 @@ function drawChart(points, current, peak, rates, bounds) {
     }
 
     const { xMinHours, xMaxHours,
-            currentEv, currentTimeSeconds, pastRate, futureRate } = bounds;
+            currentEv, currentTimeSeconds, futureRate } = bounds;
     const currentHours = current.timeSeconds / 3600;
     const peakHours = peak ? peak.timeSeconds / 3600 : null;
 
@@ -596,9 +752,9 @@ function drawChart(points, current, peak, rates, bounds) {
     //   bottom = EGP at the chart's left edge × 0.85
     //   top    = EGP at the chart's right edge × 1.15
     const egpAtLeftEdge = egpAtTime(
-        xMinHours * 3600, currentEv, currentTimeSeconds, pastRate, futureRate);
+        xMinHours * 3600, currentEv, currentTimeSeconds, futureRate);
     const egpAtRightEdge = egpAtTime(
-        xMaxHours * 3600, currentEv, currentTimeSeconds, pastRate, futureRate);
+        xMaxHours * 3600, currentEv, currentTimeSeconds, futureRate);
     const yMinRight = egpAtLeftEdge * 0.85;
     const yMaxRight = egpAtRightEdge * 1.15;
 
@@ -692,12 +848,107 @@ function drawChart(points, current, peak, rates, bounds) {
         transform: `rotate(-90 ${rightTitleX} ${MARGIN.top + PLOT_HEIGHT / 2})`,
     }, 'Total EGP'));
 
+    // ---- Pretty-mode bezier ----------------------------------------------
+    // When the curve visibly bottoms out at zero AND the user has picked
+    // Pretty mode, replace the leading "EV grew from 0" segment with a
+    // smooth bezier from the chart's bottom edge up to the leftmost
+    // marker (current or peak — whichever is earlier). Polyline data
+    // before that marker is hidden so the bezier owns the leading edge.
+    const tBreakEvenSeconds =
+        currentTimeSeconds - currentEv / futureRate;
+    const visiblyHitsZero =
+        tBreakEvenSeconds > 0 && tBreakEvenSeconds / 3600 >= xMinHours;
+    const usePretty = chartMode === 'pretty' && visiblyHitsZero;
+
+    let polylineMinTimeSeconds = 0;
+    if (usePretty) {
+        // Pick the leftmost-in-time marker that's actually visible.
+        const peakInside = peak && peakHours >= xMinHours && peakHours <= xMaxHours;
+        const currentInside =
+            currentHours >= xMinHours && currentHours <= xMaxHours;
+        let firstMarker = null;
+        if (peakInside && (!currentInside || peak.timeSeconds < current.timeSeconds)) {
+            firstMarker = peak;
+        } else if (currentInside) {
+            firstMarker = current;
+        }
+        if (firstMarker) {
+            polylineMinTimeSeconds = firstMarker.timeSeconds;
+            const mx = xScale(firstMarker.timeSeconds / 3600);
+            const myRatio = yScaleLeft(firstMarker.ratio * 60);
+            const myEgp = yScaleRight(firstMarker.egp);
+            // Anchor at the chart's bottom-left corner (xScale(0) would
+            // sit off-screen since xMinHours > 0). Start tangent extends
+            // horizontally to the right; end tangent is set to match the
+            // polyline's slope leaving the marker so the bezier-polyline
+            // join is a single continuous curve, not a kink.
+            const sx = MARGIN.left;
+            const syRatio = MARGIN.top + PLOT_HEIGHT; // ratio = 0
+            const syEgp = MARGIN.top + PLOT_HEIGHT;   // egp = 0 (yMinRight=0 here)
+            const chordX = Math.max(1, mx - sx);
+            // Two control distances: a smaller one at the start keeps the
+            // bezier hugging the chart bottom for a moment, and a larger
+            // one at the end extends the slope-matched approach so the
+            // curve visibly steepens into the marker rather than flattening
+            // out long before it.
+            const ctrlDistStart = chordX / 3;
+            const ctrlDistEnd = chordX * 0.6;
+
+            // Find the polyline point immediately after firstMarker so we
+            // can sample its outgoing direction. +1s tolerance avoids
+            // matching the marker itself if it shares a time with a
+            // generated point.
+            let nextPoint = null;
+            for (let i = 0; i < points.length; i++) {
+                if (points[i].timeSeconds > firstMarker.timeSeconds + 1
+                    && points[i].timeSeconds / 3600 <= xMaxHours) {
+                    nextPoint = points[i];
+                    break;
+                }
+            }
+
+            const buildBezierD = (sxArg, syArg, mxArg, myArg, nyArg) => {
+                const cx1 = sxArg + ctrlDistStart;
+                const cy1 = syArg;
+                let cx2 = mxArg - ctrlDistEnd;
+                let cy2 = myArg;
+                if (nextPoint) {
+                    const nxArg = xScale(nextPoint.timeSeconds / 3600);
+                    const dx = nxArg - mxArg;
+                    const dy = nyArg - myArg;
+                    const len = Math.sqrt(dx * dx + dy * dy);
+                    if (len > 0) {
+                        // P2 = P3 − ctrlDistEnd × (forward-tangent unit vector).
+                        // Bezier tangent at P3 is in direction (P3 − P2),
+                        // so this lines up with (nextPoint − marker).
+                        cx2 = mxArg - (dx / len) * ctrlDistEnd;
+                        cy2 = myArg - (dy / len) * ctrlDistEnd;
+                    }
+                }
+                return `M ${sxArg} ${syArg} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${mxArg} ${myArg}`;
+            };
+
+            // EGP curve first (drawn behind ratio for layer order).
+            const nyEgpNext = nextPoint ? yScaleRight(nextPoint.egp) : null;
+            const nyRatioNext = nextPoint ? yScaleLeft(nextPoint.ratio * 60) : null;
+            svg.appendChild(svgEl('path', {
+                d: buildBezierD(sx, syEgp, mx, myEgp, nyEgpNext),
+                class: 'curve-bezier-egp',
+            }));
+            svg.appendChild(svgEl('path', {
+                d: buildBezierD(sx, syRatio, mx, myRatio, nyRatioNext),
+                class: 'curve-bezier',
+            }));
+        }
+    }
+
     // ---- EGP curve (right axis) — drawn first so it sits behind the ratio --
 
     const egpCurvePoints = points
         .filter(p => {
             const h = p.timeSeconds / 3600;
-            return h >= xMinHours && h <= xMaxHours;
+            return h >= xMinHours && h <= xMaxHours
+                && p.timeSeconds >= polylineMinTimeSeconds;
         })
         .map(p => `${xScale(p.timeSeconds / 3600)},${yScaleRight(p.egp)}`);
     if (egpCurvePoints.length > 0) {
@@ -712,7 +963,8 @@ function drawChart(points, current, peak, rates, bounds) {
     const ratioCurvePoints = points
         .filter(p => {
             const h = p.timeSeconds / 3600;
-            return h >= xMinHours && h <= xMaxHours;
+            return h >= xMinHours && h <= xMaxHours
+                && p.timeSeconds >= polylineMinTimeSeconds;
         })
         .map(p => `${xScale(p.timeSeconds / 3600)},${yScaleLeft(p.ratio * 60)}`);
     if (ratioCurvePoints.length > 0) {
@@ -751,6 +1003,132 @@ function drawChart(points, current, peak, rates, bounds) {
             formatHoursMinutes(peakHours),
             peakLabelAbove);
     }
+
+    // ---- Hover crosshair --------------------------------------------------
+    // Snaps to the nearest discrete EGP-unlock point under the cursor and
+    // shows a guide line, dots on both curves, and a tooltip with the
+    // total-time / EGP-per-min / total-EGP triple at that point.
+    // In pretty mode the leading polyline points are hidden, so exclude
+    // them from snapping too.
+    attachHoverCrosshair(svg, points, xScale, yScaleLeft, yScaleRight,
+                         xMinHours, xMaxHours, polylineMinTimeSeconds);
+}
+
+function attachHoverCrosshair(svg, points, xScale, yScaleLeft, yScaleRight,
+                              xMinHours, xMaxHours, minTimeSeconds = 0) {
+    // Pre-create the hover artifacts once; mousemove just updates them.
+    const guide = svgEl('line', {
+        x1: 0, x2: 0, y1: MARGIN.top, y2: MARGIN.top + PLOT_HEIGHT,
+        class: 'hover-guide', visibility: 'hidden',
+    });
+    svg.appendChild(guide);
+    const dotRatio = svgEl('circle', { r: 4, class: 'hover-dot-ratio', visibility: 'hidden' });
+    svg.appendChild(dotRatio);
+    const dotEgp = svgEl('circle', { r: 4, class: 'hover-dot-egp', visibility: 'hidden' });
+    svg.appendChild(dotEgp);
+    const tooltipBg = svgEl('rect', { class: 'hover-tooltip-bg', visibility: 'hidden' });
+    svg.appendChild(tooltipBg);
+    const tooltipText = svgEl('text', { class: 'hover-tooltip-text', visibility: 'hidden' });
+    svg.appendChild(tooltipText);
+
+    // Visible-window points only; nothing else can be hovered.
+    const visiblePoints = points.filter(p => {
+        const h = p.timeSeconds / 3600;
+        return h >= xMinHours && h <= xMaxHours && p.timeSeconds >= minTimeSeconds;
+    });
+    if (visiblePoints.length === 0) return;
+
+    const overlay = svgEl('rect', {
+        x: MARGIN.left, y: MARGIN.top,
+        width: PLOT_WIDTH, height: PLOT_HEIGHT,
+        class: 'hover-overlay',
+    });
+    svg.appendChild(overlay);
+
+    const showAt = nearest => {
+        const px = xScale(nearest.timeSeconds / 3600);
+        const pyRatio = yScaleLeft(nearest.ratio * 60);
+        const pyEgp = yScaleRight(nearest.egp);
+
+        guide.setAttribute('x1', px);
+        guide.setAttribute('x2', px);
+        guide.setAttribute('visibility', 'visible');
+        dotRatio.setAttribute('cx', px);
+        dotRatio.setAttribute('cy', pyRatio);
+        dotRatio.setAttribute('visibility', 'visible');
+        dotEgp.setAttribute('cx', px);
+        dotEgp.setAttribute('cy', pyEgp);
+        dotEgp.setAttribute('visibility', 'visible');
+
+        // Render text first to measure, then size + position the bg.
+        const ratioStr = `${formatScientific(nearest.ratio * 60)} EGP/min`;
+        const egpStr = `EGP ${formatEgp(nearest.egp)}`;
+        const timeStr = formatHoursMinutes(nearest.timeSeconds / 3600);
+        tooltipText.innerHTML = '';
+        tooltipText.appendChild(svgEl('tspan', { x: 0, dy: 0 }, ratioStr));
+        tooltipText.appendChild(svgEl('tspan', { x: 0, dy: 14 }, egpStr));
+        tooltipText.appendChild(svgEl('tspan', { x: 0, dy: 14, class: 'dim' }, timeStr));
+
+        // Make the text visible briefly to measure, then position the bg.
+        tooltipText.setAttribute('visibility', 'visible');
+        const bbox = tooltipText.getBBox();
+        const PAD_X = 8;
+        const PAD_Y = 6;
+        const bgWidth = bbox.width + PAD_X * 2;
+        const bgHeight = bbox.height + PAD_Y * 2;
+
+        // Place to the right of the cursor by default, flip left if it
+        // would overflow the chart's right edge.
+        const GAP = 12;
+        let bgX = px + GAP;
+        if (bgX + bgWidth > MARGIN.left + PLOT_WIDTH) {
+            bgX = px - GAP - bgWidth;
+        }
+        let bgY = pyRatio - bgHeight / 2;
+        bgY = Math.max(MARGIN.top + 2, Math.min(bgY, MARGIN.top + PLOT_HEIGHT - bgHeight - 2));
+
+        tooltipBg.setAttribute('x', bgX);
+        tooltipBg.setAttribute('y', bgY);
+        tooltipBg.setAttribute('width', bgWidth);
+        tooltipBg.setAttribute('height', bgHeight);
+        tooltipBg.setAttribute('visibility', 'visible');
+
+        // Now anchor each tspan inside the bg via its x attribute.
+        const textX = bgX + PAD_X;
+        const textY = bgY + PAD_Y + 11; // 11 ≈ first-line cap height
+        tooltipText.setAttribute('y', textY);
+        for (let i = 0; i < tooltipText.children.length; i++) {
+            tooltipText.children[i].setAttribute('x', textX);
+        }
+    };
+
+    const hide = () => {
+        for (const el of [guide, dotRatio, dotEgp, tooltipBg, tooltipText]) {
+            el.setAttribute('visibility', 'hidden');
+        }
+    };
+
+    overlay.addEventListener('mousemove', e => {
+        // Use the SVG's own CTM so we get correct coords even when the
+        // chart is letterboxed (preserveAspectRatio="xMidYMid meet").
+        const ctm = svg.getScreenCTM();
+        if (!ctm) return;
+        const inv = ctm.inverse();
+        const pt = svg.createSVGPoint();
+        pt.x = e.clientX;
+        pt.y = e.clientY;
+        const svgPt = pt.matrixTransform(inv);
+        const cursorHours =
+            xMinHours + ((svgPt.x - MARGIN.left) / PLOT_WIDTH) * (xMaxHours - xMinHours);
+        let nearest = visiblePoints[0];
+        let best = Infinity;
+        for (const p of visiblePoints) {
+            const d = Math.abs(p.timeSeconds / 3600 - cursorHours);
+            if (d < best) { best = d; nearest = p; }
+        }
+        showAt(nearest);
+    });
+    overlay.addEventListener('mouseleave', hide);
 }
 
 /**
@@ -896,11 +1274,17 @@ function compute() {
         rates.futureRate,
     );
 
-    // Time window for the chart: 6h before current, ending some way past the peak.
-    // If the peak is in the past or doesn't exist, just show 4h of future as a tail.
+    // Time window for the chart: at least 6h before current, but extended
+    // further back if the peak is so far in the past it'd otherwise sit on
+    // (or off) the left edge — keep at least 1h of breathing room left of
+    // the peak marker. If the peak is in the future or null, the
+    // peak-1h term is large/absent and the 6h-before-current bound wins.
     const currentHours = inputs.currentTimeSeconds / 3600;
     const peakHours = peak ? peak.timeSeconds / 3600 : null;
-    const xMinHours = Math.max(0.5, currentHours - 6);
+    const xMinHours = Math.max(
+        0.5,
+        Math.min(currentHours - 6, peakHours !== null ? peakHours - 1 : Infinity),
+    );
     const xMaxHours = peak
         ? Math.max(peakHours * 1.4, currentHours + 4)
         : currentHours + 4;
@@ -908,7 +1292,6 @@ function compute() {
     const points = generateUnlockSeries(
         inputs.currentEv,
         inputs.currentTimeSeconds,
-        rates.pastRate,
         rates.futureRate,
         xMinHours * 3600,
         xMaxHours * 3600,
@@ -919,7 +1302,6 @@ function compute() {
         xMaxHours: xMaxHours,
         currentEv: inputs.currentEv,
         currentTimeSeconds: inputs.currentTimeSeconds,
-        pastRate: rates.pastRate,
         futureRate: rates.futureRate,
     };
 
@@ -943,10 +1325,59 @@ function compute() {
         document.getElementById('r-peak').textContent =
             `${formatScientific(current.ratio * 60)} /min`;
     }
+    document.getElementById('r-current').textContent =
+        `${formatScientific(current.ratio * 60)} /min`;
 
     drawChart(points, current, peak, rates, bounds);
     buildVerdict(current, peak, rates);
+
+    // The constant-rate model extrapolates EV(t) = currentEv − futureRate ×
+    // (currentTime − t) backwards. EV crosses 0 at tBreakEven; if that
+    // moment falls inside the visible window AND lies after t=0, the
+    // chart visibly bottoms out long after the player's actual run start
+    // — flag it so the user knows the early portion isn't real.
+    const tBreakEvenSeconds =
+        inputs.currentTimeSeconds - inputs.currentEv / rates.futureRate;
+    const tBreakEvenHours = tBreakEvenSeconds / 3600;
+    const visiblyHitsZero =
+        tBreakEvenSeconds > 0 && tBreakEvenHours >= xMinHours;
+    document.getElementById('graph-info-text').textContent =
+        chartMode === 'pretty'
+            ? 'With Pretty mode, all data points before the first Current/Peak marker on the graph are made up, to make the graph hit 0 in a visually pleasant way.'
+            : 'The graph assumes a constant EV/s rate, it can not account for ramp-up time at the start of the run; your EV may be shown as hitting 0 long after the start of your run.';
+    graphInfoEl.hidden = graphInfoDismissed || !visiblyHitsZero;
 }
+
+// Dismissible info banner — once the user closes it, stay closed for the
+// rest of the session. compute() re-shows it on subsequent runs only when
+// they haven't dismissed it.
+let graphInfoDismissed = false;
+const graphInfoEl = document.getElementById('graph-info');
+graphInfoEl.querySelector('.graph-info-close').addEventListener('click', () => {
+    graphInfoDismissed = true;
+    graphInfoEl.hidden = true;
+});
+
+// Chart mode — "constant" (raw extrapolated curve) vs "pretty" (replace
+// the leading-up-to-zero portion with a smooth bezier from the origin to
+// the leftmost marker; only applies when the curve actually hits zero).
+// Pretty is the default since the constant-rate extrapolation hitting
+// zero mid-run is more confusing than the smoothed alternative.
+// drawChart reads chartMode at render time.
+let chartMode = 'pretty';
+const modeButtons = document.querySelectorAll('.mode-btn');
+modeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (btn.classList.contains('active')) return;
+        chartMode = btn.dataset.mode;
+        modeButtons.forEach(b => b.classList.toggle('active', b === btn));
+        // Mode swap shows a different banner message — reset the dismiss
+        // flag so the new context isn't auto-suppressed by an earlier
+        // dismissal of the previous mode's banner.
+        graphInfoDismissed = false;
+        compute();
+    });
+});
 
 document.getElementById('calc').addEventListener('click', compute);
 
