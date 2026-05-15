@@ -373,7 +373,7 @@
 
                 <div class="field">
                     <label for="ev">Current EV</label>
-                    <input type="text" id="ev" placeholder="e.g. 8.2e16 or 82000000000000000">
+                    <input type="text" id="ev" placeholder="1000000000000, 1e12, 1t">
                     <div class="hint">Scientific notation OK.</div>
                 </div>
 
@@ -387,7 +387,7 @@
 
                 <div class="field">
                     <label for="evps">Current EV/s</label>
-                    <input type="text" id="evps" placeholder="e.g. 6.49e12">
+                    <input type="text" id="evps" placeholder="1000000000000, 1e12, 1t">
                 </div>
 
                 <button id="calc">Compute</button>
@@ -603,14 +603,36 @@ function formatEgp(egp) {
 // Input parsing
 // ============================================================================
 
+// SI-style suffixes accepted alongside scientific notation. The suffix
+// (one trailing character) is stripped and multiplied in. `Q` is treated
+// the same as `q` (both 1e15) so users can use either case for the
+// quadrillion suffix.
+const NUMBER_SUFFIXES = {
+    k: 1e3,
+    m: 1e6,
+    b: 1e9,
+    t: 1e12,
+    q: 1e15,
+    Q: 1e15,
+};
+
 function parseScientific(raw) {
     if (typeof raw !== 'string') raw = String(raw);
     const trimmed = raw.trim().replace(/[, _]/g, '');
-    const value = Number(trimmed);
+    let multiplier = 1;
+    let numericPart = trimmed;
+    if (trimmed.length > 0) {
+        const lastChar = trimmed[trimmed.length - 1];
+        if (Object.prototype.hasOwnProperty.call(NUMBER_SUFFIXES, lastChar)) {
+            multiplier = NUMBER_SUFFIXES[lastChar];
+            numericPart = trimmed.slice(0, -1);
+        }
+    }
+    const value = Number(numericPart);
     if (!Number.isFinite(value) || value < 0) {
         throw new Error(`Invalid number: "${raw}"`);
     }
-    return value;
+    return value * multiplier;
 }
 
 // Fallback values used whenever an input is left blank — also what the
